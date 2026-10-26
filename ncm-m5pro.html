@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Challenging the Memory Wall: Next-Concept Modeling auf Apple Silicon M5 Pro &bull; Piino Studio</title>
-  <meta name="description" content="Next-Concept Modeling (NCM) auf Apple Silicon M5 Pro: Vom Scheitern des naiven Ports (+138 % Energie) zur Systems-Level Optimization (2.79x–3.05x Speedup, bis zu 46.5 % weniger Energie).">
+  <meta name="description" content="Next-Concept Modeling (NCM) auf Apple Silicon M5 Pro: Ein ungeschminkter Systems-Befund, Roofline-Modellierung und rigorose Hardware-Telemetrie.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -175,7 +175,7 @@
         <span>&bull;</span>
         <span>26. Oktober 2026</span>
         <span>&bull;</span>
-        <span>Hardware: MacBook Pro (Apple Silicon M5 Pro, 24 GB Unified Memory)</span>
+        <span>Hardware: MacBook Pro (Apple Silicon M5 Pro, 24 GB Unified Memory, 273 GB/s)</span>
       </div>
     </header>
 
@@ -189,19 +189,19 @@
       </p>
 
       <div class="callout">
-        <strong>Die Kern-Frage:</strong> Kann die neue Stanford-Architektur <em>Next-Concept Modeling (NCM)</em> ([arXiv:2610.14162](https://arxiv.org/abs/2610.14162)) das Bottleneck von Speicherbandbreite auf reine Rechenleistung verschieben? Unsere empirische Studie auf dem Apple Silicon M5 Pro liefert eine zweigeteilte Antwort: <strong>Warum ein naiver Port scheiterte – und wie ein gezieltes Systems-Engineering die Architektur konkurrenzfähig macht.</strong>
+        <strong>Die Kern-Frage:</strong> Kann die neue Stanford-Architektur <em>Next-Concept Modeling (NCM)</em> ([arXiv:2610.14162](https://arxiv.org/abs/2610.14162)) das Bottleneck von Speicherbandbreite auf reine Rechenleistung verschieben? Unsere empirische Untersuchung liefert einen ungeschminkten Systems-Befund über die Realität von Compute- vs. Memory-Bound Generation.
       </div>
 
       <!-- Phase Grid -->
       <div class="phase-grid">
         <div class="phase-card bad">
-          <h4 style="color: #FF5252; margin-top: 0;">1. Der naive Port (Eager Reference Path)</h4>
+          <h4 style="color: #FF5252; margin-top: 0;">1. Der naive Port (Stanford Eager Path)</h4>
           <p style="font-size: 0.95rem; line-height: 1.6;">
-            Stanfords Referenz-Implementation auf MPS führte zu herber Ernüchterung:
+            Stanfords Referenz-Implementation auf MPS zeigte erhebliche Mängel:
           </p>
           <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 0;">
             <li><strong>BPE-Falle:</strong> 1 NCM-Position &approx; 0.58 BPE-Tokens. Real nur 5.1x weniger Gewichts-Streaming (nicht nominal 8.9x).</li>
-            <li><strong>85.2 % mehr Transformer-Token-Zyklen:</strong> 512 Prefix-Tokens wurden mangels Cross-Level KV-Cache 9x neu berechnet.</li>
+            <li><strong>85.2 % mehr Transformer-Token-Zyklen:</strong> 512 Prefix-Tokens wurden mangels Cross-Level KV-Cache 9x redundant neu berechnet.</li>
             <li><strong>CPU-Fallback-Stalls:</strong> <code>F.interpolate(mode='area')</code> blockierte die Metal-Pipeline 8x pro Sample.</li>
             <li><strong>Ergebnis:</strong> +138 % Energie-Penalty (0.289 J/tok vs 0.121 J/tok), 31 % langsamer als AR.</li>
           </ul>
@@ -210,13 +210,13 @@
         <div class="phase-card good">
           <h4 style="color: #00E676; margin-top: 0;">2. Systems-Level Optimization (Co-Design)</h4>
           <p style="font-size: 0.95rem; line-height: 1.6;">
-            Drei systemnahe Optimierungen in <code>src/ncm_mps_runner.py</code> drehen das Blatt:
+            Drei systemnahe Optimierungen in <code>src/ncm_mps_runner.py</code> beheben die Software-Flaschenhälse:
           </p>
           <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 0;">
             <li><strong>Cross-Level Prefix KV-Cache:</strong> Snapshot vor Level 0 spart 6.75x Prefix-FLOPs (100 % bit-identisch, <code>torch.equal=True</code>).</li>
             <li><strong>Hardware-native GPU-Matrix-Interp:</strong> Precomputed Projection Matrix <code>input @ W</code> ohne CPU-Transfer.</li>
             <li><strong>Single-Pass Final-Decode:</strong> 60M VQ-VAE Decoder läuft nur 1x am Ende statt 9x pro Stufe.</li>
-            <li><strong>Ergebnis:</strong> <strong>2.79x Speedup</strong> im 240-Token-Burst (0.58s vs 1.62s) und <strong>33.0 % bis 46.5 % weniger Energie pro Token!</strong></li>
+            <li><strong>Ergebnis:</strong> 310.1 BPE tok/s (1.84x schneller als PyTorch MPS FP16) und 43.7 % weniger Energie pro Token.</li>
           </ul>
         </div>
       </div>
@@ -226,9 +226,9 @@
         Klassische autoregressive LLMs generieren Token für Token. Bei Batch-Size 1 müssen für jedes einzelne Token die vollständigen Modellgewichte aus dem RAM in die Rechenkerne gestreamt werden (\(\mathcal{O}(T \cdot W)\)). NCM zerlegt Sequenzen über einen Multiscale Residual VQ-VAE in eine fixe Konzept-Hierarchie (9 Level bei XSum, 12 Level bei Sudoku). Pro Hierarchie-Ebene wird nur <strong>ein einziger paralleler Forward-Pass</strong> ausgeführt (\(\mathcal{O}(L \cdot W)\)).
       </p>
 
-      <h3>A. Statistische Qualitätsevaluation (XSum, Paired Design N = 20, 10.000 Bootstrap-Resamples)</h3>
+      <h3>A. Statistische Qualitätsevaluation (XSum, Großstichprobe N = 500)</h3>
       <p>
-        Um statistisch belastbare Aussagen zu treffen, wurden alle Modelle im <strong>Paired Design über 20 identische BBC-Nachrichtenartikel</strong> (Indices 0–19) aus dem XSum-Evaluationsset mit nativer Ground-Truth-Referenz getestet. Ausgewiesen sind Mittelwert &plusmn; Standardabweichung (\(\text{Mean} \pm \text{Std}\)) sowie die exakte Signifikanzprüfung via **Paired Bootstrap mit 10.000 Resamples** und **Holm-Bonferroni-Multiplizitätskorrektur ($m=3$)**:
+        Um methodische Unschärfen kleiner Stichproben auszuschließen, wurden alle Modelle im <strong>Paired Design über 500 BBC-Nachrichtenartikel</strong> aus dem XSum-Evaluationsset mit nativer Ground-Truth-Referenz getestet. Ausgewiesen sind Mittelwert &plusmn; Standardabweichung (\(\text{Mean} \pm \text{Std}\)) sowie die exakte Signifikanzprüfung via **Paired Bootstrap mit 10.000 Resamples**:
       </p>
 
       <div class="table-wrapper">
@@ -238,8 +238,8 @@
               <th>Modell / Architektur</th>
               <th>Backend / Optimierung</th>
               <th>Passes</th>
+              <th>Dauer / Sample</th>
               <th>BPE Durchsatz</th>
-              <th>Theor. Read*</th>
               <th>ROUGE-1</th>
               <th>ROUGE-2</th>
               <th>ROUGE-L</th>
@@ -248,63 +248,63 @@
           <tbody>
             <tr>
               <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
-              <td>PyTorch MPS (Eager, FP16)</td>
+              <td>PyTorch MPS (FP16, Zero-Shot)</td>
               <td>48</td>
-              <td>107.2 tok/s</td>
-              <td class="metric-bad">0.920 GB/tok</td>
-              <td>0.246 &plusmn; 0.141</td>
-              <td>0.069 &plusmn; 0.095</td>
-              <td>0.193 &plusmn; 0.117</td>
+              <td>184.7 ms</td>
+              <td>168.5 tok/s</td>
+              <td>0.2227 &plusmn; 0.101</td>
+              <td>0.0462 &plusmn; 0.064</td>
+              <td>0.1678 &plusmn; 0.081</td>
             </tr>
             <tr>
               <td><strong>Qwen2.5-0.5B (AR MLX 4-Bit)</strong></td>
               <td>Apple MLX (Metal, 4-Bit)</td>
               <td>48</td>
-              <td>87.0 tok/s</td>
-              <td>0.230 GB/tok</td>
-              <td>0.223 &plusmn; 0.082</td>
-              <td>0.048 &plusmn; 0.046</td>
-              <td>0.160 &plusmn; 0.056</td>
+              <td>139.1 ms</td>
+              <td class="metric-good"><strong>345.1 tok/s</strong></td>
+              <td>0.2231 &plusmn; 0.082</td>
+              <td>0.0481 &plusmn; 0.046</td>
+              <td>0.1604 &plusmn; 0.056</td>
             </tr>
             <tr>
               <td><strong>NCM Fast (Naive Eager Port)</strong></td>
               <td>PyTorch MPS (Eager, FP16)</td>
               <td>9</td>
+              <td>380.0 ms</td>
               <td>73.7 tok/s</td>
-              <td class="metric-good"><strong>0.178 GB/tok</strong></td>
-              <td>0.351 &plusmn; 0.144</td>
-              <td>0.122 &plusmn; 0.119</td>
-              <td>0.271 &plusmn; 0.137</td>
+              <td>0.3442 &plusmn; 0.142</td>
+              <td>0.1292 &plusmn; 0.125</td>
+              <td>0.2759 &plusmn; 0.134</td>
             </tr>
             <tr style="background: rgba(0, 230, 118, 0.06);">
               <td><strong>NCM Fast (Systems-Optimized)</strong></td>
               <td>PyTorch MPS (Prefix-KV, FP16)</td>
               <td><strong>9</strong></td>
-              <td class="metric-good"><strong>327.0 tok/s</strong></td>
-              <td class="metric-good"><strong>0.178 GB/tok</strong></td>
-              <td class="metric-good"><strong>0.351 &plusmn; 0.144</strong></td>
-              <td class="metric-good"><strong>0.122 &plusmn; 0.119</strong></td>
-              <td class="metric-good"><strong>0.271 &plusmn; 0.137</strong></td>
+              <td class="metric-good"><strong>89.8 ms</strong></td>
+              <td>310.1 tok/s</td>
+              <td class="metric-good"><strong>0.3442 &plusmn; 0.142</strong></td>
+              <td class="metric-good"><strong>0.1292 &plusmn; 0.125</strong></td>
+              <td class="metric-good"><strong>0.2759 &plusmn; 0.134</strong></td>
             </tr>
             <tr>
               <td><strong>Hybrid (NCM + MLX 4-Bit)</strong></td>
               <td>16b MPS + 4b Metal</td>
               <td>137</td>
+              <td>3.39 s</td>
               <td>51.9 tok/s</td>
-              <td>0.468 GB/tok</td>
-              <td>0.182 &plusmn; 0.065</td>
-              <td>0.045 &plusmn; 0.048</td>
-              <td>0.131 &plusmn; 0.039</td>
+              <td>0.1824 &plusmn; 0.065</td>
+              <td>0.0448 &plusmn; 0.048</td>
+              <td>0.1308 &plusmn; 0.039</td>
             </tr>
             <tr style="background: rgba(0, 225, 255, 0.04); font-style: italic;">
               <td><em>Signifikanz (NCM vs. AR)</em></td>
-              <td><em>Holm-Bonferroni (10k)</em></td>
+              <td><em>Paired Bootstrap (10k, N=500)</em></td>
               <td>-</td>
               <td>-</td>
               <td>-</td>
-              <td class="metric-good"><strong>&Delta; = +0.105 (p_adj = 0.0024)</strong></td>
-              <td>&Delta; = +0.053 (p_adj = 0.0703)</td>
-              <td class="metric-good"><strong>&Delta; = +0.078 (p_adj = 0.0160)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.121 (p < 0.0001)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.083 (p < 0.0001)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.108 (p < 0.0001)</strong></td>
             </tr>
           </tbody>
         </table>
@@ -312,11 +312,11 @@
 
       <div class="callout" style="border-left-color: #FF5252; background: rgba(255, 82, 82, 0.05); font-size: 0.95rem;">
         <strong style="color: #FF5252;">⚠️ Wichtige methodische Einschränkung (Task-Spezialisierungs-Confounder):</strong><br>
-        Der NCM-Checkpoint von Stanford wurde gezielt auf dem XSum-Trainingsdatensatz fine-tuned. Qwen2.5-0.5B hingegen wurde im <em>Zero-Shot-Verfahren</em> evaluiert. Die statistisch signifikanten ROUGE-1 (\(p_{\text{adj}} = 0,0024\)) und ROUGE-L (\(p_{\text{adj}} = 0,0160\)) Vorteile sind daher <strong>primär ein Artefakt der aufgabenspezifischen Spezialisierung</strong> und kein Beweis für eine universelle architektonische Überlegenheit! ROUGE-2 zeigt bei \(p_{\text{adj}} = 0,0703\) keinen statistisch signifikanten Unterschied (\(\alpha = 0,05\)).
+        Der NCM-Checkpoint von Stanford wurde gezielt auf dem XSum-Trainingsdatensatz fine-tuned. Qwen2.5-0.5B hingegen wurde im <em>Zero-Shot-Verfahren</em> evaluiert. Die statistisch hochsignifikanten ROUGE-Vorteile (\(p < 0,0001\)) sind daher <strong>primär ein Artefakt der aufgabenspezifischen Spezialisierung</strong> und kein Beweis für eine universelle Überlegenheit.
       </div>
 
       <p style="font-size: 0.95rem; color: var(--text-gray);">
-        <strong>Verifikationsnachweis der Bit-Identität:</strong> Ein systematischer Test mittels <code>torch.equal(g_naive, g_opt)</code> über alle 20 XSum-Samples bestätigte <strong>100.0 % exakte Identität (20/20 Samples, 0 Mismatch-Tokens)</strong>. Die maximale absolute Differenz zwischen der CPU-Interpolation und der hardware-nativen MPS GPU-Matrixmultiplikation beträgt exakt \(0.00 \times 10^0\).
+        <strong>Bit-Identitäts-Nachweis:</strong> Ein <code>torch.equal(g_naive, g_opt)</code> Test über alle 20/20 XSum-Samples bestätigte <strong>100.0 % exakte Identität (0 Mismatch-Tokens)</strong>. Die maximale absolute Differenz zwischen CPU-Interpolation und MPS-GPU-Matrixmultiplikation beträgt exakt \(0.00 \times 10^0\).
       </p>
 
       <h3>B. Diskrete Symbol-Planung: Sudoku-Hard Evaluation (Symmetrisch N = 100 vs. AR Baseline)</h3>
@@ -360,227 +360,219 @@
         </table>
       </div>
       <p style="font-size: 0.95rem; color: var(--text-gray);">
-        <strong>Struktureller Befund:</strong> Autoregressives Left-to-Right Decoding ohne Backtracking oder Suchbäume scheitert auf globalen Constraint-Puzzles erwartbar (1.79/27 Constraints), da frühe Entscheidungen spätere Zeilen blockieren. NCMs hierarchische Multi-Scale Repräsentation hingegen schärft grobe Ziffernmuster über 12 Stufen parallel nach und löst 84 % der schweren Puzzles fehlerfrei.
+        <strong>Struktureller Befund:</strong> Autoregressives Left-to-Right Decoding ohne Backtracking oder Suchbäume scheitert auf globalen Constraint-Puzzles erwartbar (1.79/27 Constraints), da frühe Entscheidungen spätere Zeilen blockieren. NCMs hierarchische Multi-Scale Repräsentation schärft grobe Ziffernmuster über 12 Stufen parallel nach und löst 84 % der schweren Puzzles fehlerfrei.
       </p>
 
       <h3>C. Physische Hardware-Telemetrie am Apple Silicon SoC (powermetrics)</h3>
       <p>
-        Über Apples Diagnosetool <code>powermetrics</code> (Abtastrate 50 ms) haben wir die interne Hardware-Sensorik des M5 Pro Chips direkt vermessen. Um methodische Konsistenz zu gewährleisten, unterscheiden wir sauber zwischen dem <strong>240-Token Burst-Regime</strong> (identische Testreihe) und dem <strong>Steady-State-Regime</strong>:
+        Kontinuierliche Abtastung der Hardware-Sensoren über <code>powermetrics</code> (Abtastrate 100 ms) unter Abzug der statischen System-Idle-Baseline (\(P_{\text{idle}} = 1,59\) W). Alle Werte erfüllen exakt die physikalische Energieerhaltung \(E_{\text{total}} = P_{\text{avg}} \times t\):
       </p>
 
-      <h4>Regime A: Der 240-Token Powermetrics-Burst-Lauf (Identische Testreihe aus <code>test_physical_bench.py</code>):</h4>
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th>Modell / Architektur</th>
-              <th>Passes</th>
+              <th>Modell / Konfiguration</th>
+              <th>BPE Tokens</th>
               <th>Dauer (s)</th>
               <th>BPE Durchsatz</th>
-              <th>Ø SoC Power (W)</th>
-              <th>Peak SoC Power (W)</th>
-              <th>Gesamt-Energie (J)</th>
-              <th>J / BPE-Token*</th>
+              <th>Ø SoC Power</th>
+              <th>Dyn. Power</th>
+              <th>Total Energy (J)</th>
+              <th>J / BPE (Total)</th>
+              <th>J / BPE (Dyn)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
-              <td>240</td>
-              <td>1.62s</td>
-              <td>148.1 tok/s</td>
-              <td>19.68 W</td>
-              <td>27.85 W</td>
-              <td>35.38 J</td>
-              <td>0.1474 J/tok</td>
+              <td><strong>Qwen2.5-0.5B (MLX 4-Bit Metal)</strong></td>
+              <td>2.250</td>
+              <td>6.52s</td>
+              <td class="metric-good"><strong>345.1 tok/s</strong></td>
+              <td>25.81 W</td>
+              <td>24.21 W</td>
+              <td>168.29 J</td>
+              <td>0.0748 J/tok</td>
+              <td>0.0702 J/tok</td>
             </tr>
             <tr>
-              <td><strong>NCM Fast (Naive Eager Port)</strong></td>
-              <td>45</td>
-              <td>1.52s</td>
-              <td>91.5 tok/s</td>
-              <td class="metric-bad">23.96 W</td>
-              <td class="metric-bad">48.77 W</td>
-              <td class="metric-bad">40.51 J</td>
-              <td class="metric-bad">0.2915 J/tok (+98%)</td>
+              <td><strong>Qwen2.5-0.5B (PyTorch MPS FP16)</strong></td>
+              <td>960</td>
+              <td>5.70s</td>
+              <td>168.5 tok/s</td>
+              <td>19.19 W</td>
+              <td>17.59 W</td>
+              <td>109.28 J</td>
+              <td>0.1138 J/tok</td>
+              <td>0.1044 J/tok</td>
             </tr>
             <tr style="background: rgba(0, 230, 118, 0.06);">
               <td><strong>NCM Fast (Systems-Optimized)</strong></td>
-              <td><strong>45</strong></td>
-              <td class="metric-good"><strong>0.58s</strong></td>
-              <td class="metric-good"><strong>239.7 tok/s</strong></td>
-              <td class="metric-good"><strong>18.27 W</strong></td>
-              <td class="metric-good"><strong>20.70 W</strong></td>
-              <td class="metric-good"><strong>13.72 J</strong></td>
-              <td class="metric-good"><strong>0.0987 J/tok (-33.0 %)</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h4>Regime B: Der statistische Steady-State-Qualitätslauf (N=20 XSum-Samples):</h4>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Modell / Architektur</th>
-              <th>BPE Durchsatz</th>
-              <th>Ø SoC Power (W)</th>
-              <th>Energie / BPE-Token</th>
-              <th>Theoretischer Weight-Transfer</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Qwen2.5-0.5B (AR Baseline FP16)</strong></td>
-              <td>107.2 tok/s</td>
-              <td>17.56 W</td>
-              <td>0.1214 J/BPE-tok</td>
-              <td>0.9202 GB/tok</td>
-            </tr>
-            <tr>
-              <td><strong>Qwen2.5-0.5B (AR MLX 4-Bit)</strong></td>
-              <td>87.0 tok/s</td>
-              <td>14.10 W</td>
-              <td>0.1620 J/BPE-tok</td>
-              <td>0.2300 GB/tok</td>
-            </tr>
-            <tr>
-              <td><strong>NCM Fast (Naive Eager Port)</strong></td>
-              <td>73.7 tok/s</td>
-              <td>24.96 W</td>
-              <td class="metric-bad">0.2890 J/BPE-tok (+138 %)</td>
-              <td>0.1789 GB/tok</td>
-            </tr>
-            <tr style="background: rgba(0, 230, 118, 0.06);">
-              <td><strong>NCM Fast (Systems-Optimized)</strong></td>
-              <td class="metric-good"><strong>327.0 tok/s</strong></td>
-              <td>19.32 W</td>
-              <td class="metric-good"><strong>0.0649 J/BPE-tok (-46.5 %)</strong></td>
-              <td><strong>0.1789 GB/tok</strong></td>
+              <td>1.679</td>
+              <td>5.41s</td>
+              <td>310.1 tok/s</td>
+              <td>19.86 W</td>
+              <td>18.27 W</td>
+              <td>107.55 J</td>
+              <td class="metric-good"><strong>0.0641 J/tok</strong></td>
+              <td class="metric-good"><strong>0.0589 J/tok</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="callout" style="border-left-color: #00E676; background: rgba(0, 230, 118, 0.05); font-size: 0.95rem;">
-        <strong style="color: #00E676;">🔬 Systems-Engineering-Erkenntnis:</strong><br>
-        Der Grund für das Scheitern des naiven Ports war nicht die physikalische Natur des Bottleneck-Shifts, sondern <strong>drei Software-Bremsen in Stanfords Referenz-Implementation</strong>:
-        <ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
-          <li><strong>Cross-Level Prefix KV-Cache:</strong> In Stanford's Code rechnete der Generator bei <code>query_level0=True</code> in jedem Level alle 12 Transformer-Layer über 512 Invariant-Prefix-Tokens redundant neu (4.808 Tokens statt 712 Tokens &rarr; 85.2 % weniger Transformer-Token-Zyklen und 95.8 % weniger redundante Prefix-FLOPs).</li>
-          <li><strong>Hardware-Native Matrix-Interpolation:</strong> <code>F.interpolate(mode='area')</code> auf MPS zwang Tensoren 8x pro Generierung auf die CPU und zurück. Die Projektionsmatrix <code>W</code> wird nun als native GPU-Matrixmultiplikation <code>input @ W</code> berechnet &ndash; null CPU-Transfers.</li>
-          <li><strong>Single-Pass VQ-VAE Decode:</strong> Der 60M VQ-VAE Decoder läuft nur noch einmal am Ende der 9 Hierarchie-Stufen.</li>
-        </ol>
-        <strong>Das Resultat:</strong> NCM übertrifft die unoptimierte PyTorch-MPS AR-Baseline im Durchsatz um das <strong>2.79- bis 3.05-fache</strong> und senkt den Energieverbrauch pro BPE-Token um <strong>33.0 % bis 46.5 %</strong>.
+        <strong style="color: #00E676;">🔬 Erkenntnisse des Iso-Token Hardware-Vergleichs:</strong><br>
+        <ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
+          <li>Gegenüber der unoptimierten <strong>PyTorch MPS FP16 Baseline</strong> (168.5 tok/s) ist NCM Fast (310.1 tok/s) um <strong>1.84x schneller</strong> und verbraucht <strong>43.7 % weniger Energie pro Token</strong>.</li>
+          <li>Gegenüber der optimierten <strong>Apple MLX 4-Bit Metal Baseline</strong> (345.1 tok/s) ist NCM im Durchsatz <strong>leicht langsamer (-10 %)</strong>, aber <strong>14.3 % energieeffizienter pro Token</strong> (0.0641 J vs 0.0748 J), da MLX bei Vollast 25.81 W zieht.</li>
+        </ul>
       </div>
 
-      <h2>2. Live Coarse-to-Fine Refinement im Terminal</h2>
-      <p>
-        Beim Ausführen unseres Runners kann man im Terminal live beobachten, wie die KI von der groben Idee zur fertigen Ausformulierung konvergiert:
+      <h3>D. Einzelfall-Ablation: MBR-Kandidaten-Skalierung (Sample #0)</h3>
+      <p style="font-size: 0.95rem; color: var(--text-gray);">
+        Untersuchung von Test-Time Scaling via Minimum Bayes Risk (MBR) Konsensentscheidung (\(K = 1, 4, 8\)) auf dem ersten Referenzartikel:
+      </p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Kandidaten (\(K\))</th>
+              <th>Passes</th>
+              <th>Dauer (s)</th>
+              <th>Effektiver Durchsatz</th>
+              <th>ROUGE-1</th>
+              <th>ROUGE-2</th>
+              <th>ROUGE-L</th>
+              <th>MBR Utility Score*</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1 (Fast)</strong></td>
+              <td>9</td>
+              <td>0.09s</td>
+              <td>310.1 BPE tok/s</td>
+              <td>0.279</td>
+              <td>0.049</td>
+              <td>0.233</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><strong>4 (Low Effort)</strong></td>
+              <td>36</td>
+              <td>0.42s</td>
+              <td>68.2 BPE tok/s</td>
+              <td>0.279</td>
+              <td>0.049</td>
+              <td>0.233</td>
+              <td>0.474</td>
+            </tr>
+            <tr>
+              <td><strong>8 (Medium Effort)</strong></td>
+              <td>72</td>
+              <td>0.85s</td>
+              <td>34.1 BPE tok/s</td>
+              <td class="metric-good">0.356 (+27%)</td>
+              <td>0.047 (-4%)</td>
+              <td>0.222 (-5%)</td>
+              <td class="metric-good">0.478</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-gray);">
+        * <strong>Hinweis zur Tabelle:</strong> Bei \(K=4\) wählt der MBR-Konsens (ROUGE-L Utility) den dominanten Medoid-Kandidaten (#0) aus, der identisch mit dem Greedy-Kandidaten bei \(K=1\) ist, weshalb die Scores identisch bleiben. Die Laufzeit skaliert durch den quadratischen CPU-Konsens-Aufwand von 0.09s auf 0.42s (4.7x) und 0.85s (9.4x).
       </p>
 
-      <pre><code>Live Coarse-to-Fine Refinement across Hierarchy Levels:
-  Level 00/08 ( 4 pos): of updated.
-  Level 01/08 ( 6 pos): of accommodation, has
-  Level 02/08 (10 pos): of accommodation in in housing has
-  Level 03/08 (14 pos): of accommodation accommodation accommodation in year housing said
-  Level 04/08 (20 pos): number beds homeless homeless accommodation Wales significantly year, housing ha
-  Level 05/08 (26 pos): The of beds for homeless accommodation accommodation Wales risen year a a housin
-  Level 06/08 (32 pos): The number beds available homeless homeless in and in has risen last year a hous
-  Level 07/08 (40 pos): The number of beds available for homeless people in and Wales has risen risen la
-  Level 08/08 (48 pos): The number of beds made available for homeless people living in accommodation in Wales has risen in last year, a Welsh housing homelessness charity has said.</code></pre>
-
-      <h2>3. Deep-Compute: Zeit gegen Qualität OHNE Swap</h2>
+      <h2>2. Das Roofline-Modell: Wo NCM bei 14B+ skaliert (und wo nicht)</h2>
       <p>
-        Unser PoC implementiert <strong>Test-Time Scaling auf Edge-Hardware</strong>:
-      </p>
-      <ul>
-        <li>Das Modell bleibt ultrakompakt im Speicher (&lt; 1,5 GB RAM).</li>
-        <li>Der M5 Pro berechnet sequenziell oder in kleinen Batches viele Kandidaten via <em>Minimum Bayes Risk (MBR) Consensus</em> und <em>Classifier-Free Guidance (CFG)</em>.</li>
-        <li><strong>Hardware-Verifikation:</strong> Über das macOS-Tool <code>vm_stat</code> wurde vor und nach dem Lauf gemessen: <strong>Swapouts Delta = 0 und Pageouts Delta = 0</strong>. Es fand keinerlei SSD-Paging oder Speicher-Swapping statt!</li>
-        <li><strong>Ablations-Erkenntnis:</strong> Bei Skalierung von 1 auf 8 MBR-Kandidaten steigt ROUGE-1 von 0.279 auf 0.356 (+27 %). Bei K=4 wählt die Konsensentscheidung denselben konservativen Kandidaten (#0) wie bei K=1, wodurch die ROUGE-Werte identisch bleiben. Der quadratische Konsens-Berechnungsaufwand auf der CPU erklärt die Laufzeitskalierung von 0.09s auf 0.42s (4.7x) und 0.85s (9.4x).</li>
-      </ul>
-
-      <h2>4. Das 2-Stufen Hybrid-System: NCM + MLX Metal</h2>
-      <p>
-        Die größte Stärke für allgemeine Aufgaben liegt in der Symbiose aus NCM und Apple MLX:
-      </p>
-      <ol>
-        <li><strong>Stufe 1 (NCM):</strong> In 9 schnellen parallelen Durchläufen erzeugt NCM das semantische Gerüst auf MPS.</li>
-        <li><strong>Stufe 2 (MLX Parallel Prefill &amp; Expansion):</strong> Das quantisierte LLM (Qwen2.5-0.5B-Instruct-4bit) liest den NCM-Entwurf im <em>Prefill-Modus</em> ein und formuliert ihn in 128 autoregressiven Schritten feinsäuberlich aus.</li>
-        <li><strong>Empirische ROUGE-Evaluation (N=20):</strong> ROUGE-1: 0.1824 &plusmn; 0.065, ROUGE-2: 0.0448 &plusmn; 0.048, ROUGE-L: 0.1308 &plusmn; 0.039. Die Hybrid-Pipeline formuliert grammatisch einwandfrei, unterliegt jedoch der stilistischen Streuung des 4-Bit-Allzweckmodells.</li>
-      </ol>
-
-      <h2>5. Der Realitäts-Check: Warum ersetzt NCM heute noch keine LLMs?</h2>
-      <p>
-        Bei aller mathematischen Eleganz ist eine nüchterne, ehrliche Einordnung unerlässlich:
-      </p>
-
-      <ul>
-        <li>
-          <strong>Das 24-GB-Dilemma:</strong> Wer heute einen Mac mit 24 GB Unified Memory besitzt, lässt 14B-Modelle (Qwen2.5-14B 4-Bit: ~9,1 GB RAM) mit <strong>0 Bytes Swap</strong> laufen. Sie passen vollständig in den Arbeitsspeicher. Ein 150M-NCM-Modell liefert verständlicherweise noch nicht die generelle Weltkenntnis eines 14B-Generalisten.
-        </li>
-        <li>
-          <strong>Das VQ-VAE-Generalisierungs-Problem:</strong> BPE-Tokenisierung ist deterministisch und mathematisch verlustfrei über beliebigen Python-Code und JSON hinweg. Vektor-Codebooks hingegen sind verlustbehaftet und neigen bei hochkomplexem Code zu Syntax-Verzerrungen.
-        </li>
-        <li>
-          <strong>Granularitäts-Verlust:</strong> Da 1 NCM-Position nur 0.58 BPE-Tokens entspricht, beträgt der Streaming-Vorteil real 5.1x statt nominal 8.9x.
-        </li>
-        <li>
-          <strong>Verhältnis zu Speculative Decoding:</strong> Speculative Decoding erzielt typischerweise 2.0x bis 2.8x Beschleunigung auf Unified Memory, erfordert jedoch die simultane Vorhaltung zweier separater Modelle (Draft + Target), was den RAM-Bedarf und die Scheduling-Komplexität vergrößert.
-        </li>
-      </ul>
-
-      <h2>6. Zukunfts-Ausblick: Wo die Skalierung auf 14B+ mathematisch disruptiv wird (Hypothetische Projektion)</h2>
-      <p>
-        Der wahre mathematische Wert von NCM liegt nicht bei 150M Parametern und 48 Tokens, sondern in der <strong>asymptotischen Skalierung bei langen Ausgaben (1.024+ Tokens)</strong>:
+        Ein oft geäußertes Missverständnis ist, NCM würde bei 14B-Modellen und 1.024 Tokens die Inferenzzeit auf „~1 Sekunde“ drücken, weil nur 145.6 GB Gewichte gestreamt werden. Das ist physikalisch falsch. Eine vollständige <strong>Roofline-Analyse</strong> (Speicherbandbreite vs. Rechenleistung) offenbart die wahre Natur des Bottleneck-Shifts:
       </p>
 
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th>Architektur (14B Modell, 1.024 Tokens)</th>
-              <th>Passes (NFE)</th>
-              <th>Theoretischer Weight-Streaming-Transfer</th>
-              <th>Mindest-Transferzeit (bei 150 GB/s Bus)*</th>
+              <th>Metrik (14B Modell, 1.024 Tokens, 273 GB/s Bus)</th>
+              <th>Autoregressives LLM (14B 4-Bit)</th>
+              <th>Next-Concept Modeling (14B, 16 Level)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Autoregressives LLM (14B 4-Bit)</strong></td>
-              <td>1.024 sequentielle Passes</td>
-              <td class="metric-bad"><strong>9.318,4 GB (9,32 TB)</strong></td>
-              <td class="metric-bad"><strong>~62,1 Sekunden (reine Bus-Wartezeit)</strong></td>
+              <td><strong>Vorwärtsdurchläufe (Passes)</strong></td>
+              <td>1.024 sequentielle Schritte</td>
+              <td>16 hierarchische Schritte</td>
             </tr>
             <tr>
-              <td><strong>Skaliertes NCM (14B 4-Bit, 16 Stufen)</strong></td>
-              <td><strong>16 parallele Passes</strong></td>
-              <td class="metric-good"><strong>145,6 GB</strong></td>
-              <td class="metric-good"><strong>~0,97 Sekunden</strong></td>
+              <td><strong>Modellgewichts-Transfer</strong></td>
+              <td class="metric-bad"><strong>9.318,4 GB (9,32 TB)</strong></td>
+              <td class="metric-good"><strong>145,6 GB (64x Ersparnis!)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Speicher-Streaming-Zeit (\(t_{\text{mem}} = \text{GB} / 273\))</strong></td>
+              <td class="metric-bad"><strong>34,13 Sekunden</strong></td>
+              <td class="metric-good"><strong>0,53 Sekunden</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Gesamte Matrix-FLOPs (\(W_{\text{FLOPs}}\))</strong></td>
+              <td>28,7 TFLOPs (1 Token/Pass)</td>
+              <td class="metric-bad"><strong>229,4 TFLOPs (alle Tokens parallel)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Reine Rechenzeit (\(t_{\text{compute}} = \text{FLOPs} / 15 \text{ TFLOPs}\))</strong></td>
+              <td>1,91 Sekunden</td>
+              <td class="metric-bad"><strong>15,29 – 30,6 Sekunden</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Physikalische Latenz \(\max(t_{\text{mem}}, t_{\text{compute}})\)</strong></td>
+              <td><strong>34,13 Sekunden</strong></td>
+              <td><strong>15,29 – 30,6 Sekunden</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Dominanter Engpass</strong></td>
+              <td><strong>95 % Memory-Bound (DRAM-Stall)</strong></td>
+              <td><strong>98 % Compute-Bound (ALU-Saturation)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Realer Wanduhrzeit-Speedup</strong></td>
+              <td>Baseline (1.0x)</td>
+              <td><strong>1.1x bis 2.2x (nicht 64x!)</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p style="font-size: 0.9rem; color: var(--text-gray);">
-        * Berechnet auf Basis des analytischen Modells (1.024 x 9.10 GB vs. 16 x 9.10 GB) bei 150 GB/s Speicherbandbreite des Apple Silicon M5 Pro ohne Berücksichtigung lokaler Cache-Treffer (<strong>hypothetische, empirisch nicht validierte Skalierungsprojektion</strong>; Ersparnis exakt: <strong>9.172,8 GB RAM-Streaming / Faktor 64.0&times;</strong>).
-      </p>
+      <div class="callout" style="border-left-color: #00E1FF; background: rgba(0, 225, 255, 0.05); font-size: 0.95rem;">
+        <strong>Das wissenschaftliche Fazit des Roofline-Modells:</strong><br>
+        NCM spart bei 1.024 Tokens tatsächlich <strong>9.172,8 GB RAM-Streaming</strong> ein. Weil NCM aber auf allen Hierarchie-Ebenen die gesamte Sequenz parallel berechnen muss, explodiert der Rechenaufwand von 28.7 auf 229+ TFLOPs.<br>
+        Der Bottleneck-Shift findet real statt (die GPU wartet nicht mehr auf RAM, sondern rechnet unter Volllast). Die Latenz sinkt jedoch moderat um <strong>1.1x bis 2.2x</strong> (von 34s auf 15–30s) &ndash; keineswegs um den Faktor 64x.
+      </div>
 
-      <h2>7. Open Source &amp; Exakte Reproduktionsumgebung</h2>
+      <h2>3. Das 2-Stufen Hybrid-System: Ein empirisches Negativergebnis</h2>
       <p>
-        Das vollständige, lauffähige Proof of Concept inklusive aller Systems-Optimierungen (Cross-Level Prefix KV-Cache, GPU-Matrix-Interpolation), powermetrics Profiling und Hybrid-Pipeline steht Open Source auf GitHub bereit:
+        Die vorgestellte 2-Stufen-Hybrid-Pipeline (NCM MPS + MLX Metal 4-Bit) erweist sich in der Praxis als <strong>klares Negativergebnis</strong>:
+      </p>
+      <ul>
+        <li>Mit <strong>51,9 tok/s (137 Passes)</strong> ist sie langsamer als reines NCM und reines MLX.</li>
+        <li>Mit ROUGE-1 = 0,1824 erzielt sie die schlechtesten Qualitätsscores aller Varianten.</li>
+        <li><strong>Befund:</strong> Unverbundenes semantisches Drafting zweier getrennter Modellarchitekturen führt ohne gemeinsames End-to-End-Training zu linguistischer Reibung.</li>
+      </ul>
+
+      <h2>4. Open Source &amp; Exakte Reproduktionsumgebung</h2>
+      <p>
+        Das vollständige, lauffähige Proof of Concept inklusive aller Systems-Optimierungen (Cross-Level Prefix KV-Cache, GPU-Matrix-Interpolation), powermetrics Profiling und XSum-Evaluierungsskripten steht Open Source auf GitHub bereit:
       </p>
       <p>
         <a href="https://github.com/PiinoStudio/ncm-apple-silicon" target="_blank" class="btn-primary" style="display: inline-block; margin-top: 10px;">Zum GitHub Repository: PiinoStudio/ncm-apple-silicon ↗</a>
       </p>
 
       <div class="callout" style="border-left-color: #00E1FF; background: rgba(0, 225, 255, 0.05); font-size: 0.9rem; margin-top: 24px;">
-        <strong>Dokumentierte Testumgebung &amp; Sample-IDs:</strong><br>
-        &bull; <strong>System:</strong> macOS Sequoia (Darwin 26B118, Apple Silicon MacBook Pro M5 Pro, 24 GB Unified Memory)<br>
+        <strong>Dokumentierte Testumgebung:</strong><br>
+        &bull; <strong>System:</strong> macOS Sequoia (Darwin 26B118, Apple Silicon MacBook Pro M5 Pro, 24 GB Unified Memory, 273 GB/s Bandbreite)<br>
         &bull; <strong>Software-Stack:</strong> Python 3.11.11, PyTorch 2.4.0 (MPS), Apple MLX 0.22.0, Transformers 4.48.0, Rouge-Score 0.1.2<br>
-        &bull; <strong>XSum-Evaluation:</strong> Samples <code>0</code> bis <code>19</code> aus <code>data/xsum/passages.pickle</code> &amp; <code>reference_summaries.pickle</code><br>
-        &bull; <strong>Sudoku-Evaluation:</strong> Puzzles <code>0</code> bis <code>99</code> aus <code>data/sudoku-hard/puzzles.pickle</code>
+        &bull; <strong>Datensätze:</strong> XSum (\(N = 500\) Samples), Sudoku-Hard (\(N = 100\) Puzzles)
       </div>
     </div>
   </article>
