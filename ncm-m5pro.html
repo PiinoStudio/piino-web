@@ -165,11 +165,66 @@
 
       <h2>1. Der Bottleneck-Shift: Memory Bandwidth &rarr; Compute</h2>
       <p>
+        Klassische autoregressive LLMs generieren Token für Token. Bei Batch-Size 1 (Standard bei lokalen Assistenten) müssen für jedes einzelne generierte Token die vollständigen Modellgewichte aus dem RAM in die Rechenkerne gestreamt werden.
+      </p>
+      <p>
         NCM zerlegt Sequenzen über einen Multiscale Residual VQ-VAE in eine diskrete Konzept-Hierarchie (z. B. 9 Level bei Text, 12 Level bei Sudoku). Pro Hierarchie-Ebene wird nur <strong>ein einziger paralleler Forward-Pass</strong> ausgeführt &ndash; völlig unabhängig von der finalen Tokenanzahl.
       </p>
 
+      <h3>A. Der direkte 1:1 Task-Vergleich (Apples-to-Apples)</h3>
       <p>
-        In unserem Benchmark auf dem M5 Pro zeigte sich der fundamentale Unterschied schwarz auf weiß:
+        Um methodische Unschärfen auszuschließen, haben wir beide Modelle auf die <strong>exakt selbe Aufgabe</strong> angesetzt: Zusammenfassung desselben BBC-Nachrichtenartikels aus dem XSum-Datensatz mit einer festen Ausgabelänge von <strong>48 Tokens bzw. Positionen</strong> auf identischer Hardware (Apple Silicon M5 Pro via PyTorch MPS):
+      </p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Modell / Architektur</th>
+              <th>Aufgabe</th>
+              <th>Passes (NFE)</th>
+              <th>Ausgabe</th>
+              <th>Dauer (s)</th>
+              <th>Durchsatz</th>
+              <th>Theor. Weight Read*</th>
+              <th>GB / Token*</th>
+              <th>Swap &amp; Pageouts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
+              <td>XSum Summary (1:1)</td>
+              <td>48</td>
+              <td>48 Tokens</td>
+              <td>0.45s</td>
+              <td>107.2 tok/s</td>
+              <td class="metric-bad">44.17 GB</td>
+              <td class="metric-bad">0.9202 GB/tok</td>
+              <td class="metric-good">0 / 0</td>
+            </tr>
+            <tr>
+              <td><strong>NCM XSum (Coarse-to-Fine)</strong></td>
+              <td>XSum Summary (1:1)</td>
+              <td>9</td>
+              <td>48 Positionen</td>
+              <td>0.38s</td>
+              <td>126.6 tok/s</td>
+              <td class="metric-good">4.98 GB</td>
+              <td class="metric-good">0.1038 GB/tok</td>
+              <td class="metric-good">0 / 0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        <strong>Ergebnis des 1:1-Vergleichs:</strong> Bei gleicher Eingabe und identischer Ausgabelänge senkt NCM die Anzahl der Forward-Passes um den Faktor <strong>5,3x</strong> (9 statt 48 Durchläufe). Das theoretische Modellgewicht-Streaming sinkt von 44,17 GB auf 4,98 GB &ndash; eine <strong>8,9-fache rechnerische Einsparung</strong>. Die Wanduhrzeit verbessert sich moderat um ~18 % (0,38s vs. 0,45s), da der parallele MLP- und VQ-Rechenaufwand pro Pass bei kurzen Ausgaben ins Gewicht fällt.
+      </p>
+
+      <h3>B. Skalierungs- &amp; Szenarien-Vergleich (Lange Texte, Deep-Compute, Hybrid)</h3>
+      <p>
+        Wie verhält sich die Architektur, wenn autoregressive Modelle typische längere Texte generieren oder Test-Time Reasoning betrieben wird?
       </p>
 
       <div class="table-wrapper">
@@ -179,60 +234,70 @@
               <th>Benchmark Modus</th>
               <th>Szenario / Modell</th>
               <th>NFE (Passes)</th>
+              <th>Ausgabe</th>
               <th>Dauer (s)</th>
-              <th>Tokens/s</th>
-              <th>Est. RAM Read</th>
-              <th>GB / Token</th>
-              <th>Swap Pageouts</th>
+              <th>Durchsatz (Tok/s)</th>
+              <th>Theor. Weight Read*</th>
+              <th>GB / Token*</th>
+              <th>Swap &amp; Pageouts</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Autoregressive Baseline</strong></td>
+              <td><strong>Autoregressive Baseline (512)</strong></td>
               <td>Qwen2.5-0.5B (MPS)</td>
               <td>512</td>
-              <td>3.20s</td>
-              <td>159.8</td>
+              <td>512 Tokens</td>
+              <td>3.98s</td>
+              <td>128.6</td>
               <td class="metric-bad">471.15 GB</td>
               <td class="metric-bad">0.9202 GB/tok</td>
-              <td class="metric-good">0</td>
+              <td class="metric-good">0 / 0</td>
             </tr>
             <tr>
               <td><strong>NCM Fast (Coarse-to-Fine)</strong></td>
               <td>NCM XSum (9 Levels)</td>
               <td>9</td>
-              <td>0.36s</td>
-              <td>134.3</td>
+              <td>48 Pos.</td>
+              <td>0.38s</td>
+              <td>126.6</td>
               <td class="metric-good">4.98 GB</td>
               <td class="metric-good">0.1038 GB/tok</td>
-              <td class="metric-good">0</td>
+              <td class="metric-good">0 / 0</td>
             </tr>
             <tr>
-              <td><strong>NCM Deep-Compute</strong></td>
-              <td>NCM MBR (8 Kandidaten)</td>
-              <td>72</td>
-              <td>3.92s</td>
-              <td>98.0</td>
-              <td class="metric-good">39.84 GB</td>
+              <td><strong>NCM Deep-Compute (MBR)</strong></td>
+              <td>NCM MBR (4 Kandidaten)</td>
+              <td>36</td>
+              <td>192 (4x48)</td>
+              <td>2.16s</td>
+              <td>89.0 (22.2 eff.)**</td>
+              <td class="metric-good">19.92 GB</td>
               <td class="metric-good">0.1038 GB/tok</td>
-              <td class="metric-good">0</td>
+              <td class="metric-good">0 / 0</td>
             </tr>
             <tr>
               <td><strong>Hybrid-Interleaved</strong></td>
               <td>NCM (MPS) + Qwen2.5 (MLX)</td>
-              <td>62</td>
-              <td>3.84s</td>
-              <td>26.3</td>
-              <td class="metric-good">37.20 GB</td>
-              <td class="metric-good">0.3683 GB/tok</td>
-              <td class="metric-good">0</td>
+              <td>137</td>
+              <td>176 Tokens</td>
+              <td>3.39s</td>
+              <td>51.9</td>
+              <td class="metric-good">82.34 GB</td>
+              <td class="metric-good">0.4678 GB/tok</td>
+              <td class="metric-good">0 / 0</td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      <div class="callout" style="border-left-color: #00E1FF; background: rgba(0, 225, 255, 0.05); font-size: 0.95rem;">
+        <strong>* Methodischer Hinweis zum Speichertransfer:</strong> Der angegebene Wert <em>Theor. Weight Read</em> basiert auf dem in der Systemarchitektur etablierten analytischen Streaming-Modell (\(\text{NFE} \times W_{\text{model}}\)). Er berechnet die theoretische Mindestlast beim wiederholten Laden der Modellgewichte pro Pass, ist jedoch <strong>keine physikalische Bus-Messung</strong> über Hardware-Performance-Counter (Apple PMU). Reale Bus-Aktivität hängt zusätzlich von Caching-Effekten, Zwischen-Tensoren und Matrix-Multiplikations-Tilegrößen ab.<br><br>
+        <strong>** Hinweis zu Deep-Compute:</strong> Der Durchsatz unterscheidet sauber zwischen der <em>aggregierten Generierungsrate</em> über alle erzeugten Kandidaten (89.0 tok/s) und der <em>effektiven Ausgabelatenz</em> für den Endnutzer (22.2 tok/s, 2.16s Wartezeit für die finale MBR-Konsens-Zusammenfassung).
+      </div>
+
       <p>
-        <strong>Der Effizienzgewinn:</strong> NCM senkt den Speicherbandbreiten-Bedarf pro Token um das <strong>8,9- bis 45-Fache</strong>. Die Arithmetische Intensität springt von weniger als 1 FLOP/Byte auf ein Vielfaches &ndash; die GPU rechnet endlich, statt auf den Speicherbus zu warten.
+        <strong>Der architektonische Kern:</strong> Autoregressive LLMs skalieren linear mit der Ausgabelänge (\(O(T \cdot W)\)), während NCM in einer fixen Hierarchietiefe verharrt (\(O(L \cdot W)\)). Bei 512 Tokens bedeutet das 471 GB theoretischen Datentransfer für das AR-Modell gegen unter 5 GB bei NCM &ndash; eine <strong>94-fache Gesamtersparnis</strong> bzw. <strong>8,9-fache Ersparnis pro Token</strong>.
       </p>
 
       <h2>2. Live Coarse-to-Fine Refinement im Terminal</h2>
@@ -261,7 +326,8 @@
       <ul>
         <li>Das Modell bleibt ultrakompakt im Speicher (&lt; 1,5 GB RAM).</li>
         <li>Der M5 Pro berechnet sequenziell oder in kleinen Batches viele Kandidaten via <em>Minimum Bayes Risk (MBR) Consensus</em> und <em>Classifier-Free Guidance (CFG)</em>.</li>
-        <li><strong>Hardware-Beweis:</strong> Über das macOS-Tool <code>vm_stat</code> wurde vor und nach dem Lauf gemessen: <strong>Swap Pageouts Delta = 0</strong>. Kein einziges Byte landete im SSD-Swap!</li>
+        <li><strong>Hardware-Verifikation:</strong> Über das macOS-Tool <code>vm_stat</code> wurde vor und nach dem Lauf gemessen: <strong>Swapouts Delta = 0 und Pageouts Delta = 0</strong>. Es fand keinerlei SSD-Paging oder Speicher-Swapping statt!</li>
+        <li><strong>Ehrlicher Trade-off:</strong> Deep-Compute tauscht Rechenzeit bewusst gegen Konsensqualität: Bei 4 bis 8 Kandidaten steigt die Endnutzer-Latenz (z. B. 2,16s bei 4 Kandidaten), während der RAM-Footprint strikt unter der harten Budgetgrenze bleibt.</li>
       </ul>
 
       <h2>4. Das 2-Stufen Hybrid-System: NCM + MLX Metal</h2>
