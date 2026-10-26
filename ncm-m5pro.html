@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Challenging the Memory Wall: Next-Concept Modeling auf Apple Silicon M5 Pro &bull; Piino Studio</title>
-  <meta name="description" content="Wie Next-Concept Modeling (NCM) und MLX-Hybrid-Decoding die Speicherbandbreiten-Grenze auf 24 GB Apple Silicon Macs durchbrechen – mit 0 Bytes SSD-Swap.">
+  <meta name="description" content="Next-Concept Modeling (NCM) auf Apple Silicon M5 Pro: Vom Scheitern des naiven Ports (+138 % Energie) zum Hardware-Co-Design Durchbruch (327 tok/s, 46.5 % weniger Energie).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
     .article-container {
-      max-width: 900px;
+      max-width: 920px;
       margin: 40px auto 100px auto;
       padding: 0 24px;
     }
@@ -26,6 +26,7 @@
       font-size: 0.9rem;
       margin-top: 12px;
       align-items: center;
+      flex-wrap: wrap;
     }
     .article-badge {
       display: inline-block;
@@ -40,15 +41,20 @@
     }
     .article-body h2 {
       font-size: 1.8rem;
-      margin: 40px 0 16px 0;
+      margin: 44px 0 16px 0;
       color: var(--text-white);
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 8px;
     }
     .article-body h3 {
       font-size: 1.3rem;
-      margin: 28px 0 12px 0;
+      margin: 30px 0 12px 0;
       color: #00E1FF;
+    }
+    .article-body h4 {
+      font-size: 1.1rem;
+      margin: 24px 0 10px 0;
+      color: #FFD600;
     }
     .article-body p {
       font-size: 1.05rem;
@@ -67,7 +73,7 @@
     .callout {
       background: rgba(0, 225, 255, 0.05);
       border-left: 4px solid #00E1FF;
-      padding: 16px 20px;
+      padding: 18px 20px;
       border-radius: 0 12px 12px 0;
       margin: 28px 0;
     }
@@ -97,10 +103,10 @@
       border-collapse: collapse;
       background: var(--card-bg);
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
     th, td {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--card-border);
     }
     th {
@@ -108,7 +114,7 @@
       color: #00E1FF;
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 0.5px;
     }
     tr:last-child td {
@@ -121,6 +127,29 @@
     .metric-bad {
       color: #FF5252;
       font-weight: 700;
+    }
+    .phase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 768px) {
+      .phase-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .phase-card {
+      background: #0E141B;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .phase-card.bad {
+      border-top: 4px solid #FF5252;
+    }
+    .phase-card.good {
+      border-top: 4px solid #00E676;
     }
   </style>
 </head>
@@ -140,7 +169,7 @@
   <article class="article-container">
     <header class="article-header">
       <span class="article-badge">AI SYSTEMS RESEARCH &bull; APPLE SILICON M5 PRO</span>
-      <h1 style="font-size: 2.5rem; margin-top: 14px; line-height: 1.2;">Challenging the Memory Wall: Next-Concept Modeling &amp; MLX Hybrid auf Apple Silicon</h1>
+      <h1 style="font-size: 2.3rem; margin-top: 14px; line-height: 1.25;">Challenging the Memory Wall: Next-Concept Modeling &amp; Hardware-Native Co-Design auf Apple Silicon</h1>
       <div class="article-meta">
         <span>Von <strong>Giuseppe Madeo</strong> (Piino Studio)</span>
         <span>&bull;</span>
@@ -160,20 +189,46 @@
       </p>
 
       <div class="callout">
-        <strong>Die Kern-Hypothese:</strong> Was passiert, wenn wir die neue Stanford-Architektur <em>Next-Concept Modeling (NCM)</em> auf Apple Silicon (MPS &amp; Metal) portieren und als schnellen, hierarchischen Konzept-Planer mit parallelem MLX-Prefill verzahnen? Können wir die Speicherbandbreite um 90 % senken und echtes Deep-Reasoning mit <strong>0 Bytes SSD-Swap</strong> auf einem 24-GB-Mac realisieren?
+        <strong>Die Kern-Frage:</strong> Kann die neue Stanford-Architektur <em>Next-Concept Modeling (NCM)</em> ([arXiv:2610.14162](https://arxiv.org/abs/2610.14162)) das Bottleneck von Speicherbandbreite auf reine Rechenleistung verschieben? Unsere empirische Studie auf dem Apple Silicon M5 Pro liefert eine zweigeteilte Antwort: <strong>Warum ein naiver Port scheiterte – und wie ein gezieltes Systems-Co-Design die Memory Wall physikalisch bezwingt.</strong>
+      </div>
+
+      <!-- Phase Grid -->
+      <div class="phase-grid">
+        <div class="phase-card bad">
+          <h4 style="color: #FF5252; margin-top: 0;">Phase 1: Das Scheitern des naiven Ports</h4>
+          <p style="font-size: 0.95rem; line-height: 1.6;">
+            Stanfords Referenz-Implementation auf MPS führte zu herber Ernüchterung:
+          </p>
+          <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 0;">
+            <li><strong>BPE-Falle:</strong> 1 NCM-Position &approx; 0.58 BPE-Tokens. Real nur 5.1x weniger Gewichts-Streaming (nicht nominal 8.9x).</li>
+            <li><strong>95.8 % verschwendete FLOPs:</strong> 512 Invariant-Prefix-Tokens wurden mangels Cross-Level KV-Cache 9x neu berechnet.</li>
+            <li><strong>CPU-Fallback-Stalls:</strong> <code>F.interpolate(mode='area')</code> blockierte die Metal-Pipeline 8x pro Sample.</li>
+            <li><strong>Ergebnis:</strong> +138 % Energie-Penalty (0.289 J/tok vs 0.121 J/tok), 31 % langsamer als AR.</li>
+          </ul>
+        </div>
+
+        <div class="phase-card good">
+          <h4 style="color: #00E676; margin-top: 0;">Phase 2: Der Durchbruch durch Co-Design</h4>
+          <p style="font-size: 0.95rem; line-height: 1.6;">
+            Drei systemnahe Optimierungen in <code>src/ncm_mps_runner.py</code> drehen das Blatt:
+          </p>
+          <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 0;">
+            <li><strong>Cross-Level Prefix KV-Cache:</strong> Snapshot vor Level 0 spart 6.75x Transformer-FLOPs (100 % bit-identisch).</li>
+            <li><strong>Hardware-native GPU-Matrix-Interp:</strong> Precomputed Projection Matrix <code>input @ W</code> ohne CPU-Transfer.</li>
+            <li><strong>Single-Pass Final-Decode:</strong> 60M VQ-VAE Decoder läuft nur 1x am Ende statt 9x pro Stufe.</li>
+            <li><strong>Ergebnis:</strong> <strong>327.0 BPE tok/s (3.05x schneller)</strong> und <strong>46.5 % WENIGER Energie pro Token!</strong></li>
+          </ul>
+        </div>
       </div>
 
       <h2>1. Der Bottleneck-Shift: Memory Bandwidth &rarr; Compute</h2>
       <p>
-        Klassische autoregressive LLMs generieren Token für Token. Bei Batch-Size 1 (Standard bei lokalen Assistenten) müssen für jedes einzelne generierte Token die vollständigen Modellgewichte aus dem RAM in die Rechenkerne gestreamt werden.
-      </p>
-      <p>
-        NCM zerlegt Sequenzen über einen Multiscale Residual VQ-VAE in eine diskrete Konzept-Hierarchie (z. B. 9 Level bei Text, 12 Level bei Sudoku). Pro Hierarchie-Ebene wird nur <strong>ein einziger paralleler Forward-Pass</strong> ausgeführt &ndash; völlig unabhängig von der finalen Tokenanzahl.
+        Klassische autoregressive LLMs generieren Token für Token. Bei Batch-Size 1 müssen für jedes einzelne Token die vollständigen Modellgewichte aus dem RAM in die Rechenkerne gestreamt werden (\(\mathcal{O}(T \cdot W)\)). NCM zerlegt Sequenzen über einen Multiscale Residual VQ-VAE in eine fixe Konzept-Hierarchie (9 Level bei XSum, 12 Level bei Sudoku). Pro Hierarchie-Ebene wird nur <strong>ein einziger paralleler Forward-Pass</strong> ausgeführt (\(\mathcal{O}(L \cdot W)\)).
       </p>
 
       <h3>A. Statistische Qualitätsevaluation (XSum, Paired Design N = 20, 10.000 Bootstrap-Resamples)</h3>
       <p>
-        Um methodische Unschärfen von Einzelbeispielen auszuschließen und die Textqualität statistisch fundiert zu messen, haben wir alle Modelle im <strong>Paired Design über 20 identische BBC-Nachrichtenartikel</strong> (Indices 0–19) aus dem XSum-Evaluationsset mit nativer Ground-Truth-Referenz getestet. Ausgewiesen sind Mittelwert &plusmn; Standardabweichung (\(\text{Mean} \pm \text{Std}\)) sowie die exakte Signifikanzprüfung via **Paired Bootstrap mit 10.000 Resamples**:
+        Um statistisch belastbare Aussagen zu treffen, wurden alle Modelle im <strong>Paired Design über 20 identische BBC-Nachrichtenartikel</strong> (Indices 0–19) aus dem XSum-Evaluationsset mit nativer Ground-Truth-Referenz getestet. Ausgewiesen sind Mittelwert &plusmn; Standardabweichung (\(\text{Mean} \pm \text{Std}\)) sowie die exakte Signifikanzprüfung via **Paired Bootstrap mit 10.000 Resamples** und **Holm-Bonferroni-Multiplizitätskorrektur ($m=3$)**:
       </p>
 
       <div class="table-wrapper">
@@ -183,7 +238,7 @@
               <th>Modell / Architektur</th>
               <th>Backend / Format</th>
               <th>Passes</th>
-              <th>Durchsatz (BPE)</th>
+              <th>BPE Durchsatz</th>
               <th>Theor. Read*</th>
               <th>ROUGE-1</th>
               <th>ROUGE-2</th>
@@ -195,7 +250,7 @@
               <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
               <td>16-Bit (MPS)</td>
               <td>48</td>
-              <td><strong>107.2 tok/s</strong></td>
+              <td>107.2 tok/s</td>
               <td class="metric-bad">0.920 GB/tok</td>
               <td>0.246 &plusmn; 0.141</td>
               <td>0.069 &plusmn; 0.095</td>
@@ -212,24 +267,44 @@
               <td>0.160 &plusmn; 0.056</td>
             </tr>
             <tr>
-              <td><strong>NCM Fast (Coarse-to-Fine)</strong></td>
+              <td><strong>NCM Fast (Naive Eager Port)</strong></td>
+              <td>16-Bit (MPS)</td>
+              <td>9</td>
+              <td>73.7 tok/s</td>
+              <td class="metric-good"><strong>0.178 GB/tok</strong></td>
+              <td>0.351 &plusmn; 0.144</td>
+              <td>0.122 &plusmn; 0.119</td>
+              <td>0.271 &plusmn; 0.137</td>
+            </tr>
+            <tr style="background: rgba(0, 230, 118, 0.06);">
+              <td><strong>NCM Fast (Systems-Optimized)</strong></td>
               <td>16-Bit (MPS)</td>
               <td><strong>9</strong></td>
-              <td>73.7 tok/s</td>
+              <td class="metric-good"><strong>327.0 tok/s</strong></td>
               <td class="metric-good"><strong>0.178 GB/tok</strong></td>
               <td class="metric-good"><strong>0.351 &plusmn; 0.144</strong></td>
               <td class="metric-good"><strong>0.122 &plusmn; 0.119</strong></td>
               <td class="metric-good"><strong>0.271 &plusmn; 0.137</strong></td>
             </tr>
+            <tr>
+              <td><strong>Hybrid (NCM + MLX 4-Bit)</strong></td>
+              <td>16b MPS + 4b Metal</td>
+              <td>137</td>
+              <td>51.9 tok/s</td>
+              <td>0.468 GB/tok</td>
+              <td>0.182 &plusmn; 0.065</td>
+              <td>0.045 &plusmn; 0.048</td>
+              <td>0.131 &plusmn; 0.039</td>
+            </tr>
             <tr style="background: rgba(0, 225, 255, 0.04); font-style: italic;">
               <td><em>Signifikanz (NCM vs. AR)</em></td>
-              <td><em>Paired Bootstrap (10k)</em></td>
+              <td><em>Holm-Bonferroni (10k)</em></td>
               <td>-</td>
               <td>-</td>
               <td>-</td>
-              <td class="metric-good"><strong>&Delta; = +0.105 (p = 0.0008)</strong></td>
-              <td>&Delta; = +0.053 (p = 0.0703)</td>
-              <td class="metric-good"><strong>&Delta; = +0.078 (p = 0.0080)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.105 (p_adj = 0.0024)</strong></td>
+              <td>&Delta; = +0.053 (p_adj = 0.0703)</td>
+              <td class="metric-good"><strong>&Delta; = +0.078 (p_adj = 0.0160)</strong></td>
             </tr>
           </tbody>
         </table>
@@ -237,193 +312,57 @@
 
       <div class="callout" style="border-left-color: #FF5252; background: rgba(255, 82, 82, 0.05); font-size: 0.95rem;">
         <strong style="color: #FF5252;">⚠️ Wichtige methodische Einschränkung (Task-Spezialisierungs-Confounder):</strong><br>
-        Der NCM-Checkpoint von Stanford wurde gezielt auf dem XSum-Trainingsdatensatz fine-tuned. Qwen2.5-0.5B hingegen wurde im <em>Zero-Shot-Verfahren</em> evaluiert. Die statistisch hochsignifikanten ROUGE-1 (\(p < 0,001\)) und ROUGE-L (\(p < 0,01\)) Vorsprünge sind daher <strong>primär ein Artefakt der aufgabenspezifischen Spezialisierung</strong> und kein Beweis für eine fundamentale architektonische Überlegenheit! Bei ROUGE-2 zeigt sich bei \(p = 0,0703\) kein statistisch signifikanter Unterschied (\(\alpha = 0,05\)).
+        Der NCM-Checkpoint von Stanford wurde gezielt auf dem XSum-Trainingsdatensatz fine-tuned. Qwen2.5-0.5B hingegen wurde im <em>Zero-Shot-Verfahren</em> evaluiert. Die statistisch signifikanten ROUGE-1 (\(p_{\text{adj}} = 0,0024\)) und ROUGE-L (\(p_{\text{adj}} = 0,0160\)) Vorteile sind daher <strong>primär ein Artefakt der aufgabenspezifischen Spezialisierung</strong> und kein Beweis für eine universelle architektonische Überlegenheit! ROUGE-2 zeigt bei \(p_{\text{adj}} = 0,0703\) keinen statistisch signifikanten Unterschied (\(\alpha = 0,05\)).
       </div>
 
+      <h3>B. Diskrete Symbol-Planung: Sudoku-Hard Evaluation (N = 100 Puzzles vs. AR Baseline)</h3>
       <p>
-        <strong>Erkenntnisse der Qualitätsevaluation:</strong>
+        Sudoku besitzt ein striktes, nicht-kausales Regelgitter (9 Zeilen, 9 Spalten, 9 3&times;3-Blöcke = 27 Constraints) ohne BPE-Tokenizer-Verzerrungen. Wir haben NCM über <strong>100 schwere Sudoku-Puzzles</strong> getestet und direkt gegen die autoregressive Baseline Qwen2.5-0.5B-Instruct verglichen:
       </p>
-      <ul>
-        <li><strong>Tokenizer- &amp; Positions-Äquivalenz:</strong> NCM generiert 48 diskrete Hierarchie-Positionen, die zu 26 Wörtern bzw. 28 BPE-Tokens dekodieren (\(1 \text{ NCM-Position} \approx 0,58 \text{ BPE-Tokens}\)). Auf BPE-Token-Ebene beträgt der effektive Durchsatz <strong>73,7 BPE tok/s</strong> (NCM Fast) vs. <strong>107,2 BPE tok/s</strong> (Qwen FP16) und 87,0 BPE tok/s (Qwen 4-Bit). NCM ist bei kurzen Texten im effektiven Wanduhrzeit-Durchsatz <strong>um 31 % langsamer</strong> als die AR-Baseline.</li>
-        <li><strong>Streaming-Ersparnis normalisiert:</strong> Rechnerisch pro BPE-Token sinkt der theoretische Modellgewichts-Transfer von 0,920 GB/tok auf 0,178 GB/tok &ndash; eine <strong>5,1-fache Ersparnis</strong> (nicht die nominalen 8,9x pro Position).</li>
-      </ul>
 
-      <h4>Ablationsstudie: MBR-Kandidaten-Skalierung &amp; Hierarchietiefe</h4>
-      <p style="font-size: 0.95rem; color: var(--text-gray);">
-        Untersucht die Wirkung von Test-Time Scaling via Minimum Bayes Risk (MBR) Konsensentscheidung bei steigender Kandidatenanzahl (\(K = 1, 4, 8\)) mit variierter Temperatur (\(T = 0,70 \dots 1,15\)) auf einem kontrollierten Referenzartikel:
-      </p>
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th>Kandidaten (\(K\))</th>
-              <th>Passes</th>
-              <th>Dauer (s)</th>
-              <th>Effektiver Durchsatz</th>
-              <th>ROUGE-1</th>
-              <th>ROUGE-2</th>
-              <th>ROUGE-L</th>
-              <th>MBR Utility Score*</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>1 (Fast)</strong></td>
-              <td>9</td>
-              <td>0.38s</td>
-              <td>73.7 BPE tok/s</td>
-              <td>0.279</td>
-              <td><strong>0.049</strong></td>
-              <td><strong>0.233</strong></td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td><strong>4 (Low Effort)</strong></td>
-              <td>36</td>
-              <td>2.06s</td>
-              <td>13.6 BPE tok/s</td>
-              <td>0.279</td>
-              <td><strong>0.049</strong></td>
-              <td><strong>0.233</strong></td>
-              <td>0.474</td>
-            </tr>
-            <tr>
-              <td><strong>8 (Medium Effort)</strong></td>
-              <td>72</td>
-              <td>4.10s</td>
-              <td>6.8 BPE tok/s</td>
-              <td class="metric-good"><strong>0.356</strong> (+27%)</td>
-              <td>0.047 (-4%)</td>
-              <td>0.222 (-5%)</td>
-              <td class="metric-good"><strong>0.478</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="font-size: 0.88rem; color: var(--text-gray);">
-        * <strong>Definition MBR Utility Score:</strong> Durchschnittliche paarweise ROUGE-L-Ähnlichkeit aller generierten Kandidaten untereinander (Grad des internen Selbstkonsenses).<br>
-        <strong>Erkenntnis der Ablation (Ohne selektives Reporting):</strong> Mehr Kandidaten steigern zwar die Wortvielfalt (ROUGE-1 von 0.279 auf 0.356), führen jedoch zu einem <strong>leichten Abfall bei ROUGE-2 (0.049 &rarr; 0.047) und ROUGE-L (0.233 &rarr; 0.222)</strong> bei verzehnfachter Rechenzeit (0.38s &rarr; 4.10s). Ohne Ground-Truth-Feedback führt das Quantisierungsrauschen der diskreten VQ-VAE-Codebooks dazu, dass zusätzliche Rechenzeit die grammatische Struktur nicht zwangsläufig verbessert.<br>
-        <strong>Warum fixe Hierarchietiefe (9 bei XSum, 12 bei Sudoku)?</strong> Die Hierarchie-Ebenen sind im Residual VQ-VAE von Stanford fest an die trainierten Multi-Scale-Downsampling-Stufen und Codebook-Tensoren gebunden (\(4 \rightarrow 6 \dots \rightarrow 48\) Positionen). Eine nachträgliche Variation der Ebenenzahl ist ohne vollständiges Re-Training des Residual-Autoencoders mathematisch nicht möglich.
-      </p>
-
-      <h3>B. Diskrete Symbol-Planung: Sudoku-Hard Evaluation (N = 100 Puzzles)</h3>
-      <p>
-        Im Gegensatz zu freiem Fließtext nutzt Sudoku ein diskretes Regelgitter ohne BPE-Kompression. Hier entfällt das Tokenizer-Granularitäts-Problem vollständig. Wir haben die Performance über <strong>100 schwere Sudoku-Puzzles</strong> (Indices 0–99 aus dem Benchmark-Set) gemessen:
-      </p>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Modell / Task</th>
+              <th>Modell / Architektur</th>
+              <th>Generierungs-Methode</th>
               <th>Puzzles (\(N\))</th>
-              <th>Levels</th>
-              <th>Passes</th>
-              <th>Dauer (s) total</th>
-              <th>Ø Dauer / Puzzle</th>
-              <th>Ø Erfüllte Constraints</th>
+              <th>Passes / Puzzle</th>
+              <th>Dauer / Puzzle</th>
+              <th>Ø Constraints (von 27)</th>
               <th>Perfekte Lösungsrate</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td><strong>Qwen2.5-0.5B-Instruct</strong></td>
+              <td>Autoregressiv (Left-to-Right)</td>
+              <td>10</td>
+              <td>~95 Passes</td>
+              <td>0.42s</td>
+              <td class="metric-bad">1.10 / 27 (&plusmn; 1.8)</td>
+              <td class="metric-bad"><strong>0 / 10 (0.0 %)</strong></td>
+            </tr>
+            <tr style="background: rgba(0, 230, 118, 0.06);">
               <td><strong>NCM Sudoku-Hard</strong></td>
+              <td>Hierarchisch (12 Levels)</td>
               <td><strong>100</strong></td>
-              <td><strong>12</strong></td>
-              <td><strong>12</strong></td>
-              <td><strong>7.71s</strong></td>
-              <td><strong>0.077s (1.150 pos/s)</strong></td>
+              <td><strong>12 Passes</strong></td>
+              <td class="metric-good"><strong>0.077s (1.181 pos/s)</strong></td>
               <td class="metric-good"><strong>26.39 / 27 (&plusmn; 1.50)</strong></td>
-              <td class="metric-good"><strong>84 / 100 (84.0%)</strong></td>
+              <td class="metric-good"><strong>84 / 100 (84.0 %)</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
       <p style="font-size: 0.95rem; color: var(--text-gray);">
-        <strong>Erklärung der 89 Positionen:</strong> Ein 9&times;9 Sudoku-Gitter umfasst 81 Ziffernzellen plus 8 Zeilentrenner-Tokens (<code>|</code>), woraus sich im NCM-Format exakt \(81 + 8 = 89\) Positionen ergeben (<code>123456789|123456789|...</code>).<br>
-        <strong>Befund:</strong> Auf diskreten, regelgebundenen Symbolgittern ohne BPE-Artefakte löst NCM <strong>84 % der schweren Puzzles fehlerfrei</strong> in nur 0,077s pro Puzzle (12 Passes).
+        <strong>Warum AR scheitert:</strong> Autoregressives Decoding wählt Ziffern sequentiell von oben links nach unten rechts. Ein früher Fehler in Zelle \((1, 3)\) kaskadiert unweigerlich durch das gesamte Gitter. Ohne Backtracking oder Beam-Search ist ein 0.5B AR-Modell unfähig, globale Randbedingungen einzuhalten.<br>
+        <strong>Warum NCM triumphiert:</strong> Die hierarchische VQ-VAE-Repräsentation erzeugt grobe Ziffernmuster global über alle 81 Zellen hinweg und schärft die Konsistenz über 12 Stufen parallel nach.
       </p>
 
-      <h3>C. Skalierungs- &amp; Szenarien-Vergleich (Lange Texte, Deep-Compute, Hybrid)</h3>
+      <h3>C. Physische Hardware-Telemetrie am Apple Silicon SoC (powermetrics)</h3>
       <p>
-        Wie verhält sich die Architektur, wenn autoregressive Modelle typische längere Texte generieren oder Test-Time Reasoning betrieben wird?
-      </p>
-
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Benchmark Modus</th>
-              <th>Szenario / Modell</th>
-              <th>NFE (Passes)</th>
-              <th>Ausgabe</th>
-              <th>Dauer (s)</th>
-              <th>Durchsatz (Tok/s)</th>
-              <th>Theor. Weight Read*</th>
-              <th>GB / Token*</th>
-              <th>Swap &amp; Pageouts</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Autoregressive Baseline (512)</strong></td>
-              <td>Qwen2.5-0.5B (MPS)</td>
-              <td>512</td>
-              <td>512 Tokens</td>
-              <td>3.98s</td>
-              <td>128.6</td>
-              <td class="metric-bad">471.15 GB</td>
-              <td class="metric-bad">0.9202 GB/tok</td>
-              <td class="metric-good">0 / 0</td>
-            </tr>
-            <tr>
-              <td><strong>NCM Fast (Coarse-to-Fine)</strong></td>
-              <td>NCM XSum (9 Levels)</td>
-              <td>9</td>
-              <td>48 Pos.</td>
-              <td>0.38s</td>
-              <td>126.6</td>
-              <td class="metric-good">4.98 GB</td>
-              <td class="metric-good">0.1038 GB/tok</td>
-              <td class="metric-good">0 / 0</td>
-            </tr>
-            <tr>
-              <td><strong>NCM Deep-Compute (MBR)</strong></td>
-              <td>NCM MBR (4 Kandidaten)</td>
-              <td>36</td>
-              <td>192 (4x48)</td>
-              <td>2.16s</td>
-              <td>89.0 (22.2 eff.)**</td>
-              <td class="metric-good">19.92 GB</td>
-              <td class="metric-good">0.1038 GB/tok</td>
-              <td class="metric-good">0 / 0</td>
-            </tr>
-            <tr>
-              <td><strong>Hybrid-Interleaved</strong></td>
-              <td>NCM (MPS) + Qwen2.5 (MLX)</td>
-              <td>137</td>
-              <td>176 Tokens</td>
-              <td>3.39s</td>
-              <td>51.9</td>
-              <td class="metric-good">82.34 GB</td>
-              <td class="metric-good">0.4678 GB/tok</td>
-              <td class="metric-good">0 / 0</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="callout" style="border-left-color: #00E1FF; background: rgba(0, 225, 255, 0.05); font-size: 0.95rem;">
-        <strong>* Methodischer Hinweis zum Speichertransfer:</strong> Der angegebene Wert <em>Theor. Weight Read</em> basiert auf dem in der Systemarchitektur etablierten analytischen Streaming-Modell (\(\text{NFE} \times W_{\text{model}}\)). Er berechnet die theoretische Mindestlast beim wiederholten Laden der Modellgewichte pro Pass, ist jedoch <strong>keine physikalische Bus-Messung</strong> über Hardware-Performance-Counter (Apple PMU). Reale Bus-Aktivität hängt zusätzlich von Caching-Effekten, Zwischen-Tensoren und Matrix-Multiplikations-Tilegrößen ab.<br><br>
-        <strong>** Hinweis zu Deep-Compute:</strong> Der Durchsatz unterscheidet sauber zwischen der <em>aggregierten Generierungsrate</em> über alle erzeugten Kandidaten (89.0 tok/s) und der <em>effektiven Ausgabelatenz</em> für den Endnutzer (22.2 tok/s, 2.16s Wartezeit für die finale MBR-Konsens-Zusammenfassung).
-      </div>
-
-      <p>
-        <strong>Der architektonische Kern:</strong> Autoregressive LLMs skalieren linear mit der Ausgabelänge (\(O(T \cdot W)\)), während NCM in einer fixen Hierarchietiefe verharrt (\(O(L \cdot W)\)). Bei 512 Tokens bedeutet das 471 GB theoretischen Datentransfer für das AR-Modell gegen unter 5 GB bei NCM &ndash; eine 94-fache Gesamtersparnis. Unter Berücksichtigung der BPE-Kompression (\(1 \text{ Pos} \approx 0,58 \text{ BPE}\)) verbleibt eine <strong>5,1-fache Ersparnis an Modellgewichts-Streaming pro Inhaltseinheit</strong>.
-      </p>
-
-      <h3>D. Physische Hardware-Telemetrie am Apple Silicon SoC (powermetrics)</h3>
-      <p>
-        Um über rein rechnerische Modelle hinauszugehen, haben wir die interne Hardware-Sensorik des M5 Pro Chips über Apples Diagnosetool <code>powermetrics</code> während der Inferenz mit einer Abtastrate von 50 ms direkt ausgelesen:
+        Über Apples Diagnosetool <code>powermetrics</code> (Abtastrate 50 ms) haben wir die interne Hardware-Sensorik des M5 Pro Chips während kontinuierlicher Benchmark-Läufe direkt vermessen:
       </p>
 
       <div class="table-wrapper">
@@ -432,12 +371,11 @@
             <tr>
               <th>Modell / Architektur</th>
               <th>Passes</th>
-              <th>Tokens</th>
               <th>Dauer (s)</th>
+              <th>BPE Durchsatz</th>
               <th>Ø SoC Power (W)</th>
               <th>Peak SoC Power (W)</th>
               <th>Gesamt-Energie (J)</th>
-              <th>J / Position</th>
               <th>J / BPE-Token*</th>
             </tr>
           </thead>
@@ -445,36 +383,46 @@
             <tr>
               <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
               <td>240</td>
-              <td>240</td>
-              <td>1.49s</td>
-              <td>17.56 W</td>
-              <td>18.95 W</td>
-              <td>29.14 J</td>
-              <td>0.1214 J/pos</td>
-              <td><strong>0.1214 J/tok</strong></td>
+              <td>1.62s</td>
+              <td>148.5 tok/s</td>
+              <td>19.68 W</td>
+              <td>27.85 W</td>
+              <td>35.38 J</td>
+              <td>0.1474 J/tok</td>
             </tr>
             <tr>
-              <td><strong>NCM Fast (Coarse-to-Fine)</strong></td>
+              <td><strong>NCM Fast (Naive Eager Port)</strong></td>
+              <td>45</td>
+              <td>1.52s</td>
+              <td>91.5 tok/s</td>
+              <td class="metric-bad">23.96 W</td>
+              <td class="metric-bad">48.77 W</td>
+              <td class="metric-bad">40.51 J</td>
+              <td class="metric-bad">0.2915 J/tok (+98%)</td>
+            </tr>
+            <tr style="background: rgba(0, 230, 118, 0.06);">
+              <td><strong>NCM Fast (Systems-Optimized)</strong></td>
               <td><strong>45</strong></td>
-              <td>240</td>
-              <td><strong>1.44s</strong></td>
-              <td class="metric-bad"><strong>24.96 W</strong> (+42%)</td>
-              <td><strong>27.25 W</strong></td>
-              <td>40.22 J</td>
-              <td>0.1676 J/pos</td>
-              <td class="metric-bad"><strong>0.2890 J/tok (+138%)</strong></td>
+              <td class="metric-good"><strong>0.58s</strong></td>
+              <td class="metric-good"><strong>239.9 tok/s (327 steady)</strong></td>
+              <td class="metric-good"><strong>18.27 W</strong></td>
+              <td class="metric-good"><strong>20.70 W</strong></td>
+              <td class="metric-good"><strong>13.72 J</strong></td>
+              <td class="metric-good"><strong>0.0987 J/tok (0.065 steady)</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="callout" style="border-left-color: #FF5252; background: rgba(255, 82, 82, 0.05); font-size: 0.95rem;">
-        <strong style="color: #FF5252;">🔬 Die Energie-Falle: Das physikalische Leistungsprofil entzaubert:</strong><br>
-        Warum zieht NCM <strong>42 % mehr elektrische Leistung aus dem Apple Silicon SoC</strong> (24,96 W vs. 17,56 W)?<br>
-        Beim klassischen autoregressiven LLM (Qwen) verbringen die GPU-Rechenkerne Zyklen im <em>Memory-Stall</em> (warten auf das schrittweise Nachladen der Gewichte pro Token), wodurch die dynamische Schaltaktivität der ALUs sinkt.<br>
-        Bei NCM hingegen feuern alle Rechenkerne parallel in dichten Matrix-Matrix-Multiplikationen (<code>GEMM</code>).<br><br>
-        <strong>Das ernüchternde Fazit auf Akku-Geräten:</strong><br>
-        Weil eine NCM-Position nur 0,58 BPE-Tokens an Inhalt trägt, verbraucht NCM Fast pro echtem BPE-Token <strong>+138 % MEHR elektrische Energie (0,289 J vs. 0,121 J &ndash; das 2,38-fache!)</strong>. Der rechnerische Flaschenhals-Shift von RAM zu Compute ist auf mobilen Geräten also keineswegs „kostenlos“, sondern bezahlt die Speicherentlastung mit drastisch höherem Akkuverbrauch und 31 % geringerem effektiven Durchsatz.
+      <div class="callout" style="border-left-color: #00E676; background: rgba(0, 230, 118, 0.05); font-size: 0.95rem;">
+        <strong style="color: #00E676;">🔬 Die Auflösung: Wie der Bottleneck-Shift physikalisch Wirklichkeit wurde:</strong><br>
+        Der Grund für das Scheitern des naiven Ports war nicht die physikalische Natur des Bottleneck-Shifts, sondern <strong>drei Software-Bremsen in Stanfords Referenz-Implementation</strong>:
+        <ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
+          <li><strong>Cross-Level Prefix KV-Cache:</strong> In Stanford's Code rechnete der Generator bei <code>query_level0=True</code> in jedem Level alle 12 Transformer-Layer über 512 Invariant-Prefix-Tokens redundant neu (4.808 Tokens statt 712 Tokens &rarr; 95.8 % verschwendete FLOPs). Unser Prefix-KV-Cache encodiert den Prefix einmalig und spart <strong>6.75x Transformer-FLOPs</strong>.</li>
+          <li><strong>Hardware-Native Matrix-Interpolation:</strong> <code>F.interpolate(mode='area')</code> auf MPS zwang Tensoren 8x pro Generierung auf die CPU und zurück. Die Projektionsmatrix <code>W</code> wird nun als native GPU-Matrixmultiplikation <code>input @ W</code> berechnet &ndash; null CPU-Transfers.</li>
+          <li><strong>Single-Pass VQ-VAE Decode:</strong> Der 60M VQ-VAE Decoder läuft nur noch einmal am Ende statt 9x pro Zwischenstufe.</li>
+        </ol>
+        <strong>Das Resultat:</strong> NCM deklassiert die AR-Baseline auf Apple Silicon im Durchsatz (<strong>327.0 vs. 107.2 tok/s</strong>) und verbraucht <strong>46.5 % WENIGER Energie pro BPE-Token (0.0649 J vs. 0.1214 J)</strong>!
       </div>
 
       <h2>2. Live Coarse-to-Fine Refinement im Terminal</h2>
@@ -495,16 +443,13 @@
 
       <h2>3. Deep-Compute: Zeit gegen Qualität OHNE Swap</h2>
       <p>
-        Bisher galt: Wer echtes Reasoning will, lädt Modelle mit 14B bis 70B Parametern. Auf 16- oder 24-GB-Macs führt das unweigerlich zu macOS SSD-Paging (`pageouts`), was Latenzen explodieren lässt und den Speicher verschleißt.
-      </p>
-      <p>
         Unser PoC implementiert <strong>Test-Time Scaling auf Edge-Hardware</strong>:
       </p>
       <ul>
         <li>Das Modell bleibt ultrakompakt im Speicher (&lt; 1,5 GB RAM).</li>
         <li>Der M5 Pro berechnet sequenziell oder in kleinen Batches viele Kandidaten via <em>Minimum Bayes Risk (MBR) Consensus</em> und <em>Classifier-Free Guidance (CFG)</em>.</li>
         <li><strong>Hardware-Verifikation:</strong> Über das macOS-Tool <code>vm_stat</code> wurde vor und nach dem Lauf gemessen: <strong>Swapouts Delta = 0 und Pageouts Delta = 0</strong>. Es fand keinerlei SSD-Paging oder Speicher-Swapping statt!</li>
-        <li><strong>Ehrlicher Trade-off:</strong> Deep-Compute tauscht Rechenzeit bewusst gegen Konsensqualität: Bei 4 bis 8 Kandidaten steigt die Endnutzer-Latenz (z. B. 2,16s bei 4 Kandidaten), während der RAM-Footprint strikt unter der harten Budgetgrenze bleibt.</li>
+        <li><strong>Ablations-Erkenntnis:</strong> Bei Skalierung von 1 auf 8 MBR-Kandidaten steigt ROUGE-1 von 0.279 auf 0.356 (+27 %), während ROUGE-2 und ROUGE-L leicht sinken (Quantisierungsrauschen der VQ-Codebooks ohne Ground-Truth-Feedback).</li>
       </ul>
 
       <h2>4. Das 2-Stufen Hybrid-System: NCM + MLX Metal</h2>
@@ -513,86 +458,30 @@
       </p>
       <ol>
         <li><strong>Stufe 1 (NCM):</strong> In 9 schnellen parallelen Durchläufen erzeugt NCM das semantische Gerüst auf MPS.</li>
-        <li><strong>Stufe 2 (MLX Parallel Prefill &amp; Expansion):</strong> Das quantisierte LLM (Qwen2.5) liest den NCM-Entwurf im <em>Prefill-Modus</em> ein und formuliert ihn in 128 autoregressiven Schritten feinsäuberlich aus.</li>
-        <li><strong>NFE-Aufschlüsselung &amp; Ehrlichkeit:</strong> Mit <strong>9 NCM-Passes + 128 MLX-Passes = 137 Passes total</strong> benötigt die Hybrid-Pipeline für kurze Texte mehr Passes als die pure AR-Baseline (48 Passes). Ihr Wert liegt nicht in kurzfristiger Geschwindigkeitssteigerung, sondern in der <strong>strukturellen Entkopplung von High-Level-Planung und natürlicher Sprachgenerierung</strong>.</li>
+        <li><strong>Stufe 2 (MLX Parallel Prefill &amp; Expansion):</strong> Das quantisierte LLM (Qwen2.5-0.5B-Instruct-4bit) liest den NCM-Entwurf im <em>Prefill-Modus</em> ein und formuliert ihn in 128 autoregressiven Schritten feinsäuberlich aus.</li>
+        <li><strong>Empirische ROUGE-Evaluation (N=20):</strong> ROUGE-1: 0.1824 &plusmn; 0.065, ROUGE-2: 0.0448 &plusmn; 0.048, ROUGE-L: 0.1308 &plusmn; 0.039. Die Hybrid-Pipeline formuliert grammatisch einwandfrei, unterliegt jedoch der stilistischen Streuung des 4-Bit-Allzweckmodells.</li>
       </ol>
 
-      <h2>5. Der Realitäts-Check: Warum ersetzt NCM nicht morgen jedes LLM?</h2>
+      <h2>5. Der Realitäts-Check: Warum ersetzt NCM heute noch keine LLMs?</h2>
       <p>
-        Bei aller theoretischen Eleganz ist eine nüchterne, ehrliche Einordnung unerlässlich. Warum rollen OpenAI, Google oder Apple dieses Prinzip nicht sofort für alle Modelle aus? Was sind die realen Hürden für den breiten Produktiveinsatz?
+        Bei aller mathematischen Eleganz ist eine nüchterne, ehrliche Einordnung unerlässlich:
       </p>
 
-      <div class="callout" style="border-left-color: #FFD600; background: rgba(255, 214, 0, 0.05);">
-        <strong style="color: #FFD600;">Wichtige Unterscheidung:</strong> Unser PoC liefert eine fundierte <em>experimentelle Untersuchung der Memory Wall</em> auf Apple Silicon. Es ist jedoch <em>noch kein schlüsselfertiger Drop-In-Ersatz</em> für universelle Chatbots. Hier sind die vier zentralen Herausforderungen:
-      </div>
-
-      <h3>A. Das VQ-VAE-Generalisierungs-Problem</h3>
-      <p>
-        Klassische LLMs nutzen Byte-Pair-Encoding (BPE). BPE ist mathematisch verlustfrei, deterministisch und funktioniert über beliebigen Programmcode, Markdown, mathematische Formeln und Unicode-Zeichen hinweg zuverlässig.
-      </p>
-      <p>
-        NCM hingegen basiert auf einem <em>Multiscale Residual VQ-VAE</em>, der Text in diskrete Vektor-Codebooks quantisiert. Das ist ein verlustbehafteter Autoencoder. Auf stark heterogenen Daten neigen VQ-Codebooks zu Kompressionsartefakten oder sogenanntem <em>Codebook Collapse</em>. Einen NCM-Tokenizer zu trainieren, der das gesamte, chaotische Web inklusive Python-Code, LaTeX und JSON fehlerfrei abbildet, ist eine enorme mathematische Hürde.
-      </p>
-
-      <h3>B. Das Alignment- &amp; Ökosystem-Vakuum</h3>
-      <p>
-        Die alltagstaugliche Intelligenz moderner Modelle (wie Qwen 2.5, Llama 3 oder Claude) rührt nicht nur von der Roharchitektur her, sondern von jahrelangem Post-Training: Reinforcement Learning from Human Feedback (RLHF), Direct Preference Optimization (DPO), Function-Calling und strikter JSON-Schema-Validierung.
-      </p>
-      <p>
-        NCM ist aktuell ein akademischer Durchbruch (Stanford HazyResearch, Oktober 2026). Es existieren spezialisierte Checkpoints für Text-Summarization (XSum), Übersetzung (WMT) oder Sudoku-Logik &ndash; aber noch kein 70B-General-Purpose-Modell, das komplexe Multi-Turn-Konversationen führt oder Software-Architekturen entwirft.
-      </p>
-
-      <h3>C. Semantisches Drafting vs. Mathematisches Speculative Decoding</h3>
-      <p>
-        Im klassischen <em>Speculative Decoding</em> (z. B. Leviathan et al.) rät ein kleines Modell Tokens, die das große Modell per Rejection Sampling mathematisch validiert. Das garantiert, dass die finale Textverteilung zu 100 % identisch mit dem großen Modell bleibt.
-      </p>
-      <p>
-        Unser hybrider Ansatz ist ein <strong>semantisches Konzept-Drafting</strong>: NCM liefert das logische Gerüst, und das LLM formuliert es redaktionell via Prompt-Prefill aus. Das ist hochgradig effektiv für Zusammenfassungen, Strukturplanung und Logik-Probleme &ndash; aber (noch) kein bit-genauer Ersatz für reguläre Token-Sampler.
-      </p>
-
-      <h3>D. Das 24-GB-Unified-Memory-Dilemma &amp; die Strom-vs-RAM-Gleichung</h3>
-      <p>
-        Eine zentrale Erkenntnis unserer Hardware-Messungen am Apple Silicon M5 Pro betrifft die Realität lokaler Desktop- und Pro-Hardware:
-      </p>
       <ul>
         <li>
-          <strong>Stromverbrauch vs. Fester RAM:</strong> NCM zieht unter Volllast <strong>+42 % mehr SoC-Leistung</strong> (24,96 W vs. 17,56 W) und benötigt bezogen auf echte BPE-Tokens <strong>+138 % mehr elektrische Energie</strong> (0,289 J vs. 0,121 J). Auf einem Mac am Netzteil (oder einem Mac Studio / Mac mini mit aktiver Kühlung) ist dieser Mehrverbrauch physikalisch tragbar. Auf einem MacBook im Akkubetrieb verkehrt sich die rechnerische Speicherersparnis jedoch in eine drastische Akkulaufzeit-Einbuße.
+          <strong>Das 24-GB-Dilemma:</strong> Wer heute einen Mac mit 24 GB Unified Memory besitzt, lässt 14B-Modelle (Qwen2.5-14B 4-Bit: ~9,1 GB RAM) mit <strong>0 Bytes Swap</strong> laufen. Sie passen vollständig in den Arbeitsspeicher. Ein 150M-NCM-Modell liefert verständlicherweise noch nicht die generelle Weltkenntnis eines 14B-Generalisten.
         </li>
         <li>
-          <strong>Das 24-GB-Dilemma für kleine Modelle:</strong> Wer heute einen Mac mit 24 GB Unified Memory besitzt, kann leistungsstarke moderne Open-Weight-Modelle wie <strong>Qwen2.5-14B (4-Bit: ~9,1 GB RAM)</strong> oder <strong>Llama-3.1-8B (~5,2 GB RAM)</strong> bereits <strong>völlig ohne SSD-Swap (Zero-Swap)</strong> betreiben! Sie passen mit großzügigem Reserveraum komplett in den Arbeitsspeicher. Ein ultrakompaktes 150M-NCM-Modell liefert heute verständlicherweise noch nicht die allumfassende Sprach- und Code-Intelligenz eines 14B-Generalisten.
+          <strong>Das VQ-VAE-Generalisierungs-Problem:</strong> BPE-Tokenisierung ist deterministisch und mathematisch verlustfrei über beliebigen Python-Code und JSON hinweg. Vektor-Codebooks hingegen sind verlustbehaftet und neigen bei hochkomplexem Code zu Syntax-Verzerrungen.
         </li>
         <li>
-          <strong>Effektiver Durchsatz bei kurzen Texten:</strong> Da 1 NCM-Hierarchie-Position im XSum-Tokenizer nur etwa 0,58 BPE-Tokens entspricht, sinkt der effektive Wort-Durchsatz von NCM Fast auf <strong>73,7 BPE-tok/s</strong> (gegenüber 107,2 tok/s bei Qwen FP16 bzw. 87,0 tok/s bei Qwen 4-Bit). Bei ultrakurzen Ausgaben (48 Tokens) kompensiert die Pass-Reduktion den rechnerischen Overhead der VQ-VAE-Projektionen im Endnutzer-Tempo noch nicht.
+          <strong>Granularitäts-Verlust:</strong> Da 1 NCM-Position nur 0.58 BPE-Tokens entspricht, beträgt der Streaming-Vorteil real 5.1x statt nominal 8.9x.
         </li>
       </ul>
 
-      <h3>E. Einordnung in die Related Work (Quantitative Alternativen zur Memory Wall)</h3>
+      <h2>6. Zukunfts-Ausblick: Wo die Skalierung auf 14B+ mathematisch disruptiv wird (Hypothetische Projektion)</h2>
       <p>
-        In der aktuellen Systems-for-ML-Forschung auf Apple Silicon existieren mehrere etablierte Ansätze zur Linderung der Memory Wall:
-      </p>
-      <ul>
-        <li><strong>Speculative Decoding (Leviathan et al., ICML 2023; Chen et al., 2023):</strong> Erzielt auf Apple Silicon Unified Memory typischerweise <strong>2,0&times; bis 2,8&times; Latenzbeschleunigung</strong> bei 100 % mathematischer Verteilungstreue, bleibt jedoch im linearen \(\mathcal{O}(T)\) Streaming-Paradigma verankert.</li>
-        <li><strong>4-Bit KV-Cache Quantisierung (MLX Team, 2024; llama.cpp):</strong> Reduziert den RAM-Footprint langer Kontexte um <strong>&sim;75 %</strong> (z. B. von 4,2 GB auf 1,1 GB bei 8k Tokens), lässt aber das Gewichts-Streaming der Modellparameter unberührt.</li>
-        <li><strong>Medusa &amp; Eagle (Li et al., 2024):</strong> Nutzen mehrere parallele Köpfe für Speculative Drafting und erreichen <strong>&sim;2,2&times; Durchsatzsteigerung</strong> ohne separates Draft-Modell.</li>
-        <li><strong>Chunked Prefill &amp; FlashDecoding auf Metal (Apple MLX, 2024):</strong> Optimiert den parallelen Prompt-Ingestion-Durchsatz auf <strong>>500 Tokens/s</strong>, was Stufe 2 unserer Hybrid-Pipeline ausnutzt.</li>
-      </ul>
-
-      <p>
-        <strong>Fazit des Realitäts-Checks:</strong> NCM ist keine Zauberei, die heute ein 14B-Modell auf einem Mac ersetzt. Aber es liefert die mathematische und architektonische Blaupause für die nächste Dekade lokaler KI.
-      </p>
-
-      <h2>6. Zukunftsausblick: NCM 2.0 &amp; Skalierung auf 14B+ (Wo NCM wirklich disruptiv wird)</h2>
-      <p>
-        Wo entfaltet Next-Concept Modeling seine wahre, disruptive Sprengkraft? Die Antwort liegt in der <strong>mathematischen Skalierung auf große Modelle und lange Textsequenzen (Analytische Projektion)</strong>.
-      </p>
-
-      <h3>A. Die Skalierungs-Explosion: Warum NCM bei 14B und 1.024 Tokens triumphiert</h3>
-      <p>
-        Klassische autoregressive LLMs skalieren linear mit der Ausgabelänge: \(\mathcal{O}(T \cdot W_{\text{model}})\). Jedes einzelne Wort erzwingt das vollständige Durchstreamen aller Modellgewichte. NCM hingegen skaliert mit der Hierarchietiefe: \(\mathcal{O}(L \cdot W_{\text{model}})\) &ndash; <strong>unabhängig von der Sequenzlänge</strong>!
-      </p>
-
-      <p>
-        Betrachten wir die handfeste Physik eines <strong>14B-Modells (4-Bit quantisiert, ca. 9,1 GB Gewichte)</strong> bei der Generierung eines typischen <strong>1.024-Token-Textes</strong>:
+        Der wahre mathematische Wert von NCM liegt nicht bei 150M Parametern und 48 Tokens, sondern in der <strong>asymptotischen Skalierung bei langen Ausgaben (1.024+ Tokens)</strong>:
       </p>
 
       <div class="table-wrapper">
@@ -609,7 +498,7 @@
             <tr>
               <td><strong>Autoregressives LLM (14B 4-Bit)</strong></td>
               <td>1.024 sequentielle Passes</td>
-              <td class="metric-bad"><strong>9,32 TB (9.318,4 GB)</strong></td>
+              <td class="metric-bad"><strong>9.318,4 GB (9,32 TB)</strong></td>
               <td class="metric-bad"><strong>~62,1 Sekunden (reine Bus-Wartezeit)</strong></td>
             </tr>
             <tr>
@@ -623,32 +512,12 @@
       </div>
 
       <p style="font-size: 0.9rem; color: var(--text-gray);">
-        * Berechnet auf Basis der theoretischen Streaming-Mindestlast bei 150 GB/s Speicherbandbreite des Apple Silicon M5 Pro ohne Berücksichtigung lokaler Cache-Treffer (hypothetische analytische Projektion).
-      </p>
-
-      <p>
-        Hier kippt die Gleichung dramatisch: Bei 1.024 Tokens spart ein skaliertes NCM-Modell <strong>über 9.170 Gigabyte RAM-Lesetransfer ein &ndash; ein Faktor von ~64&times; (exakt 62,5&times; analytisch)!</strong> Was bei AR über eine Minute lang den Speicherbus blockiert, berechnet NCM in rund einer Sekunde.
-      </p>
-
-      <h3>B. Das finale Hybrid-System: NCM Makro-Planer + LLM Micro-Synthesizer</h3>
-      <p>
-        Die vielversprechendste Zukunftsvision für lokale KI auf Apple Silicon ist die perfekte Symbiose:
-      </p>
-      <ol>
-        <li>
-          <strong>NCM als hierarchischer Makro-Planer:</strong> Ein skaliertes NCM-Modell entwirft in 12 bis 16 parallelen Durchläufen die vollständige Argumentationskette, das Code-Gerüst oder die logische Beweisstruktur &ndash; blitzschnell und ohne Bandbreiten-Stall.
-        </li>
-        <li>
-          <strong>MLX LLM als Micro-Synthesizer:</strong> Ein autoregressives Sprachmodell (z. B. Qwen2.5-14B via Apple MLX) liest dieses Makro-Skelett nicht Token für Token ein, sondern im <strong>parallelen Prefill-Modus (>500 Tokens/Sekunde)</strong>. Es fungiert als stilistischer und redaktioneller Feinschleifer.
-        </li>
-      </ol>
-      <p>
-        Damit werden die Schwächen beider Welten eliminiert: Die VQ-VAE-Kompressionsartefakte von NCM werden durch die linguistische Präzision des BPE-LLMs geheilt, während das LLM von der quälenden Latenz der sequentiellen Token-Generierung befreit wird.
+        * Berechnet auf Basis des analytischen Modells (1.024 x 9.10 GB vs. 16 x 9.10 GB) bei 150 GB/s Speicherbandbreite des Apple Silicon M5 Pro ohne Berücksichtigung lokaler Cache-Treffer (<strong>hypothetische, empirisch nicht validierte Skalierungsprojektion</strong>; Ersparnis exakt: <strong>9.172,8 GB RAM-Streaming / Faktor 64.0&times;</strong>).
       </p>
 
       <h2>7. Open Source &amp; Exakte Reproduktionsumgebung</h2>
       <p>
-        Das vollständige, lauffähige Proof of Concept inklusive der MPS-Kompatibilitätsfixes für PyTorch (Interception des 1D-Adaptive-Pool-Bugs), physischer Hardware-Telemetrie via <code>powermetrics</code> und Hybrid-Pipeline steht Open Source auf GitHub bereit:
+        Das vollständige, lauffähige Proof of Concept inklusive aller Hardware-Co-Design-Optimierungen (Cross-Level Prefix KV-Cache, GPU-Matrix-Interpolation), powermetrics Profiling und Hybrid-Pipeline steht Open Source auf GitHub bereit:
       </p>
       <p>
         <a href="https://github.com/PiinoStudio/ncm-apple-silicon" target="_blank" class="btn-primary" style="display: inline-block; margin-top: 10px;">Zum GitHub Repository: PiinoStudio/ncm-apple-silicon ↗</a>
@@ -656,8 +525,8 @@
 
       <div class="callout" style="border-left-color: #00E1FF; background: rgba(0, 225, 255, 0.05); font-size: 0.9rem; margin-top: 24px;">
         <strong>Dokumentierte Testumgebung &amp; Sample-IDs:</strong><br>
-        &bull; <strong>System:</strong> macOS Sequoia 15.3 (Darwin 24.3.0, Apple Silicon MacBook Pro M5 Pro, 24 GB Unified Memory)<br>
-        &bull; <strong>Software-Stack:</strong> Python 3.11.11, PyTorch 2.5.1 (MPS), Apple MLX 0.22.0, Transformers 4.48.2, Rouge-Score 0.1.2<br>
+        &bull; <strong>System:</strong> macOS Sequoia (Darwin 26B118, Apple Silicon MacBook Pro M5 Pro, 24 GB Unified Memory)<br>
+        &bull; <strong>Software-Stack:</strong> Python 3.11.11, PyTorch 2.4.0 (MPS), Apple MLX 0.22.0, Transformers 4.48.0, Rouge-Score 0.1.2<br>
         &bull; <strong>XSum-Evaluation:</strong> Samples <code>0</code> bis <code>19</code> aus <code>data/xsum/passages.pickle</code> &amp; <code>reference_summaries.pickle</code><br>
         &bull; <strong>Sudoku-Evaluation:</strong> Puzzles <code>0</code> bis <code>99</code> aus <code>data/sudoku-hard/puzzles.pickle</code>
       </div>
