@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux auf dem Honor MagicBook Art 14 Snapdragon: Was geht, was klemmt? &bull; Piino Studio</title>
+  <meta name="description" content="Der Stand der Dinge zu Linux auf dem Honor MagicBook Art 14 Snapdragon (X1E80100): 120Hz OLED, Wi-Fi 7 und Fingerprint laufen. Warum der Sound noch nach unten feuert und der Standby-Akkuverbrauch wie bei allen Snapdragon X1 Elites eine Baustelle ist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-container {
+      max-width: 920px;
+      margin: 40px auto 100px auto;
+      padding: 0 24px;
+    }
+    .article-header {
+      margin-bottom: 36px;
+      text-align: left;
+    }
+    .article-meta {
+      display: flex;
+      gap: 16px;
+      color: var(--text-gray);
+      font-size: 0.9rem;
+      margin-top: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .article-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 225, 255, 0.12);
+      color: #00E1FF;
+      border: 1px solid rgba(0, 225, 255, 0.3);
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    .article-body h2 {
+      font-size: 1.8rem;
+      margin: 44px 0 16px 0;
+      color: var(--text-white);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+    .article-body h3 {
+      font-size: 1.3rem;
+      margin: 30px 0 12px 0;
+      color: #00E1FF;
+    }
+    .article-body p {
+      font-size: 1.05rem;
+      color: #D1D9E0;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .article-body ul, .article-body ol {
+      margin: 0 0 24px 24px;
+      color: #D1D9E0;
+      line-height: 1.8;
+    }
+    .article-body li {
+      margin-bottom: 8px;
+    }
+    .callout {
+      background: rgba(0, 225, 255, 0.05);
+      border-left: 4px solid #00E1FF;
+      padding: 18px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 28px 0;
+    }
+    .callout-warning {
+      background: rgba(255, 214, 0, 0.06);
+      border-left: 4px solid #FFD600;
+    }
+    .callout strong {
+      color: #00E1FF;
+    }
+    .callout-warning strong {
+      color: #FFD600;
+    }
+    .summary-box {
+      background: #10171D;
+      border: 1px solid rgba(0, 225, 255, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 32px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 18px;
+    }
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .summary-card {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 16px 18px;
+      border: 1px solid var(--card-border);
+    }
+    .summary-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-working {
+      background: rgba(0, 230, 118, 0.15);
+      color: #00E676;
+      border: 1px solid rgba(0, 230, 118, 0.3);
+    }
+    .badge-wip {
+      background: rgba(255, 214, 0, 0.15);
+      color: #FFD600;
+      border: 1px solid rgba(255, 214, 0, 0.3);
+    }
+    .github-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #161E24, #0F171F);
+      border: 1px solid rgba(0, 225, 255, 0.3);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin: 36px 0;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .github-banner-text h3 {
+      margin: 0 0 6px 0;
+      color: #FFFFFF;
+      font-size: 1.25rem;
+    }
+    .github-banner-text p {
+      margin: 0;
+      color: var(--text-gray);
+      font-size: 0.95rem;
+    }
+    .tag-pill {
+      display: inline-block;
+      padding: 2px 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #A0B2C6;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <img src="piino-logo-legal.svg" alt="Piino Studio Logo" class="nav-logo-svg">
+    </a>
+    <div class="nav-links">
+      <a href="index.html#projekte" class="nav-link">&larr; Alle Projekte</a>
+      <a href="ncm-m5pro.html" class="nav-link">AI Research</a>
+      <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-primary btn-sm">GitHub Repository ↗</a>
+    </div>
+  </nav>
+
+  <!-- Article Container -->
+  <article class="article-container">
+
+    <!-- Header -->
+    <header class="article-header">
+      <div class="article-badge">HARDWARE BRING-UP &bull; QUALCOMM SNAPDRAGON X ELITE</div>
+      <h1 style="font-size: 2.4rem; font-weight: 800; line-height: 1.25; margin-top: 14px; color: #FFFFFF;">
+        Linux auf dem Honor MagicBook Art 14 Snapdragon: Was geht und wo es noch klemmt
+      </h1>
+      <div class="article-meta">
+        <span>Von <strong>Giuseppe Madeo</strong></span>
+        <span>&bull;</span>
+        <span>Oktober 2026</span>
+        <span>&bull;</span>
+        <span style="color: #00E1FF;">Lesedauer: ca. 5 Min.</span>
+      </div>
+      <div style="margin-top: 16px;">
+        <span class="tag-pill">Qualcomm X1E80100</span>
+        <span class="tag-pill">Fedora 45 / Linux 7.2</span>
+        <span class="tag-pill">120Hz Native OLED</span>
+        <span class="tag-pill">SoundWire WSA8845</span>
+        <span class="tag-pill">Suspend &amp; Hibernate</span>
+      </div>
+    </header>
+
+    <!-- Main Body -->
+    <div class="article-body">
+
+      <!-- GitHub Banner -->
+      <div class="github-banner">
+        <div class="github-banner-text">
+          <h3>📦 Honor MagicBook Art 14 Linux Toolkit auf GitHub</h3>
+          <p>Fertige Patches, Device-Tree-Binaries, Sound-Konfigurationen und Standby-Automatisierungen direkt als Open Source.</p>
+        </div>
+        <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-primary">Zum GitHub Repository &rarr;</a>
+      </div>
+
+      <!-- Quick Summary / Mainstream intro -->
+      <div class="summary-box">
+        <h2 style="font-size: 1.4rem; margin: 0 0 8px 0; border: none; padding: 0; color: #00E1FF;">
+          ⚡ Für Eilige: Kann man das MagicBook Art 14 unter Linux schon nutzen?
+        </h2>
+        <p style="margin-bottom: 12px; font-size: 1rem;">
+          Das Honor MagicBook Art 14 ist dank seines federleichten Magnesium-Gehäuses, des spektakulären 3.1K OLED-Panels und des Qualcomm Snapdragon X Elite (X1E80100) eines der spannendsten ARM-Notebooks des Jahres. Wir haben das Gerät auf Herz und Nieren unter aktuellem Linux (Fedora 45 / Kernel 7.2) getestet und angepasst. 
+        </p>
+        <p style="margin-bottom: 0; font-size: 1rem;">
+          <strong>Das ehrliche Fazit vorab:</strong> Für Entwickler, Bastler und Textarbeiter ist es ein Traum mit butterweichen 120 Hz und tagelanger Akkulaufzeit beim Arbeiten. <strong>Aber:</strong> Für den durchschnittlichen Alltags- und Mediennutzer gibt es momentan noch zwei spürbare Dämpfer, die man vor dem Kauf oder der Installation kennen muss:
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-card" style="border-top: 3px solid #00E676;">
+            <h4>🟢 Was bereits fantastisch läuft</h4>
+            <ul style="margin: 0 0 0 16px; padding: 0; font-size: 0.95rem;">
+              <li><strong>Natives 3.1K OLED bei 120 Hz:</strong> Volle Adreno-GPU-Beschleunigung, keine Bildrisse, kein Flimmern.</li>
+              <li><strong>Konnektivität:</strong> Wi-Fi 7 und Bluetooth laufen absolut stabil.</li>
+              <li><strong>Eingabe &amp; Komfort:</strong> Trackpad, Tastaturbeleuchtung, Akkuanzeige und sogar der Fingerabdruck-Sensor zum Entsperren &amp; für <code>sudo</code> funktionieren.</li>
+              <li><strong>Display-Aus beim Zuklappen:</strong> Echter Deckelsensor schaltet den OLED-Bildschirm sofort ab.</li>
+              <li><strong>Windows 11 Dual-Boot:</strong> Paralleles Booten von Windows 11 ARM64 und Linux klappt problemlos.</li>
+            </ul>
+          </div>
+
+          <div class="summary-card" style="border-top: 3px solid #FFD600;">
+            <h4>🟡 Wo es aktuell noch hakt</h4>
+            <ul style="margin: 0 0 0 16px; padding: 0; font-size: 0.95rem;">
+              <li><strong>Lautsprecher (Keine alltagstaugliche Lösung):</strong> Das Notebook besitzt vier Lautsprecher. Unter Linux feuert der Ton derzeit <em>nur nach unten</em> (in die Tischplatte) aus den Tieftönern. Die oberen Lautsprecher in Richtung Tastatur bleiben stumm. Stimmen und Höhen klingen dadurch dumpf und unausgewogen.</li>
+              <li><strong>Standby-Verbrauch:</strong> Wie bei <em>allen</em> Snapdragon X1 Elite Varianten unter Linux verbraucht das Gerät im einfachen Standby noch zu viel Strom (~2 Watt). Wir lösen das mit automatischem Tiefschlaf auf Disk.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertiefung für Interessierte -->
+      <h2>Etwas tiefer geblickt: Die Technik hinter den Kulissen</h2>
+      <p>
+        Für alle, die wissen möchten, warum manche Dinge auf Anhieb klappten und warum andere Bereiche auf modernen ARM-Laptops so zäh sind, haben wir die wichtigsten Baustellen hier verständlich zusammengefasst – ohne dabei in kryptischem Entwickler-Kauderwelsch zu versinken.
+      </p>
+
+      <!-- Kapitel 1: Display -->
+      <h3>1. Das Display-Wunder: 3.1K OLED mit 120 Hz</h3>
+      <p>
+        Auf dem Papier klingt es simpel: Ein Display anschließen und ein Bild anzeigen. Doch die Realität bei 3120 &times; 2080 Pixeln und 120 Bildern pro Sekunde (Hz) ist eine gigantische Datenflut.
+      </p>
+      <p>
+        Qualcomms Grafikprozessor kann so hohe Auflösungen bei 120 Hz nicht über einen einzelnen internen Datenkanal ansteuern. Das Bild muss intern in zwei Hälften aufgeteilt und über zwei synchron arbeitende Bildmischer (Dual Layer Mixer) gerendert werden. Unter Standard-Linux führte das anfangs zu einem schwarzen Bildschirm oder zerschnittenen Mauszeigern.
+      </p>
+      <p>
+        Durch einen gezielten Patch im Display-Treiber und die Aktivierung des sogenannten <em>eDP-Widebus</em> (einer doppelten Datenautobahn zum Bildschirm) konnten wir dem Linux-Kernel die exakten Abmessungen und Taktfrequenzen des Honor-OLEDs beibringen. Das Ergebnis: Perfekte, flüssige 120 Hz mit strahlenden Farben und null Ruckeln.
+      </p>
+
+      <!-- Kapitel 2: Das Sound-Rätsel -->
+      <h3>2. Das Sound-Rätsel: Warum feuert der Ton nur nach unten?</h3>
+      <p>
+        Hier liegt aktuell der größte Wermutstropfen für alle, die mit dem Laptop auch mal YouTube-Videos schauen oder Musik hören wollen: <strong>Es gibt für den Sound im Moment noch keine wirklich alltagstaugliche Lösung.</strong>
+      </p>
+      <p>
+        Das Honor MagicBook Art 14 verfügt ab Werk über ein exzellentes Audiosystem mit <strong>vier Lautsprechern</strong>:
+      </p>
+      <ul>
+        <li>Zwei Tieftöner (Woofer), die nach unten in die Tischplatte abstrahlen, um Fülle und Bass zu erzeugen.</li>
+        <li>Zwei Hochtöner (Tweeter), die links und rechts der Tastatur direkt nach oben in Richtung Nutzer feuern, um für klare Stimmen und Brillanz zu sorgen.</li>
+      </ul>
+      <p>
+        Gesteuert werden diese Lautsprecher nicht mehr über klassische analoge Soundkarten, sondern über moderne digitale Verstärkerchips (Qualcomm WSA8845) an einem schnellen Steuerbus namens SoundWire. 
+      </p>
+      <div class="callout callout-warning">
+        <strong>Das Problem:</strong> Zwar konnten wir die Verstärker unter Linux ansprechen, aber die Sound-Routing-Pfade der Firmware sprechen derzeit <strong>nur die beiden unteren Tieftöner</strong> an. Die oberen Hochtöner neben der Tastatur bleiben stumm. Das führt dazu, dass Sprache und Musik dumpf klingen, als käme der Sound aus dem Nachbarzimmer. Bis Qualcomm und die ALSA-Community die internen Audiowege für dieses Notebook vollständig entschlüsselt haben, bleibt für sauberen Klang vorerst nur der Griff zu Kopfhörern oder Bluetooth-Boxen.
+      </div>
+
+      <!-- Kapitel 3: Standby & Akkuverbrauch -->
+      <h3>3. Der Standby-Verbrauch: Warum schläft Snapdragon unter Linux noch nicht tief genug?</h3>
+      <p>
+        Wer ein MacBook mit Apple Silicon oder ein normales Windows-Notebook zuklappt, erwartet, dass es über Nacht so gut wie gar keinen Strom verliert. Bei Snapdragon X Elite Laptops unter Linux erlebt man aktuell jedoch eine unschöne Überraschung: Der Akku verliert im Standby ca. 2–3 % pro Stunde, und das Notebook bleibt im Rucksack spürbar warm.
+      </p>
+      <p>
+        Woran liegt das? Warum ist das bei <em>allen</em> Snapdragon X1 Elite Notebooks (egal ob Lenovo, Asus, Dell oder Honor) so?
+      </p>
+      <ul>
+        <li><strong>Unter Windows:</strong> Qualcomm liefert für Windows einen riesigen, proprietären Steuerungstreiber mit (genannt PEP – <em>Platform Extension Plugin</em>). Dieser Treiber schaltet beim Zuklappen rabiat und in einem einzigen Rutsch fast alle internen Stromschienen des Prozessors auf Millivolt-Ebene ab. Der Laptop sinkt auf ca. 0,3 Watt Standby-Verbrauch.</li>
+        <li><strong>Unter Linux:</strong> Im Linux-Kernel gibt es keine solchen proprietären Riesen-Treiber. Stattdessen verwaltet jeder Teil des Systems (WLAN, USB, Grafik, Speicher) seinen Strombedarf selbst und stimmt bei Qualcomms Hardware-Power-Manager (RPMh) ab. Die eiserne Hardware-Regel lautet: <em>Nur wenn alle Komponenten einstimmig melden, dass sie schlafen, wird der Hauptstrom abgedreht.</em> Meldet auch nur ein USB-Port oder der Mainboard-Chip von Honor noch minimalen Bedarf, bleibt die Hauptspannung an.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Unsere Lösung – Das 0,00-Watt-Tiefschlaf-Setup:</strong><br>
+        Da das Notebook unter Linux im einfachen Standby rund 2 Watt zieht, haben wir eine intelligente Brücke gebaut: <strong>Suspend-Then-Hibernate</strong>.
+        <br><br>
+        Klappt man das Notebook für ein kurzes Gespräch zu, geht es sofort in den schnellen Standby und wacht auf Knopfdruck in einer Sekunde auf. Bleibt der Deckel aber länger als <strong>15 Minuten</strong> zu, speichert Linux den gesamten Arbeitsspeicher auf die extrem schnelle interne SSD und schaltet den Laptop <strong>vollständig ab (echte 0,00 Watt Verbrauch)</strong>. 
+        <br><br>
+        Da die interne Micron-SSD Daten mit über 3.000 MB/s liest, dauert das Aufwachen aus diesem Tiefschlaf beim Aufklappen gerade einmal <strong>rund 3 Sekunden</strong> – und der Rucksack bleibt garantiert eiskalt!
+      </div>
+
+      <!-- Kapitel 4: Windows 11 Dual-Boot -->
+      <h3>4. Windows 11 Dual-Boot: Das Beste aus beiden Welten</h3>
+      <p>
+        Niemand muss sein vorinstalliertes Windows 11 löschen, um Linux auszuprobieren. Auf Snapdragon-Notebooks gab es anfangs das Problem, dass der Linux-Bootloader (GRUB) den Windows-Start blockierte oder die Partitionskennungen durcheinanderbrachte.
+      </p>
+      <p>
+        In unserem Toolkit ist eine saubere GRUB-Chainloader-Konfiguration enthalten. Damit erscheint beim Einschalten ein einfaches Menü, mit dem man wahlweise blitzschnell in Fedora Linux oder zurück in sein originales Windows 11 booten kann.
+      </p>
+
+      <!-- Fazit -->
+      <h2>Fazit &amp; Ausblick</h2>
+      <p>
+        Das Honor MagicBook Art 14 zeigt eindrucksvoll, was moderne ARM-Hardware leisten kann: Atemberaubende Akkulaufzeit bei aktiver Arbeit, ein Display, das seinesgleichen sucht, und ein extrem leises, kühles Arbeiten.
+      </p>
+      <p>
+        Linux auf Snapdragon X Elite ist keine Utopie mehr – es ist zum Greifen nah. Wer bereit ist, für Videos vorerst Kopfhörer aufzusetzen und den automatischen 15-Minuten-Tiefschlaf nutzt, bekommt schon heute ein faszinierendes Stück Zukunft in die Hände.
+      </p>
+      <p>
+        Alle Skripte, Kernel-Patches, Device-Tree-Dateien und Konfigurationen stellen wir der Open-Source-Community vollständig und kostenlos auf GitHub bereit.
+      </p>
+
+      <!-- GitHub Call to Action -->
+      <div class="github-banner" style="margin-top: 48px;">
+        <div class="github-banner-text">
+          <h3>Möchtest du es selbst ausprobieren?</h3>
+          <p>Schau dir das vollständige Repository an, lade das vorgefertigte Toolkit herunter oder beteilige dich an der Weiterentwicklung.</p>
+        </div>
+        <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-primary">GitHub Repository besuchen &rarr;</a>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- Legal Impressum & Privacy Section -->
+  <section id="impressum" class="impressum-section">
+    <div class="impressum-container">
+      <h2>⚖️ Impressum &amp; Rechtliche Angaben</h2>
+      <p class="impressum-subtitle">Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</p>
+
+      <div class="impressum-grid">
+        <div class="impressum-block">
+          <h4>Diensteanbieter</h4>
+          <p><strong>Giuseppe "Pino" Madeo</strong><br>
+          Bauhofstr. 10<br>
+          71634 Ludwigsburg, Deutschland</p>
+        </div>
+
+        <div class="impressum-block">
+          <h4>Kontakt &amp; Anfragen</h4>
+          <p>E-Mail: <a href="mailto:mad@piino.de">mad@piino.de</a><br>
+          Website: <a href="https://www.piino.de">www.piino.de</a></p>
+        </div>
+      </div>
+
+      <div class="impressum-legal-text">
+        <p><strong>Haftung für Inhalte:</strong> Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+        <p><strong>Datenschutz (DSGVO):</strong> Diese Website nutzt keine Tracking-Cookies und speichert keine personenbezogenen Daten der Besucher. Die Bereitstellung erfolgt über Cloudflare Pages CDN.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Piino Studio • Giuseppe Madeo &bull; Alle Rechte vorbehalten.</p>
+  </footer>
+
+</body>
+</html>
