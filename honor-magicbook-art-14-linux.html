@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Linux auf dem Honor MagicBook Art 14 Snapdragon: Was geht, was klemmt? &bull; Piino Studio</title>
-  <meta name="description" content="Der Stand der Dinge zu Linux auf dem Honor MagicBook Art 14 Snapdragon (X1E80100): 120Hz OLED, Wi-Fi 7 und Fingerprint laufen. Warum der Sound noch nach unten feuert und der Standby-Akkuverbrauch wie bei allen Snapdragon X1 Elites eine Baustelle ist.">
+  <title>Linux auf dem Honor MagicBook Art 14 Snapdragon: Statusbericht Ende 2026 &bull; Piino Studio</title>
+  <meta name="description" content="Statusbericht Ende 2026 zu Linux auf dem Honor MagicBook Art 14 Snapdragon (X1E80100): 120Hz OLED, Wi-Fi 7 und Fingerprint laufen. Warum der Sound noch nach unten feuert und der Standby-Akkuverbrauch wie bei allen Snapdragon X1 Elites eine Baustelle bleibt.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -114,24 +114,6 @@
       font-size: 1.1rem;
       margin-bottom: 12px;
     }
-    .status-badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .badge-working {
-      background: rgba(0, 230, 118, 0.15);
-      color: #00E676;
-      border: 1px solid rgba(0, 230, 118, 0.3);
-    }
-    .badge-wip {
-      background: rgba(255, 214, 0, 0.15);
-      color: #FFD600;
-      border: 1px solid rgba(255, 214, 0, 0.3);
-    }
     .github-banner {
       display: flex;
       justify-content: space-between;
@@ -185,23 +167,23 @@
 
     <!-- Header -->
     <header class="article-header">
-      <div class="article-badge">HARDWARE BRING-UP &bull; QUALCOMM SNAPDRAGON X ELITE</div>
+      <div class="article-badge">STATUSBERICHT ENDE 2026 &bull; QUALCOMM SNAPDRAGON X ELITE</div>
       <h1 style="font-size: 2.4rem; font-weight: 800; line-height: 1.25; margin-top: 14px; color: #FFFFFF;">
-        Linux auf dem Honor MagicBook Art 14 Snapdragon: Was geht und wo es noch klemmt
+        Linux auf dem Honor MagicBook Art 14 Snapdragon: Was geht heute und wo es noch klemmt
       </h1>
       <div class="article-meta">
         <span>Von <strong>Giuseppe Madeo</strong></span>
         <span>&bull;</span>
-        <span>Oktober 2026</span>
+        <span>Ende Oktober 2026</span>
         <span>&bull;</span>
-        <span style="color: #00E1FF;">Lesedauer: ca. 5 Min.</span>
+        <span style="color: #00E1FF;">Lesedauer: ca. 6 Min.</span>
       </div>
       <div style="margin-top: 16px;">
         <span class="tag-pill">Qualcomm X1E80100</span>
-        <span class="tag-pill">Fedora 45 / Linux 7.2</span>
+        <span class="tag-pill">Fedora 45 / Linux 7.2 (2026)</span>
         <span class="tag-pill">120Hz Native OLED</span>
         <span class="tag-pill">SoundWire WSA8845</span>
-        <span class="tag-pill">Suspend &amp; Hibernate</span>
+        <span class="tag-pill">0W Suspend &amp; Hibernate</span>
       </div>
     </header>
 
@@ -212,7 +194,7 @@
       <div class="github-banner">
         <div class="github-banner-text">
           <h3>📦 Honor MagicBook Art 14 Linux Toolkit auf GitHub</h3>
-          <p>Fertige Patches, Device-Tree-Binaries, Sound-Konfigurationen und Standby-Automatisierungen direkt als Open Source.</p>
+          <p>Alle Patches, Device-Tree-Binaries, Sound-Topologien und Standby-Automatisierungen direkt als Open Source.</p>
         </div>
         <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-primary">Zum GitHub Repository &rarr;</a>
       </div>
@@ -220,122 +202,118 @@
       <!-- Quick Summary / Mainstream intro -->
       <div class="summary-box">
         <h2 style="font-size: 1.4rem; margin: 0 0 8px 0; border: none; padding: 0; color: #00E1FF;">
-          ⚡ Für Eilige: Kann man das MagicBook Art 14 unter Linux schon nutzen?
+          ⚡ Für Eilige: Taugt das MagicBook Art 14 Ende 2026 als täglicher Linux-Laptop?
         </h2>
         <p style="margin-bottom: 12px; font-size: 1rem;">
-          Das Honor MagicBook Art 14 ist dank seines federleichten Magnesium-Gehäuses, des spektakulären 3.1K OLED-Panels und des Qualcomm Snapdragon X Elite (X1E80100) eines der spannendsten ARM-Notebooks des Jahres. Wir haben das Gerät auf Herz und Nieren unter aktuellem Linux (Fedora 45 / Kernel 7.2) getestet und angepasst. 
+          Über zwei Jahre nach dem Marktstart der ersten Snapdragon X Elite Notebooks im Jahr 2024 hat sich die Linux-Unterstützung für Qualcomms ARM64-Plattform gewaltig weiterentwickelt. Auf unserem Testgerät – dem extrem dünnen <em>Honor MagicBook Art 14</em> (Snapdragon X Elite X1E80100) – läuft modernes Linux (Fedora 45 mit aktuellem Kernel 7.2) heute so performant und flüssig wie nie zuvor.
         </p>
         <p style="margin-bottom: 0; font-size: 1rem;">
-          <strong>Das ehrliche Fazit vorab:</strong> Für Entwickler, Bastler und Textarbeiter ist es ein Traum mit butterweichen 120 Hz und tagelanger Akkulaufzeit beim Arbeiten. <strong>Aber:</strong> Für den durchschnittlichen Alltags- und Mediennutzer gibt es momentan noch zwei spürbare Dämpfer, die man vor dem Kauf oder der Installation kennen muss:
+          <strong>Das ehrliche Fazit Ende 2026:</strong> Für Entwickler, Schreibarbeiten und produktives Arbeiten unterwegs ist das Gerät mit butterweichen 120 Hz, voller GPU-Beschleunigung und langer Arbeitszeit fantastisch. <strong>Doch auch Ende 2026 gibt es zwei hartnäckige Baustellen</strong>, die verhindern, dass man das System uneingeschränkt jedem Durchschnittsnutzer als vollständigen Ersatz empfehlen kann:
         </p>
 
         <div class="summary-grid">
           <div class="summary-card" style="border-top: 3px solid #00E676;">
-            <h4>🟢 Was bereits fantastisch läuft</h4>
+            <h4>🟢 Was Ende 2026 perfekt läuft</h4>
             <ul style="margin: 0 0 0 16px; padding: 0; font-size: 0.95rem;">
-              <li><strong>Natives 3.1K OLED bei 120 Hz:</strong> Volle Adreno-GPU-Beschleunigung, keine Bildrisse, kein Flimmern.</li>
-              <li><strong>Konnektivität:</strong> Wi-Fi 7 und Bluetooth laufen absolut stabil.</li>
-              <li><strong>Eingabe &amp; Komfort:</strong> Trackpad, Tastaturbeleuchtung, Akkuanzeige und sogar der Fingerabdruck-Sensor zum Entsperren &amp; für <code>sudo</code> funktionieren.</li>
-              <li><strong>Display-Aus beim Zuklappen:</strong> Echter Deckelsensor schaltet den OLED-Bildschirm sofort ab.</li>
-              <li><strong>Windows 11 Dual-Boot:</strong> Paralleles Booten von Windows 11 ARM64 und Linux klappt problemlos.</li>
+              <li><strong>Natives 3.1K OLED bei echten 120 Hz:</strong> Volle Adreno-GPU-Beschleunigung, keine Bildrisse, kein Flimmern – ein Traum von einem Display.</li>
+              <li><strong>Moderne Konnektivität:</strong> Wi-Fi 7 und Bluetooth laufen absolut rocksolid.</li>
+              <li><strong>Eingabe &amp; Biometrie:</strong> Touchpad, Tastaturbeleuchtung, Akkuanzeige und sogar der Fingerabdruck-Sensor zum Login und für <code>sudo</code> funktionieren reibungslos.</li>
+              <li><strong>Deckelsensor (Lid Switch):</strong> Schaltet das OLED-Panel beim Zuklappen sofort und zuverlässig ab.</li>
+              <li><strong>Windows 11 Dual-Boot:</strong> Paralleles Booten von Windows 11 ARM64 und Linux über das GRUB-Menü klappt ohne Reibereien.</li>
             </ul>
           </div>
 
           <div class="summary-card" style="border-top: 3px solid #FFD600;">
-            <h4>🟡 Wo es aktuell noch hakt</h4>
+            <h4>🟡 Wo es auch 2026 noch spürbar hakt</h4>
             <ul style="margin: 0 0 0 16px; padding: 0; font-size: 0.95rem;">
-              <li><strong>Lautsprecher (Keine alltagstaugliche Lösung):</strong> Das Notebook besitzt vier Lautsprecher. Unter Linux feuert der Ton derzeit <em>nur nach unten</em> (in die Tischplatte) aus den Tieftönern. Die oberen Lautsprecher in Richtung Tastatur bleiben stumm. Stimmen und Höhen klingen dadurch dumpf und unausgewogen.</li>
-              <li><strong>Standby-Verbrauch:</strong> Wie bei <em>allen</em> Snapdragon X1 Elite Varianten unter Linux verbraucht das Gerät im einfachen Standby noch zu viel Strom (~2 Watt). Wir lösen das mit automatischem Tiefschlaf auf Disk.</li>
+              <li><strong>Lautsprecher (Keine alltagstaugliche Lösung):</strong> Das Notebook besitzt vier Lautsprecher. Unter Linux feuert der Ton derzeit <em>nur nach unten</em> (in die Tischplatte) aus den Tieftönern. Die oberen Lautsprecher in Richtung Tastatur bleiben stumm. Stimmen und Höhen klingen dadurch dumpf und unausgewogen. Für Filme und Musik braucht man weiterhin Kopfhörer.</li>
+              <li><strong>Standby-Verbrauch:</strong> Wie bei <em>allen</em> Snapdragon X1 Elite Varianten unter Linux schläft der SoC im Standard-Standby nicht tief genug (~2 Watt Dauerverbrauch). Wir haben das mit einem automatischen 15-Minuten-Tiefschlaf (0,00W Hibernate) gelöst.</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- Vertiefung für Interessierte -->
-      <h2>Etwas tiefer geblickt: Die Technik hinter den Kulissen</h2>
+      <h2>Ein Blick hinter die Kulissen: Was steckt dahinter?</h2>
       <p>
-        Für alle, die wissen möchten, warum manche Dinge auf Anhieb klappten und warum andere Bereiche auf modernen ARM-Laptops so zäh sind, haben wir die wichtigsten Baustellen hier verständlich zusammengefasst – ohne dabei in kryptischem Entwickler-Kauderwelsch zu versinken.
+        Zwei Jahre Entwicklung im Linux-Kernel haben viele frühere Hürden von 2024 beseitigt. Doch warum sind ausgerechnet Lautsprecher und Standby auch Ende 2026 noch so widerspenstig? Hier ist die Erklärung – verständlich aufbereitet, ohne Kernel-Chinesisch.
       </p>
 
       <!-- Kapitel 1: Display -->
-      <h3>1. Das Display-Wunder: 3.1K OLED mit 120 Hz</h3>
+      <h3>1. Das 120-Hz-OLED: Warum es zwei Jahre brauchte</h3>
       <p>
-        Auf dem Papier klingt es simpel: Ein Display anschließen und ein Bild anzeigen. Doch die Realität bei 3120 &times; 2080 Pixeln und 120 Bildern pro Sekunde (Hz) ist eine gigantische Datenflut.
+        3120 &times; 2080 Pixel bei 120 Bildern pro Sekunde bedeuten eine gewaltige Datenmenge. In den ersten Monaten nach Release im Jahr 2024 blieben Bildschirme dieser Klasse unter Linux oft schwarz oder zeigten zerhackte Fragmente. Der Grund: Qualcomms Display-Prozessor kann diese Datenflut nicht über einen einzelnen Kanal schicken. Er muss das Bild intern in zwei Hälften teilen und über zwei synchronisierte Bildmischer (Dual Layer Mixer) berechnen.
       </p>
       <p>
-        Qualcomms Grafikprozessor kann so hohe Auflösungen bei 120 Hz nicht über einen einzelnen internen Datenkanal ansteuern. Das Bild muss intern in zwei Hälften aufgeteilt und über zwei synchron arbeitende Bildmischer (Dual Layer Mixer) gerendert werden. Unter Standard-Linux führte das anfangs zu einem schwarzen Bildschirm oder zerschnittenen Mauszeigern.
-      </p>
-      <p>
-        Durch einen gezielten Patch im Display-Treiber und die Aktivierung des sogenannten <em>eDP-Widebus</em> (einer doppelten Datenautobahn zum Bildschirm) konnten wir dem Linux-Kernel die exakten Abmessungen und Taktfrequenzen des Honor-OLEDs beibringen. Das Ergebnis: Perfekte, flüssige 120 Hz mit strahlenden Farben und null Ruckeln.
+        Erst mit unserem aktuellen Patch und der Aktivierung des sogenannten <em>eDP-Widebus</em> (einer doppelten Datenleitung zum Display) konnten wir dem Linux-Kernel die exakten Timing-Parameter des Honor-Panels beibringen. Heute schöpft Fedora 45 das OLED endlich voll aus: Gestochen scharf, leuchtstark und absolut ruckelfrei bei 120 Hz.
       </p>
 
       <!-- Kapitel 2: Das Sound-Rätsel -->
-      <h3>2. Das Sound-Rätsel: Warum feuert der Ton nur nach unten?</h3>
+      <h3>2. Das Lautsprecher-Rätsel: Warum der Ton nur nach unten feuert</h3>
       <p>
-        Hier liegt aktuell der größte Wermutstropfen für alle, die mit dem Laptop auch mal YouTube-Videos schauen oder Musik hören wollen: <strong>Es gibt für den Sound im Moment noch keine wirklich alltagstaugliche Lösung.</strong>
+        Kommen wir zum größten Ärgernis im Alltag: <strong>Für die eingebauten Lautsprecher gibt es auch Ende 2026 noch keine runde, alltagstaugliche Lösung.</strong>
       </p>
       <p>
-        Das Honor MagicBook Art 14 verfügt ab Werk über ein exzellentes Audiosystem mit <strong>vier Lautsprechern</strong>:
+        Das MagicBook Art 14 besitzt ab Werk ein raffiniertes 4-Lautsprecher-Setup:
       </p>
       <ul>
-        <li>Zwei Tieftöner (Woofer), die nach unten in die Tischplatte abstrahlen, um Fülle und Bass zu erzeugen.</li>
-        <li>Zwei Hochtöner (Tweeter), die links und rechts der Tastatur direkt nach oben in Richtung Nutzer feuern, um für klare Stimmen und Brillanz zu sorgen.</li>
+        <li><strong>Zwei Tieftöner (Woofer)</strong> im Gehäuseboden, die nach unten abstrahlen, um über die Tischoberfläche Bass und Resonanz aufzubauen.</li>
+        <li><strong>Zwei Hochtöner (Tweeter)</strong> links und rechts neben der Tastatur, die direkt nach oben zum Gesicht des Nutzers strahlen, um Sprache, Obertöne und Brillanz abzubilden.</li>
       </ul>
       <p>
-        Gesteuert werden diese Lautsprecher nicht mehr über klassische analoge Soundkarten, sondern über moderne digitale Verstärkerchips (Qualcomm WSA8845) an einem schnellen Steuerbus namens SoundWire. 
+        Angesteuert werden diese Lautsprecher nicht mehr über simple Standard-Audiocodecs, sondern über vier getrennte, smarte Digitalverstärker (Qualcomm WSA8845) an einem komplexen SoundWire-Bus.
       </p>
       <div class="callout callout-warning">
-        <strong>Das Problem:</strong> Zwar konnten wir die Verstärker unter Linux ansprechen, aber die Sound-Routing-Pfade der Firmware sprechen derzeit <strong>nur die beiden unteren Tieftöner</strong> an. Die oberen Hochtöner neben der Tastatur bleiben stumm. Das führt dazu, dass Sprache und Musik dumpf klingen, als käme der Sound aus dem Nachbarzimmer. Bis Qualcomm und die ALSA-Community die internen Audiowege für dieses Notebook vollständig entschlüsselt haben, bleibt für sauberen Klang vorerst nur der Griff zu Kopfhörern oder Bluetooth-Boxen.
+        <strong>Der aktuelle Haken:</strong> Zwar konnten wir die Verstärker und Qualcomms AudioReach-DSP unter Linux grundsätzlich in Betrieb nehmen, aber die Software-Routingpfade der Firmware sprechen derzeit <strong>ausschließlich die beiden unteren Tieftöner</strong> an. Die oberen Hochtöner in Tastaturrichtung bleiben stumm.
+        <br><br>
+        Das Resultat im Alltag: Videos, Podcasts und Musik klingen extrem dumpf, belegt und hallig – als würde der Sprecher durch eine Wolldecke reden. Ohne die oberen Hochtöner fehlt jede Klarheit. Wer Serien schauen oder Musik hören will, muss vorerst auf Bluetooth-Lautsprecher oder Kopfhörer ausweichen.
       </div>
 
       <!-- Kapitel 3: Standby & Akkuverbrauch -->
-      <h3>3. Der Standby-Verbrauch: Warum schläft Snapdragon unter Linux noch nicht tief genug?</h3>
+      <h3>3. Das Standby-Dilemma: Warum alle Snapdragon-Laptops im Schlaf schwächeln</h3>
       <p>
-        Wer ein MacBook mit Apple Silicon oder ein normales Windows-Notebook zuklappt, erwartet, dass es über Nacht so gut wie gar keinen Strom verliert. Bei Snapdragon X Elite Laptops unter Linux erlebt man aktuell jedoch eine unschöne Überraschung: Der Akku verliert im Standby ca. 2–3 % pro Stunde, und das Notebook bleibt im Rucksack spürbar warm.
+        Jeder, der ein Apple Silicon MacBook oder ein normales Intel/AMD-Notebook zuklappt, ist gewohnt, dass das Gerät im Rucksack kühl bleibt und über Nacht kaum 1 % Akku verliert. Wer dagegen im Jahr 2026 ein Snapdragon X Elite Laptop mit Standard-Linux zuklappt, stellt fest: Nach 10 Stunden im Standby fehlen 20 bis 30 % Akku, und die Tasche ist lauwarm.
       </p>
       <p>
-        Woran liegt das? Warum ist das bei <em>allen</em> Snapdragon X1 Elite Notebooks (egal ob Lenovo, Asus, Dell oder Honor) so?
+        Dieses Verhalten betrifft nicht nur Honor, sondern ausnahmslos <strong>alle Snapdragon X1 Elite Geräte</strong> am Markt (Lenovo Yoga Slim 7x, Dell XPS 13, Asus Vivobook). Die Ursache liegt tief im Architektur-Unterschied zwischen Windows und Linux:
       </p>
       <ul>
-        <li><strong>Unter Windows:</strong> Qualcomm liefert für Windows einen riesigen, proprietären Steuerungstreiber mit (genannt PEP – <em>Platform Extension Plugin</em>). Dieser Treiber schaltet beim Zuklappen rabiat und in einem einzigen Rutsch fast alle internen Stromschienen des Prozessors auf Millivolt-Ebene ab. Der Laptop sinkt auf ca. 0,3 Watt Standby-Verbrauch.</li>
-        <li><strong>Unter Linux:</strong> Im Linux-Kernel gibt es keine solchen proprietären Riesen-Treiber. Stattdessen verwaltet jeder Teil des Systems (WLAN, USB, Grafik, Speicher) seinen Strombedarf selbst und stimmt bei Qualcomms Hardware-Power-Manager (RPMh) ab. Die eiserne Hardware-Regel lautet: <em>Nur wenn alle Komponenten einstimmig melden, dass sie schlafen, wird der Hauptstrom abgedreht.</em> Meldet auch nur ein USB-Port oder der Mainboard-Chip von Honor noch minimalen Bedarf, bleibt die Hauptspannung an.</li>
+        <li><strong>Wie Windows das macht:</strong> Qualcomm liefert für Windows einen riesigen, proprietären Firmware-Treiber namens PEP (<em>Platform Extension Plugin</em>). Dieser Treiber schaltet beim Zuklappen kurzerhand alle Stromleitungen des Prozessors mit Gewalt ab. Das Gerät sinkt auf rund 0,3 Watt Standby-Verbrauch.</li>
+        <li><strong>Warum Linux das nicht so einfach kann:</strong> Im Linux-Kernel sind solche proprietären Alles-Könner-Treiber verboten. Stattdessen verwaltet jeder Treiber (WLAN, USB, GPU, SSD) seinen Strombedarf eigenständig. Qualcomms Hardware-Power-Manager (RPMh) arbeitet nach dem Einstimmigkeitsprinzip: <em>Nur wenn ausnahmslos alle 40+ Subsysteme melden, dass sie keinen Strom mehr brauchen, schaltet der Chip die Hauptspannung ab.</em> Meldet auch nur ein einziger USB-Controller oder der proprietäre Honor-Mainboard-Chip noch Bedarf, bleibt der SoC im Wachzustand hängen (~2 Watt Dauerlast).</li>
       </ul>
 
       <div class="callout">
-        <strong>Unsere Lösung – Das 0,00-Watt-Tiefschlaf-Setup:</strong><br>
-        Da das Notebook unter Linux im einfachen Standby rund 2 Watt zieht, haben wir eine intelligente Brücke gebaut: <strong>Suspend-Then-Hibernate</strong>.
+        <strong>Unsere pragmatische Lösung: Suspend-Then-Hibernate (0,00 Watt)</strong><br>
+        Weil Linux- und Qualcomm-Entwickler seit über zwei Jahren daran feilen, alle Treiber auf diese Tiefschlaf-Zyklen einzustimmen, haben wir einen praxiserprobten Zwischenschritt gebaut:
         <br><br>
-        Klappt man das Notebook für ein kurzes Gespräch zu, geht es sofort in den schnellen Standby und wacht auf Knopfdruck in einer Sekunde auf. Bleibt der Deckel aber länger als <strong>15 Minuten</strong> zu, speichert Linux den gesamten Arbeitsspeicher auf die extrem schnelle interne SSD und schaltet den Laptop <strong>vollständig ab (echte 0,00 Watt Verbrauch)</strong>. 
+        Klappt man das Notebook für ein paar Minuten zu, geht es sofort in den schnellen Standby und wacht beim Aufklappen in einer Sekunde auf. Bleibt das Notebook aber länger als <strong>15 Minuten</strong> zu (z. B. auf Reisen oder über Nacht), sichert Linux den gesamten Arbeitsspeicher auf die interne UFS-SSD und schaltet das Notebook <strong>vollständig ab (0,00 Watt Verbrauch)</strong>.
         <br><br>
-        Da die interne Micron-SSD Daten mit über 3.000 MB/s liest, dauert das Aufwachen aus diesem Tiefschlaf beim Aufklappen gerade einmal <strong>rund 3 Sekunden</strong> – und der Rucksack bleibt garantiert eiskalt!
+        Da die Micron-SSD Daten mit über 3.000 MB/s lädt, ist das System beim Einschalten in <strong>rund 3 Sekunden</strong> wieder exakt an der Stelle, an der man aufgehört hat – und der Akku bleibt tagelang voll.
       </div>
 
       <!-- Kapitel 4: Windows 11 Dual-Boot -->
-      <h3>4. Windows 11 Dual-Boot: Das Beste aus beiden Welten</h3>
+      <h3>4. Windows 11 Dual-Boot: Entspannt zweigleisig fahren</h3>
       <p>
-        Niemand muss sein vorinstalliertes Windows 11 löschen, um Linux auszuprobieren. Auf Snapdragon-Notebooks gab es anfangs das Problem, dass der Linux-Bootloader (GRUB) den Windows-Start blockierte oder die Partitionskennungen durcheinanderbrachte.
-      </p>
-      <p>
-        In unserem Toolkit ist eine saubere GRUB-Chainloader-Konfiguration enthalten. Damit erscheint beim Einschalten ein einfaches Menü, mit dem man wahlweise blitzschnell in Fedora Linux oder zurück in sein originales Windows 11 booten kann.
+        Wer das MagicBook Art 14 kauft, muss sein originales Windows 11 nicht aufgeben. In unserem Toolkit ist eine saubere GRUB-Chainloader-Konfiguration hinterlegt: Beim Einschalten wählt man einfach im Menü aus, ob man in Fedora Linux booten möchte oder in Windows 11. Beide Systeme laufen friedlich nebeneinander, ohne dass UEFI-Firmware-Updates oder Partitionsdaten beschädigt werden.
       </p>
 
       <!-- Fazit -->
-      <h2>Fazit &amp; Ausblick</h2>
+      <h2>Fazit &amp; Perspektive</h2>
       <p>
-        Das Honor MagicBook Art 14 zeigt eindrucksvoll, was moderne ARM-Hardware leisten kann: Atemberaubende Akkulaufzeit bei aktiver Arbeit, ein Display, das seinesgleichen sucht, und ein extrem leises, kühles Arbeiten.
+        Ende 2026 zeigt das Honor MagicBook Art 14 unter Linux eindrucksvoll, welches enorme Potenzial in moderner ARM64-Hardware steckt: Das federleichte Magnesium-Gehäuse in Kombination mit dem 120-Hz-OLED und der Snapdragon-Rechenleistung macht beim Arbeiten einfach Spaß.
       </p>
       <p>
-        Linux auf Snapdragon X Elite ist keine Utopie mehr – es ist zum Greifen nah. Wer bereit ist, für Videos vorerst Kopfhörer aufzusetzen und den automatischen 15-Minuten-Tiefschlaf nutzt, bekommt schon heute ein faszinierendes Stück Zukunft in die Hände.
+        Dass ausgerechnet das obere Lautsprecherpaar und der reguläre Standby auch heute noch Geduld erfordern, zeigt aber auch, wie zäh das Ringen um herstellereigene Firmware-Spezifikationen im Linux-Ökosystem sein kann. Wer mit Kopfhörern arbeitet und unser 15-Minuten-Hibernate-Setup nutzt, hat schon heute ein hochmodernes Arbeitsgerät.
       </p>
       <p>
-        Alle Skripte, Kernel-Patches, Device-Tree-Dateien und Konfigurationen stellen wir der Open-Source-Community vollständig und kostenlos auf GitHub bereit.
+        Alle Skripte, Kernel-Patches, Device-Tree-Dateien und Konfigurationen stellen wir der Community kostenlos auf GitHub bereit.
       </p>
 
       <!-- GitHub Call to Action -->
       <div class="github-banner" style="margin-top: 48px;">
         <div class="github-banner-text">
           <h3>Möchtest du es selbst ausprobieren?</h3>
-          <p>Schau dir das vollständige Repository an, lade das vorgefertigte Toolkit herunter oder beteilige dich an der Weiterentwicklung.</p>
+          <p>Lade das fertige Toolkit herunter, schau in die Konfigurationen oder bringe dich auf GitHub mit ein.</p>
         </div>
         <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-primary">GitHub Repository besuchen &rarr;</a>
       </div>
