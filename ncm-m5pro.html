@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breaking the Memory Wall: Next-Concept Modeling auf Apple Silicon M5 Pro &bull; Piino Studio</title>
+  <meta name="description" content="Wie Next-Concept Modeling (NCM) und MLX-Hybrid-Decoding die Speicherbandbreiten-Grenze auf 24 GB Apple Silicon Macs durchbrechen – mit 0 Bytes SSD-Swap.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-container {
+      max-width: 900px;
+      margin: 40px auto 100px auto;
+      padding: 0 24px;
+    }
+    .article-header {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .article-meta {
+      display: flex;
+      gap: 16px;
+      color: var(--text-gray);
+      font-size: 0.9rem;
+      margin-top: 12px;
+      align-items: center;
+    }
+    .article-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 225, 255, 0.12);
+      color: #00E1FF;
+      border: 1px solid rgba(0, 225, 255, 0.3);
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    .article-body h2 {
+      font-size: 1.8rem;
+      margin: 40px 0 16px 0;
+      color: var(--text-white);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+    .article-body h3 {
+      font-size: 1.3rem;
+      margin: 28px 0 12px 0;
+      color: #00E1FF;
+    }
+    .article-body p {
+      font-size: 1.05rem;
+      color: #D1D9E0;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .article-body ul, .article-body ol {
+      margin: 0 0 24px 24px;
+      color: #D1D9E0;
+      line-height: 1.8;
+    }
+    .article-body li {
+      margin-bottom: 8px;
+    }
+    .callout {
+      background: rgba(0, 225, 255, 0.05);
+      border-left: 4px solid #00E1FF;
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 28px 0;
+    }
+    .callout strong {
+      color: #00E1FF;
+    }
+    pre {
+      background: #0D1117;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: #E6EDF3;
+      margin: 24px 0;
+      line-height: 1.5;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 28px 0;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: #0F161C;
+      color: #00E1FF;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .metric-good {
+      color: #00E676;
+      font-weight: 700;
+    }
+    .metric-bad {
+      color: #FF5252;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <img src="piino-logo-legal.svg" alt="Piino Studio Logo" class="nav-logo-svg">
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">&larr; Zurück zur Übersicht</a>
+      <a href="https://github.com/PiinoStudio/ncm-apple-silicon" target="_blank" class="btn-primary btn-sm">GitHub Repository ↗</a>
+    </div>
+  </nav>
+
+  <article class="article-container">
+    <header class="article-header">
+      <span class="article-badge">AI SYSTEMS RESEARCH &bull; APPLE SILICON M5 PRO</span>
+      <h1 style="font-size: 2.5rem; margin-top: 14px; line-height: 1.2;">Breaking the Memory Wall: Next-Concept Modeling &amp; MLX Hybrid auf 24 GB Macs</h1>
+      <div class="article-meta">
+        <span>Von <strong>Giuseppe Madeo</strong> (Piino Studio)</span>
+        <span>&bull;</span>
+        <span>26. Oktober 2026</span>
+        <span>&bull;</span>
+        <span>Hardware: MacBook Pro (Apple Silicon M5 Pro, 24 GB Unified Memory)</span>
+      </div>
+    </header>
+
+    <div class="article-body">
+      <p>
+        Wer lokale KI-Modelle auf Apple Silicon betreibt, stößt unweigerlich auf das fundamentale Paradoxon moderner Inferenz: <strong>Die GPU-Rechenkerne langweilen sich, während der Speicherbus glüht.</strong>
+      </p>
+
+      <p>
+        Klassische autoregressive Large Language Models (LLMs) sind für lokale Hardware berüchtigt ineffizient. Weil jedes Token sequentiell berechnet wird, muss für jedes einzelne Wort das gesamte Modellgewicht einmal komplett aus dem Unified Memory in die GPU-ALUs gestreamt werden. Bei 512 Tokens und einem schlanken 0.5B Modell bedeutet das über <strong>470 GB reinen RAM-Lesetransfer</strong>.
+      </p>
+
+      <div class="callout">
+        <strong>Die Kern-Hypothese:</strong> Was passiert, wenn wir die neue Stanford-Architektur <em>Next-Concept Modeling (NCM)</em> auf Apple Silicon (MPS &amp; Metal) portieren und als schnellen, hierarchischen Konzept-Planer mit parallelem MLX-Prefill verzahnen? Können wir die Speicherbandbreite um 90 % senken und echtes Deep-Reasoning mit <strong>0 Bytes SSD-Swap</strong> auf einem 24-GB-Mac realisieren?
+      </div>
+
+      <h2>1. Der Bottleneck-Shift: Memory Bandwidth &rarr; Compute</h2>
+      <p>
+        NCM zerlegt Sequenzen über einen Multiscale Residual VQ-VAE in eine diskrete Konzept-Hierarchie (z. B. 9 Level bei Text, 12 Level bei Sudoku). Pro Hierarchie-Ebene wird nur <strong>ein einziger paralleler Forward-Pass</strong> ausgeführt &ndash; völlig unabhängig von der finalen Tokenanzahl.
+      </p>
+
+      <p>
+        In unserem Benchmark auf dem M5 Pro zeigte sich der fundamentale Unterschied schwarz auf weiß:
+      </p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Benchmark Modus</th>
+              <th>Szenario / Modell</th>
+              <th>NFE (Passes)</th>
+              <th>Dauer (s)</th>
+              <th>Tokens/s</th>
+              <th>Est. RAM Read</th>
+              <th>GB / Token</th>
+              <th>Swap Pageouts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Autoregressive Baseline</strong></td>
+              <td>Qwen2.5-0.5B (MPS)</td>
+              <td>512</td>
+              <td>3.20s</td>
+              <td>159.8</td>
+              <td class="metric-bad">471.15 GB</td>
+              <td class="metric-bad">0.9202 GB/tok</td>
+              <td class="metric-good">0</td>
+            </tr>
+            <tr>
+              <td><strong>NCM Fast (Coarse-to-Fine)</strong></td>
+              <td>NCM XSum (9 Levels)</td>
+              <td>9</td>
+              <td>0.36s</td>
+              <td>134.3</td>
+              <td class="metric-good">4.98 GB</td>
+              <td class="metric-good">0.1038 GB/tok</td>
+              <td class="metric-good">0</td>
+            </tr>
+            <tr>
+              <td><strong>NCM Deep-Compute</strong></td>
+              <td>NCM MBR (8 Kandidaten)</td>
+              <td>72</td>
+              <td>3.92s</td>
+              <td>98.0</td>
+              <td class="metric-good">39.84 GB</td>
+              <td class="metric-good">0.1038 GB/tok</td>
+              <td class="metric-good">0</td>
+            </tr>
+            <tr>
+              <td><strong>Hybrid-Interleaved</strong></td>
+              <td>NCM (MPS) + Qwen2.5 (MLX)</td>
+              <td>62</td>
+              <td>3.84s</td>
+              <td>26.3</td>
+              <td class="metric-good">37.20 GB</td>
+              <td class="metric-good">0.3683 GB/tok</td>
+              <td class="metric-good">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        <strong>Der Effizienzgewinn:</strong> NCM senkt den Speicherbandbreiten-Bedarf pro Token um das <strong>8,9- bis 45-Fache</strong>. Die Arithmetische Intensität springt von weniger als 1 FLOP/Byte auf ein Vielfaches &ndash; die GPU rechnet endlich, statt auf den Speicherbus zu warten.
+      </p>
+
+      <h2>2. Live Coarse-to-Fine Refinement im Terminal</h2>
+      <p>
+        Beim Ausführen unseres Runners kann man im Terminal live beobachten, wie die KI von der groben Idee zur fertigen Ausformulierung konvergiert:
+      </p>
+
+      <pre><code>Live Coarse-to-Fine Refinement across Hierarchy Levels:
+  Level 00/08 ( 4 pos): of updated.
+  Level 01/08 ( 6 pos): of accommodation, has
+  Level 02/08 (10 pos): of accommodation in in housing has
+  Level 03/08 (14 pos): of accommodation accommodation accommodation in year housing said
+  Level 04/08 (20 pos): number beds homeless homeless accommodation Wales significantly year, housing ha
+  Level 05/08 (26 pos): The of beds for homeless accommodation accommodation Wales risen year a a housin
+  Level 06/08 (32 pos): The number beds available homeless homeless in and in has risen last year a hous
+  Level 07/08 (40 pos): The number of beds available for homeless people in and Wales has risen risen la
+  Level 08/08 (48 pos): The number of beds made available for homeless people living in accommodation in Wales has risen in last year, a Welsh housing homelessness charity has said.</code></pre>
+
+      <h2>3. Deep-Compute: Zeit gegen Qualität OHNE Swap</h2>
+      <p>
+        Bisher galt: Wer echtes Reasoning will, lädt Modelle mit 14B bis 70B Parametern. Auf 16- oder 24-GB-Macs führt das unweigerlich zu macOS SSD-Paging (`pageouts`), was Latenzen explodieren lässt und den Speicher verschleißt.
+      </p>
+      <p>
+        Unser PoC implementiert <strong>Test-Time Scaling auf Edge-Hardware</strong>:
+      </p>
+      <ul>
+        <li>Das Modell bleibt ultrakompakt im Speicher (&lt; 1,5 GB RAM).</li>
+        <li>Der M5 Pro berechnet sequenziell oder in kleinen Batches viele Kandidaten via <em>Minimum Bayes Risk (MBR) Consensus</em> und <em>Classifier-Free Guidance (CFG)</em>.</li>
+        <li><strong>Hardware-Beweis:</strong> Über das macOS-Tool <code>vm_stat</code> wurde vor und nach dem Lauf gemessen: <strong>Swap Pageouts Delta = 0</strong>. Kein einziges Byte landete im SSD-Swap!</li>
+      </ul>
+
+      <h2>4. Das 2-Stufen Hybrid-System: NCM + MLX Metal</h2>
+      <p>
+        Die größte Stärke für allgemeine Aufgaben liegt in der Symbiose aus NCM und Apple MLX:
+      </p>
+      <ol>
+        <li><strong>Stufe 1 (NCM):</strong> In 9 schnellen parallelen Durchläufen erzeugt NCM das semantische Gerüst. Danach wird der MPS-VRAM sofort vollständig freigegeben.</li>
+        <li><strong>Stufe 2 (MLX Parallel Prefill):</strong> Das quantisierte LLM liest den NCM-Entwurf im <em>Prefill-Modus</em>. Weil Prefill als dichte Matrix-Matrix-Multiplikation (<code>GEMM</code>) ausgeführt wird, lastet es die Metal-Kerne voll aus und poliert den Entwurf in wenigen Millisekunden.</li>
+      </ol>
+
+      <h2>5. Open Source &amp; Reproduktion</h2>
+      <p>
+        Das vollständige, lauffähige Proof of Concept inklusive der MPS-Kompatibilitätsfixes für PyTorch (Interception des 1D-Adaptive-Pool-Bugs) steht ab sofort Open Source auf GitHub bereit:
+      </p>
+      <p>
+        <a href="https://github.com/PiinoStudio/ncm-apple-silicon" target="_blank" class="btn-primary" style="display: inline-block; margin-top: 10px;">Zum GitHub Repository: PiinoStudio/ncm-apple-silicon ↗</a>
+      </p>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer style="padding: 40px 8%; background: #070A0D; border-top: 1px solid var(--card-border); text-align: center; color: var(--text-gray); font-size: 0.9rem;">
+    <p>&copy; 2026 Piino Software Studio &bull; Giuseppe Madeo. Alle Rechte vorbehalten.</p>
+  </footer>
+
+</body>
+</html>
