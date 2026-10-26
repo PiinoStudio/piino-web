@@ -238,7 +238,9 @@
               <th>Modell / Architektur</th>
               <th>Backend / Optimierung</th>
               <th>Passes</th>
-              <th>Dauer / Sample</th>
+              <th>Ø BPE-Tokens</th>
+              <th>Gemessene Dauer</th>
+              <th>Iso-Latenz (28 Tok)*</th>
               <th>BPE Durchsatz</th>
               <th>ROUGE-1</th>
               <th>ROUGE-2</th>
@@ -250,8 +252,10 @@
               <td><strong>Qwen2.5-0.5B (AR Baseline)</strong></td>
               <td>PyTorch MPS (FP16, Zero-Shot)</td>
               <td>48</td>
-              <td>184.7 ms</td>
-              <td>168.5 tok/s</td>
+              <td>28.1</td>
+              <td>178.4 ms</td>
+              <td>177.8 ms</td>
+              <td>157.5 tok/s</td>
               <td>0.2227 &plusmn; 0.101</td>
               <td>0.0462 &plusmn; 0.064</td>
               <td>0.1678 &plusmn; 0.081</td>
@@ -260,18 +264,22 @@
               <td><strong>Qwen2.5-0.5B (AR MLX 4-Bit)</strong></td>
               <td>Apple MLX (Metal, 4-Bit)</td>
               <td>48</td>
-              <td>139.1 ms</td>
-              <td class="metric-good"><strong>345.1 tok/s</strong></td>
-              <td>0.2231 &plusmn; 0.082</td>
-              <td>0.0481 &plusmn; 0.046</td>
-              <td>0.1604 &plusmn; 0.056</td>
+              <td>35.4</td>
+              <td>106.7 ms</td>
+              <td class="metric-good"><strong>84.3 ms</strong></td>
+              <td class="metric-good"><strong>332.1 tok/s</strong></td>
+              <td>0.2283 &plusmn; 0.088</td>
+              <td>0.0424 &plusmn; 0.054</td>
+              <td>0.1664 &plusmn; 0.069</td>
             </tr>
             <tr>
               <td><strong>NCM Fast (Naive Eager Port)</strong></td>
               <td>PyTorch MPS (Eager, FP16)</td>
               <td>9</td>
+              <td>25.9</td>
               <td>380.0 ms</td>
-              <td>73.7 tok/s</td>
+              <td>410.0 ms</td>
+              <td>68.3 tok/s</td>
               <td>0.3442 &plusmn; 0.142</td>
               <td>0.1292 &plusmn; 0.125</td>
               <td>0.2759 &plusmn; 0.134</td>
@@ -280,25 +288,31 @@
               <td><strong>NCM Fast (Systems-Optimized)</strong></td>
               <td>PyTorch MPS (Prefix-KV, FP16)</td>
               <td><strong>9</strong></td>
+              <td>25.9</td>
               <td class="metric-good"><strong>89.8 ms</strong></td>
-              <td>310.1 tok/s</td>
+              <td>96.9 ms</td>
+              <td>288.9 tok/s</td>
               <td class="metric-good"><strong>0.3442 &plusmn; 0.142</strong></td>
               <td class="metric-good"><strong>0.1292 &plusmn; 0.125</strong></td>
               <td class="metric-good"><strong>0.2759 &plusmn; 0.134</strong></td>
             </tr>
             <tr>
-              <td><strong>Hybrid (NCM + MLX 4-Bit)</strong></td>
+              <td><strong>Hybrid (NCM + MLX 4-Bit)*</strong></td>
               <td>16b MPS + 4b Metal</td>
               <td>137</td>
+              <td>176.0</td>
               <td>3.39 s</td>
+              <td>-</td>
               <td>51.9 tok/s</td>
               <td>0.1824 &plusmn; 0.065</td>
               <td>0.0448 &plusmn; 0.048</td>
               <td>0.1308 &plusmn; 0.039</td>
             </tr>
             <tr style="background: rgba(0, 225, 255, 0.04); font-style: italic;">
-              <td><em>Signifikanz (NCM vs. AR)</em></td>
+              <td><em>Signifikanz (NCM vs. AR Base)</em></td>
               <td><em>Paired Bootstrap (10k, N=500)</em></td>
+              <td>-</td>
+              <td>-</td>
               <td>-</td>
               <td>-</td>
               <td>-</td>
@@ -306,9 +320,29 @@
               <td class="metric-good"><strong>&Delta; = +0.083 (p < 0.0001)</strong></td>
               <td class="metric-good"><strong>&Delta; = +0.108 (p < 0.0001)</strong></td>
             </tr>
+            <tr style="background: rgba(0, 225, 255, 0.04); font-style: italic;">
+              <td><em>Signifikanz (NCM vs. MLX 4b)</em></td>
+              <td><em>Paired Bootstrap (10k, N=500)</em></td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="metric-good"><strong>&Delta; = +0.116 (p < 0.0001)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.087 (p < 0.0001)</strong></td>
+              <td class="metric-good"><strong>&Delta; = +0.110 (p < 0.0001)</strong></td>
+            </tr>
           </tbody>
         </table>
       </div>
+
+      <p style="font-size: 0.88rem; color: var(--text-gray); margin-top: 6px; line-height: 1.5;">
+        * <strong>Methodische Erläuterungen zu Tabelle 1:</strong><br>
+        1. <strong>Invariante A (\(\text{Tokens} / \text{Dauer} = \text{Durchsatz}\)):</strong> Der Durchsatz berechnet sich exakt aus \(\text{Tokens} / \text{Dauer}\) (z. B. 28.1 tok / 0.1784s = 157.5 tok/s; 35.44 tok / 0.1067s = 332.1 tok/s; 25.94 tok / 0.0898s = 288.9 tok/s).<br>
+        2. <strong>Iso-Token-Normalisierung:</strong> Auf eine einheitliche Ziel-Länge von 28.0 BPE-Tokens normiert (\(28.0 / \text{Durchsatz}\)) decodiert MLX 4-Bit in nur <strong>84.3 ms</strong> (vs. 96.9 ms für NCM Fast).<br>
+        3. <strong>Stichproben-Kennzeichnung:</strong> AR Baseline, MLX 4-Bit und NCM Fast wurden über alle \(N = 500\) Samples evaluiert. Die Hybrid-Pipeline wurde aus Laufzeitgründen (3.39s/Sample) auf einem repräsentativen Subset von <strong>\(N = 20\) Samples</strong> evaluiert.<br>
+        4. <strong>Steady-State vs. Burst-Durchsatz:</strong> Tabelle 1 zeigt die reale End-to-End Inferenz pro Sample über 500 diskrete Läufe. Der in Tabelle 3 für <code>powermetrics</code> gemessene Durchsatz (310.4 tok/s NCM, 345.1 tok/s MLX) stammt aus kontinuierlichem Hardware-Streaming im Burst-Regime.
+      </p>
 
       <div class="callout" style="border-left-color: #FF5252; background: rgba(255, 82, 82, 0.05); font-size: 0.95rem;">
         <strong style="color: #FF5252;">⚠️ Wichtige methodische Einschränkung (Task-Spezialisierungs-Confounder):</strong><br>
@@ -365,7 +399,7 @@
 
       <h3>C. Physische Hardware-Telemetrie am Apple Silicon SoC (powermetrics)</h3>
       <p>
-        Kontinuierliche Abtastung der Hardware-Sensoren über <code>powermetrics</code> (Abtastrate 100 ms) unter Abzug der statischen System-Idle-Baseline (\(P_{\text{idle}} = 1,59\) W). Alle Werte erfüllen exakt die physikalische Energieerhaltung \(E_{\text{total}} = P_{\text{avg}} \times t\):
+        Kontinuierliche Abtastung der Hardware-Sensoren über <code>powermetrics</code> (Abtastrate 100 ms) unter Abzug der statischen System-Idle-Baseline (\(P_{\text{idle}} = 1,59\) W). Alle Werte erfüllen exakt die physikalischen Invarianten \(E_{\text{total}} = P_{\text{avg}} \times t\) und \(J/\text{tok} = E_{\text{total}} / \text{Tokens}\):
       </p>
 
       <div class="table-wrapper">
@@ -390,8 +424,8 @@
               <td>6.52s</td>
               <td class="metric-good"><strong>345.1 tok/s</strong></td>
               <td>25.81 W</td>
-              <td>24.21 W</td>
-              <td>168.29 J</td>
+              <td>24.22 W</td>
+              <td>168.28 J</td>
               <td>0.0748 J/tok</td>
               <td>0.0702 J/tok</td>
             </tr>
@@ -399,22 +433,22 @@
               <td><strong>Qwen2.5-0.5B (PyTorch MPS FP16)</strong></td>
               <td>960</td>
               <td>5.70s</td>
-              <td>168.5 tok/s</td>
+              <td>168.4 tok/s</td>
               <td>19.19 W</td>
-              <td>17.59 W</td>
-              <td>109.28 J</td>
-              <td>0.1138 J/tok</td>
-              <td>0.1044 J/tok</td>
+              <td>17.60 W</td>
+              <td>109.38 J</td>
+              <td>0.1139 J/tok</td>
+              <td>0.1045 J/tok</td>
             </tr>
             <tr style="background: rgba(0, 230, 118, 0.06);">
               <td><strong>NCM Fast (Systems-Optimized)</strong></td>
               <td>1.679</td>
               <td>5.41s</td>
-              <td>310.1 tok/s</td>
+              <td>310.4 tok/s</td>
               <td>19.86 W</td>
               <td>18.27 W</td>
-              <td>107.55 J</td>
-              <td class="metric-good"><strong>0.0641 J/tok</strong></td>
+              <td>107.44 J</td>
+              <td class="metric-good"><strong>0.0640 J/tok</strong></td>
               <td class="metric-good"><strong>0.0589 J/tok</strong></td>
             </tr>
           </tbody>
@@ -424,14 +458,14 @@
       <div class="callout" style="border-left-color: #00E676; background: rgba(0, 230, 118, 0.05); font-size: 0.95rem;">
         <strong style="color: #00E676;">🔬 Erkenntnisse des Iso-Token Hardware-Vergleichs:</strong><br>
         <ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
-          <li>Gegenüber der unoptimierten <strong>PyTorch MPS FP16 Baseline</strong> (168.5 tok/s) ist NCM Fast (310.1 tok/s) um <strong>1.84x schneller</strong> und verbraucht <strong>43.7 % weniger Energie pro Token</strong>.</li>
-          <li>Gegenüber der optimierten <strong>Apple MLX 4-Bit Metal Baseline</strong> (345.1 tok/s) ist NCM im Durchsatz <strong>leicht langsamer (-10 %)</strong>, aber <strong>14.3 % energieeffizienter pro Token</strong> (0.0641 J vs 0.0748 J), da MLX bei Vollast 25.81 W zieht.</li>
+          <li>Gegenüber der unoptimierten <strong>PyTorch MPS FP16 Baseline</strong> (168.4 tok/s) ist NCM Fast (310.4 tok/s) um <strong>1.84x schneller</strong> und verbraucht <strong>43.8 % weniger Energie pro Token</strong> (0.0640 J vs. 0.1139 J).</li>
+          <li>Gegenüber der optimierten <strong>Apple MLX 4-Bit Metal Baseline</strong> (345.1 tok/s) ist NCM im Durchsatz <strong>leicht langsamer (-10 %)</strong>, aber <strong>14.4 % energieeffizienter pro Token</strong> (0.0640 J vs. 0.0748 J), da MLX bei Vollast 25.81 W zieht.</li>
         </ul>
       </div>
 
-      <h3>D. Einzelfall-Ablation: MBR-Kandidaten-Skalierung (Sample #0)</h3>
+      <h3>D. Statistische MBR-Kandidaten-Skalierung (Ablation über \(N = 20\) Samples)</h3>
       <p style="font-size: 0.95rem; color: var(--text-gray);">
-        Untersuchung von Test-Time Scaling via Minimum Bayes Risk (MBR) Konsensentscheidung (\(K = 1, 4, 8\)) auf dem ersten Referenzartikel:
+        Untersuchung von Test-Time Scaling via Minimum Bayes Risk (MBR) Konsensentscheidung (\(K = 1, 4, 8\)) gemittelt über 20 repräsentative XSum-Artikel (<code>passages[0:20]</code>):
       </p>
       <div class="table-wrapper">
         <table>
@@ -439,8 +473,8 @@
             <tr>
               <th>Kandidaten (\(K\))</th>
               <th>Passes</th>
-              <th>Dauer (s)</th>
-              <th>Effektiver Durchsatz</th>
+              <th>Dauer / Sample</th>
+              <th>Effektiver BPE Durchsatz</th>
               <th>ROUGE-1</th>
               <th>ROUGE-2</th>
               <th>ROUGE-L</th>
@@ -451,38 +485,38 @@
             <tr>
               <td><strong>1 (Fast)</strong></td>
               <td>9</td>
-              <td>0.09s</td>
-              <td>310.1 BPE tok/s</td>
-              <td>0.279</td>
-              <td>0.049</td>
-              <td>0.233</td>
+              <td>0.098s</td>
+              <td>285.4 tok/s</td>
+              <td>0.3509 &plusmn; 0.144</td>
+              <td>0.1218 &plusmn; 0.119</td>
+              <td>0.2706 &plusmn; 0.137</td>
               <td>-</td>
             </tr>
             <tr>
               <td><strong>4 (Low Effort)</strong></td>
               <td>36</td>
-              <td>0.42s</td>
-              <td>68.2 BPE tok/s</td>
-              <td>0.279</td>
-              <td>0.049</td>
-              <td>0.233</td>
-              <td>0.474</td>
+              <td>0.454s</td>
+              <td>61.6 tok/s</td>
+              <td>0.3452 &plusmn; 0.154</td>
+              <td>0.1197 &plusmn; 0.115</td>
+              <td>0.2613 &plusmn; 0.147</td>
+              <td>0.4292</td>
             </tr>
             <tr>
               <td><strong>8 (Medium Effort)</strong></td>
               <td>72</td>
-              <td>0.85s</td>
-              <td>34.1 BPE tok/s</td>
-              <td class="metric-good">0.356 (+27%)</td>
-              <td>0.047 (-4%)</td>
-              <td>0.222 (-5%)</td>
-              <td class="metric-good">0.478</td>
+              <td>0.897s</td>
+              <td>31.2 tok/s</td>
+              <td>0.3466 &plusmn; 0.150</td>
+              <td>0.1205 &plusmn; 0.129</td>
+              <td>0.2686 &plusmn; 0.138</td>
+              <td class="metric-good"><strong>0.4339</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="font-size: 0.88rem; color: var(--text-gray);">
-        * <strong>Hinweis zur Tabelle:</strong> Bei \(K=4\) wählt der MBR-Konsens (ROUGE-L Utility) den dominanten Medoid-Kandidaten (#0) aus, der identisch mit dem Greedy-Kandidaten bei \(K=1\) ist, weshalb die Scores identisch bleiben. Die Laufzeit skaliert durch den quadratischen CPU-Konsens-Aufwand von 0.09s auf 0.42s (4.7x) und 0.85s (9.4x).
+      <p style="font-size: 0.88rem; color: var(--text-gray); line-height: 1.5;">
+        * <strong>Methodik &amp; Befund:</strong> Kandidat #0 wird stets deterministisch als Greedy-Anker (\(T=0,7\), <code>top_k=1</code>, <code>top_p=0</code>) generiert, während ab \(k \ge 1\) eine Temperaturspreizung (\(T=0,85 \dots 1,15\)) den Konzeptraum exploriert. Auf Text-Summarization bringt MBR-Konsens keine statistisch signifikante ROUGE-Verbesserung, während der \(4,6\times\) bis \(9,2\times\) höhere Rechenaufwand den effektiven Durchsatz auf 31,2 tok/s drückt.
       </p>
 
       <h2>2. Das Roofline-Modell: Wo NCM bei 14B+ skaliert (und wo nicht)</h2>
