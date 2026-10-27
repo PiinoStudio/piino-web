@@ -1,7 +1,8 @@
 {
-  "versionCode": 71,
-  "versionName": "3.0.0-PRO",
+  "versionCode": 140,
+  "versionName": "3.8.5-PRO",
   "apkUrl": "https://nodus.piino.de/downloads/Nodus_latest.apk",
-  "releaseNotes": "🚀 Nodus v3.0.0-PRO (vc71): Stille USB-Reconnects, direkte 802.1Q VLAN Profile-Auflösung, optimierte Switch-Namen Stabilization & prominente Switch Management IP Anzeige.",
-  "minSupportedVersionCode": 30
+  "playStoreUrl": "https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share",
+  "releaseNotes": "Nodus v3.8.5-PRO (vc140): Native Desktop-, Laptop- und Großbildschirm-Unterstützung für ChromeOS / PCs, optimiertes Fenster-Handling, verbesserte Switch-Topologie und Messberichte.",
+  "minSupportedVersionCode": 45
 }
