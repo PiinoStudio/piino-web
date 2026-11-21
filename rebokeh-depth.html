@@ -65,19 +65,123 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 <article class="section section--tight">
   <div class="wrap wrap-narrow">
     <header class="article-header">
-      <div class="article-badge">Computational photography &bull; Dynamic Depth</div>
-      <h1>Your Pixel saves a depth map. Google Photos ignores it.</h1>
+      <div class="article-badge">Computational Photography &bull; Dynamic Depth</div>
+      <h1 lang="de">Dein Pixel speichert eine Tiefenkarte. Google Fotos ignoriert sie.</h1>
+      <h1 lang="en">Your Pixel saves a depth map. Google Photos ignores it.</h1>
       <div class="article-meta">
-        <span>By <strong>Pino Madeo</strong></span>
+        <span lang="de">Von <strong>Pino Madeo</strong></span>
+        <span lang="en">By <strong>Pino Madeo</strong></span>
         <span>&bull;</span>
-        <span>21 November 2026</span>
+        <span lang="de">21. November 2026</span>
+        <span lang="en">21 November 2026</span>
         <span>&bull;</span>
-        <span>Measured on Pixel 10 and Pixel 11 Pro files</span>
+        <span lang="de">Gemessen an Dateien von Pixel 10 und Pixel 11 Pro</span>
+        <span lang="en">Measured on Pixel 10 and Pixel 11 Pro files</span>
       </div>
-      <p class="small" lang="de" style="margin-top:14px;">Dieser Artikel ist auf Englisch — die Zielgruppe sitzt in englischsprachigen Foren.</p>
     </header>
 
-    <div class="prose article-body">
+    <div class="prose article-body" lang="de">
+      <p>Mach ein Porträt mit einem Pixel. Schau es dir später an und entscheide, dass dir der unscharfe Hintergrund zu stark ist. Öffne Google Fotos, tippe auf Bearbeiten, Tools, Weichzeichnen, und zieh den Regler ganz nach unten auf Null.</p>
+
+      <p>Du bekommst kein scharfes Foto. Du bekommst das Foto mit Googles Unschärfe, fest eingebacken.</p>
+
+      <p>Das ist keine Beschwerde über einen Schieberegler. Es ist der Grund, warum diese App existiert — und wenn man einmal weiß, was in der Datei steckt, kann man es nicht mehr übersehen.</p>
+
+      <h2>Was wirklich in der Datei liegt</h2>
+
+      <p>Ein Pixel-Porträt ist kein Bild, sondern ein Behälter: Googles eigenes veröffentlichtes Format <em>Dynamic Depth</em>, aufgebaut auf dem GContainer-Verzeichnis in den XMP-Daten. Ich habe einen Parser über vier Aufnahmen von meinen eigenen Geräten laufen lassen. Das kam heraus:</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Datei</th><th>Container-Elemente</th><th>Tiefenfelder</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pixel 10, 12 MP Porträt</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Pixel 10, 10 MP Selfie</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Pixel 11 Pro, 50 MP</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Galaxy S25 Ultra, 12 MP</strong></td><td>Primary, GainMap</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Frontkamera, Hauptkamera, 10 bis 50 Megapixel: Auf den Pixeln ist der Stapel jedes Mal derselbe. Drei Einträge verdienen einen zweiten Blick.</p>
+
+      <p><strong>Depth.</strong> Eine vollständige Tiefenkarte, als eigenes JPEG in der Datei — 127 KB bei der 12-MP-Aufnahme, 1,25 MB bei 50 MP. Hier ist eine, unverändert aus einem meiner Fotos herausgelöst. Dunkel ist nah, hell ist fern.</p>
+
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/scene-original.jpg" alt="Herbstdekoration auf einer Fensterbank: ein Igel aus Filz, zwei Fuchsfiguren" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">Die Aufnahme, wie sie aus der Kamera kommt. Pixel 11 Pro, 50 Megapixel.</figcaption>
+      </figure>
+
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/scene-depth.jpg" alt="Die Tiefenkarte derselben Aufnahme: Igel und Fuchs als dunkle Formen, die Fensterbank als Verlauf nach hinten" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">Dieselbe Aufnahme als Tiefenkarte, Byte für Byte aus dem Container gezogen und nur fürs Web verkleinert. Die Stacheln des Igels sind einzeln aufgelöst, der Fenstersims läuft als sauberer Verlauf nach hinten. Diese Daten liegen in jedem deiner Porträts.</figcaption>
+      </figure>
+
+      <p><strong>Confidence.</strong> Eine zweite Karte, die festhält, wie sicher sich die Kamera an jeder Stelle war — also genau dort, wo die Schätzung schwierig wird und Kanten ausfransen. Google schreibt sie mit. Googles Editor bietet nichts an, was sie nutzt.</p>
+
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/scene-confidence.jpg" alt="Die Confidence-Karte derselben Aufnahme" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">Die Confidence-Karte: helle Bereiche sind verlässlich gemessen, dunkle nicht. Auch sie liegt ungenutzt in der Datei.</figcaption>
+      </figure>
+
+      <p><strong>Original.</strong> Das war die Überraschung beim ersten Mal. Der Container trägt das unbearbeitete Bild in voller Auflösung, ohne jede Unschärfe — 770 KB bei 12 MP, 7,3 MB bei 50 MP. Das scharfe Foto, das du über den Editor nicht zurückbekommst, liegt in derselben Datei, die du gerade bearbeitest.</p>
+
+      <p>Dazu kommt die FocalTable: die Unschärfekurve, die die Kamera bei der Aufnahme selbst verwendet hat. Keine Vermutung darüber, wie die Szene ausgesehen haben könnte, sondern die tatsächlichen Parameter.</p>
+
+      <h2>Was Google Fotos stattdessen macht</h2>
+
+      <p>Jetzt der Teil, der mich zum Programmieren gebracht hat. Google Fotos lässt die Unschärfe nachträglich verändern, und auf diesen Regler zeigen die Leute immer, wenn das Thema aufkommt. Aber schau, worauf er arbeitet.</p>
+
+      <p>Er nimmt das fertige, flachgerechnete JPEG — das, in dem Googles Unschärfe schon in den Pixeln steckt —, erzeugt mit einem KI-Modell eine <em>neue</em> Tiefenkarte und legt darauf eine neue Unschärfe. Zieh ihn auf Null, und du landest nicht beim Original-Element. Du landest auf dem eingebackenen Bild darunter. Ich habe das diese Woche auf einem aktuellen Pixel noch einmal geprüft.</p>
+
+      <p>Der Editor schätzt also maschinell Informationen, die die Kamera gemessen und ein paar Kilobyte weiter abgelegt hat. Das ist das Software-Äquivalent dazu, ein Dokument abzufotografieren, weil man die Datei nicht findet.</p>
+
+      <p>Snapseed, ebenfalls Google, wurde dieses Jahr wieder weiterentwickelt. Auch dessen Objektivunschärfe arbeitet nicht mit Tiefendaten.</p>
+
+      <h2>Warum ich nicht einfach gewartet habe</h2>
+
+      <p>2019 habe ich meine Bachelorarbeit über UX-Design für Computational Photography im Zeitalter der KI geschrieben. Dort bin ich diesem Containerformat zum ersten Mal begegnet, und damals sah die Lücke nach einem zeitlichen Problem aus: Die Daten sind da, die Werkzeuge kommen nach.</p>
+
+      <p>Ich habe es bei Google gemeldet — <a href="https://issuetracker.google.com/issues/313403359" target="_blank" rel="noopener">Issue 313403359</a> und <a href="https://issuetracker.google.com/issues/328954410" target="_blank" rel="noopener">Issue 328954410</a>. Dieses Jahr kam eine Rückmeldung. Geändert hat sich nichts. Dann kam ein Pixel 10, später ein Pixel 11 Pro, und die Tiefenkarte lag immer noch da, unberührt von allem, was Google ausliefert.</p>
+
+      <p>Irgendwann hört Warten auf, eine Strategie zu sein.</p>
+
+      <h2>Was Rebokeh damit macht</h2>
+
+      <p>Rebokeh liest, was ohnehin in deiner Datei liegt: die Tiefenkarte, die Confidence-Karte, die Fokustabelle und das unbearbeitete Bild. Von da an lässt sich das Foto so bearbeiten, wie es von Anfang an möglich gewesen wäre.</p>
+
+      <ul>
+        <li><strong>Blende als physikalische Größe</strong>, stufenlos von f/1.4 bis f/22, in einer 3D-Engine gerechnet statt als Weichzeichner. Lichtpunkte im Hintergrund werden zu Bokeh-Kreisen, der Verlauf folgt der gemessenen Tiefe.</li>
+        <li><strong>Zurück zu scharf, wirklich.</strong> Weil das Originalbild im Container liegt, heißt Unschärfe entfernen: dieses Bild zeigen — keine Annäherung daran.</li>
+        <li><strong>Umfokussieren per Fingertipp</strong>, die Schärfeebene wandert durch echte Tiefe.</li>
+        <li><strong>Fünf Objektiv-Charaktere</strong>: sphärisch, anamorphotisch, Swirl, Vintage Soft, Mirror.</li>
+        <li><strong>Ein Tiefenpinsel</strong> für die Stellen, an denen die Confidence-Karte ehrlich ist: Haare, Brillenbügel, der Spalt zwischen Arm und Körper.</li>
+        <li><strong>Porträt-Relighting</strong> und ein 3D-Parallax-Live-Wallpaper aus demselben Foto.</li>
+      </ul>
+
+      <p>Alles läuft auf dem Gerät. Kein Konto, kein Upload, kein Analyse-SDK — nicht als Datenschutz-Parole, sondern weil es schlicht nichts gibt, wofür ein Server nötig wäre.</p>
+
+      <h2>Wo es schwieriger wird</h2>
+
+      <p>Schau noch einmal auf die letzte Zeile der Tabelle. Die Datei vom Galaxy S25 Ultra trägt überhaupt keine Tiefendaten im Container. Samsung schreibt anders, andere Hersteller wieder anders, und manche Modelle schreiben gar nichts.</p>
+
+      <p>Für solche Fotos schätzt Rebokeh die Tiefe selbst, auf dem Gerät, und rechnet daraus — also genau das, was Google Fotos bei jedem Bild tut, nur dass Rebokeh erst dann schätzt, wenn nichts Besseres verfügbar ist. Wo die Kamera gemessen hat, gewinnt die Messung.</p>
+
+      <p>Das ist zugleich die ehrliche Grenze dessen, was ich im Moment versprechen kann. Ich besitze ein Pixel und ein Samsung. Jeder andere Hersteller ist eine Vermutung, bis es jemand ausprobiert — deshalb ist die App im geschlossenen Test, und deshalb frage ich ständig nach ungewöhnlichen Geräten.</p>
+
+      <div class="note" style="--p: var(--rebokeh); margin-top: 32px;">
+        <h3>Probier es mit deinen Fotos</h3>
+        <p>Rebokeh ist in der geschlossenen Beta, ab Android 14. Zwei Schritte zum Mitmachen — und das Nützlichste, was du mir schicken kannst, ist ein Satz dazu, ob die App in deinen Porträts Tiefendaten gefunden hat.</p>
+        <div class="cluster" style="margin-top: 18px;">
+          <a class="btn btn--product" style="--p: var(--rebokeh);" href="rebokeh.html#mitmachen">Zur Beta</a>
+          <a class="btn btn--ghost" href="mailto:mad@piino.de?subject=Rebokeh">mad@piino.de</a>
+        </div>
+      </div>
+
+      <p class="small" style="margin-top: 28px;">Methode: Die Container-Elemente stammen aus dem XMP-GContainer-Verzeichnis unveränderter Kameradateien; die gezeigten Karten wurden byteweise aus dem JPEG gelöst und nur fürs Web verkleinert. Das beschriebene Verhalten von Google Fotos ist mein eigener Test auf einem aktuellen Pixel im November 2026.</p>
+    </div>
+
+    <div class="prose article-body" lang="en">
       <p>Take a portrait on a Pixel. Look at it later and decide the background blur is too strong. Open Google Photos, tap Edit, Tools, Blur, and pull the slider all the way down to zero.</p>
 
       <p>You do not get a sharp photo. You get the photo with Google's blur still baked in.</p>
@@ -86,50 +190,42 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <h2>What is actually in the file</h2>
 
-      <p>A Pixel portrait is not one image. It is a container — Google's own published format, Dynamic Depth, built on the GContainer XMP directory. I ran a parser over three photos from my own devices. This is what came out:</p>
+      <p>A Pixel portrait is not one image. It is a container — Google's own published format, Dynamic Depth, built on the GContainer XMP directory. I ran a parser over four photos from my own devices. This is what came out:</p>
 
       <div class="table-wrapper">
         <table>
-          <thead>
-            <tr><th>File</th><th>Container items</th><th>Depth fields</th></tr>
-          </thead>
+          <thead><tr><th>File</th><th>Container items</th><th>Depth fields</th></tr></thead>
           <tbody>
-            <tr>
-              <td><strong>Pixel 10, 12 MP portrait</strong></td>
-              <td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td>
-              <td>FocalTable</td>
-            </tr>
-            <tr>
-              <td><strong>Pixel 11 Pro, 50 MP portrait</strong></td>
-              <td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td>
-              <td>FocalTable</td>
-            </tr>
-            <tr>
-              <td><strong>Pixel 10, 10 MP selfie portrait</strong></td>
-              <td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td>
-              <td>FocalTable</td>
-            </tr>
-            <tr>
-              <td><strong>Galaxy S25 Ultra, 12 MP</strong></td>
-              <td>Primary, GainMap</td>
-              <td>&mdash;</td>
-            </tr>
+            <tr><td><strong>Pixel 10, 12 MP portrait</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Pixel 10, 10 MP selfie</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Pixel 11 Pro, 50 MP</strong></td><td>Primary, GainMap, <strong>Original</strong>, <strong>Depth</strong>, <strong>Confidence</strong></td><td>FocalTable</td></tr>
+            <tr><td><strong>Galaxy S25 Ultra, 12 MP</strong></td><td>Primary, GainMap</td><td>&mdash;</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p>Front camera, rear camera, 10 to 50 megapixels: on the Pixels the stack is the same every time. Three things in that table deserve a second look.</p>
+      <p>Front camera, rear camera, 10 to 50 megapixels: on the Pixels the stack is the same every time. Three entries deserve a second look.</p>
 
-      <p><strong>Depth.</strong> A full depth map, stored as its own JPEG inside the file — 127 KB on the 12 MP shot, 1.25 MB on the 50 MP one. Here is one, extracted straight out of a photo of mine. Dark is close, light is far. Note the hair:</p>
+      <p><strong>Depth.</strong> A full depth map, stored as its own JPEG inside the file — 127 KB on the 12 MP shot, 1.25 MB at 50 MP. Here is one, extracted unchanged from a photo of mine. Dark is close, light is far.</p>
 
       <figure style="margin: 28px 0;">
-        <img src="screenshots/depth/pixel-depth-map.jpg" alt="Depth map extracted from a Pixel portrait: a dark silhouette of a head and shoulders against a bright background" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
-        <figcaption class="small" style="margin-top: 10px;">The Depth item from a Pixel 10 portrait, extracted unchanged from the JPEG container. Your phone writes this next to every portrait you take.</figcaption>
+        <img src="screenshots/depth/scene-original.jpg" alt="Autumn decoration on a windowsill: a felt hedgehog and two fox figures" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">The photo as it comes out of the camera. Pixel 11 Pro, 50 megapixels.</figcaption>
       </figure>
 
-      <p><strong>Confidence.</strong> A second map, telling you how sure the camera was about each region — the places where depth estimation struggles, which is exactly where edges go wrong. Google writes it. Google's editor does not offer you anything that uses it.</p>
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/scene-depth.jpg" alt="The depth map of the same photo: hedgehog and fox as dark shapes, the windowsill receding as a gradient" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">The same photo as a depth map, pulled byte for byte out of the container and only scaled down for the web. The hedgehog's spines are resolved individually and the windowsill recedes as a clean gradient. This sits inside every portrait you take.</figcaption>
+      </figure>
 
-      <p><strong>Original.</strong> This is the one that surprised me the first time. The container holds the unprocessed frame, full resolution, no blur applied — 770 KB on the 12 MP file, 7.3 MB on the 50 MP one. The sharp photo you cannot get back from the editor is sitting in the same file you are editing.</p>
+      <p><strong>Confidence.</strong> A second map, recording how sure the camera was about each region — exactly where estimation gets hard and edges fray. Google writes it. Google's editor offers nothing that uses it.</p>
+
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/scene-confidence.jpg" alt="The confidence map of the same photo" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">The confidence map: bright areas were measured reliably, dark ones were not. It sits unused in the file as well.</figcaption>
+      </figure>
+
+      <p><strong>Original.</strong> This is the one that surprised me the first time. The container holds the unprocessed frame at full resolution, no blur applied — 770 KB on the 12 MP file, 7.3 MB at 50 MP. The sharp photo you cannot get back from the editor is sitting in the same file you are editing.</p>
 
       <p>And alongside those, a FocalTable: the blur curve the camera itself used at capture time. Not a guess about what the scene looked like. The actual parameters.</p>
 
@@ -137,7 +233,7 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <p>Here is the part that made me build an app. Google Photos does let you change the blur after the fact, and people point at that slider whenever this comes up. But watch what it operates on.</p>
 
-      <p>It takes the finished, flattened JPEG — the one with Google's blur already burned into the pixels — generates a <em>new</em> depth map with an AI model, and renders a new blur on top of that. Slide it to zero and you do not land on the Original item. You land on the baked image underneath. I checked this again this week on a current Pixel.</p>
+      <p>It takes the finished, flattened JPEG — the one with Google's blur already burned into the pixels — generates a <em>new</em> depth map with an AI model, and renders new blur on top of that. Slide it to zero and you do not land on the Original item. You land on the baked image underneath. I checked this again this week on a current Pixel.</p>
 
       <p>So the editor re-estimates, by machine learning, information that the camera measured and stored a few kilobytes away. It is the software equivalent of photographing a document because you cannot find the file.</p>
 
@@ -153,26 +249,26 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <h2>What Rebokeh does with it</h2>
 
-      <p>Rebokeh reads what is already in your file: the depth map, the confidence map, the focal table, and the original frame. From there, the photo becomes editable in the way it should have been all along.</p>
+      <p>Rebokeh reads what is already in your file: the depth map, the confidence map, the focal table, and the original frame. From there the photo becomes editable the way it should have been all along.</p>
 
       <ul>
-        <li><strong>Aperture as a physical quantity</strong>, stepless from f/1.4 to f/22, rendered in a 3D engine rather than as a blur filter. Background highlights become bokeh discs, and the falloff follows measured depth.</li>
+        <li><strong>Aperture as a physical quantity</strong>, stepless from f/1.4 to f/22, rendered in a 3D engine rather than as a blur filter. Background highlights become bokeh discs and the falloff follows measured depth.</li>
         <li><strong>Back to sharp, for real.</strong> Because the original frame is in the container, removing the blur means showing you that frame — not an approximation of it.</li>
-        <li><strong>Refocus by tapping</strong> anywhere in the image, with the focal plane moving through actual depth.</li>
+        <li><strong>Refocus by tapping</strong> anywhere, with the focal plane moving through actual depth.</li>
         <li><strong>Five lens characters</strong>: spherical, anamorphic, swirl, vintage soft, mirror.</li>
         <li><strong>A depth brush</strong> for the places the confidence map is honest about — hair, glasses frames, the gap between arm and body.</li>
         <li><strong>Portrait relighting</strong> and a 3D parallax live wallpaper from the same photo.</li>
       </ul>
 
-      <p>All of it runs on the device. No account, no uploads, no analytics SDK. Not as a privacy slogan — there is simply nothing a server would be needed for.</p>
+      <p>All of it runs on the device. No account, no uploads, no analytics SDK — not as a privacy slogan, but because there is simply nothing a server would be needed for.</p>
 
       <h2>Where it gets harder</h2>
 
-      <p>Look at the third row of that table again. The Galaxy S25 Ultra file carries no depth data at all in its container. Samsung writes it differently, other manufacturers differently again, and some models write nothing.</p>
+      <p>Look at the last row of that table again. The Galaxy S25 Ultra file carries no depth data in its container at all. Samsung writes it differently, other manufacturers differently again, and some models write nothing.</p>
 
-      <p>For those photos Rebokeh estimates depth itself, on the device, and renders from that — which is exactly what Google Photos does for every photo, except that Rebokeh only falls back to estimation when there is nothing better available. When your camera measured the scene, measurement wins.</p>
+      <p>For those photos Rebokeh estimates depth itself, on the device, and renders from that — which is what Google Photos does for every photo, except that Rebokeh only falls back to estimation when nothing better is available. Where the camera measured, measurement wins.</p>
 
-      <p>This is also the honest limit of what I can promise right now. I own a Pixel and a Samsung. Every other manufacturer is a guess until someone tries it, which is why the app is in closed testing and why I keep asking for unusual devices.</p>
+      <p>That is also the honest limit of what I can promise right now. I own a Pixel and a Samsung. Every other manufacturer is a guess until someone tries it, which is why the app is in closed testing and why I keep asking for unusual devices.</p>
 
       <div class="note" style="--p: var(--rebokeh); margin-top: 32px;">
         <h3>Try it on your photos</h3>
@@ -183,7 +279,7 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
         </div>
       </div>
 
-      <p class="small" style="margin-top: 28px;">Method: container items were read from the XMP GContainer directory of unmodified camera files; the depth map above was extracted byte-for-byte from the JPEG and only scaled down for the web. The behaviour of Google Photos described here is my own test on a current Pixel in November 2026.</p>
+      <p class="small" style="margin-top: 28px;">Method: container items were read from the XMP GContainer directory of unmodified camera files; the maps shown were extracted byte-for-byte from the JPEG and only scaled down for the web. The behaviour of Google Photos described here is my own test on a current Pixel in November 2026.</p>
     </div>
   </div>
 </article>
