@@ -1,3 +1,6 @@
+# Arbeitsdatei, gehoert nicht auf die Website
+reddit-post.md
+
 # Backend-Quelltext gehört NICHT in dieses öffentliche Statik-Repo:
 # Cloudflare Pages führt kein PHP aus und würde die Dateien als Quelltext ausliefern.
 api/
