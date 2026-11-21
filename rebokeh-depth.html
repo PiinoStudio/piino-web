@@ -160,6 +160,16 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <p>Am 27. November 2023 habe ich es bei Google gemeldet: <a href="https://issuetracker.google.com/issues/313403359" target="_blank" rel="noopener">Issue 313403359</a>, Titel <em>„Photos don't include depth map"</em>. Meine Beschwerde damals war genau die, die oben am Anfang steht — der Porträt-Weichzeichner lässt sich nicht auf null stellen. Der Eintrag steht bis heute auf <strong>Assigned</strong>, Priorität P2, Statusnotiz: <em>„No update yet."</em></p>
 
+      <p>Dazwischen passierte Folgendes: Im Dezember 2025 und im Januar 2026 wurde der Eintrag intern weitergereicht. Am 6. Juni 2026 bat mich Google, das Problem auf dem neuesten Build nachzuprüfen. Das habe ich getan und am selben Tag eine dreiteilige Analyse hinterlassen. Drei Tage später kam die Antwort, man habe die Angaben an Produkt- und Entwicklungsteam weitergegeben. Am 29. Oktober 2026 wurde der Eintrag erneut weitergereicht. Stand heute: Assigned, P2, keine Änderung.</p>
+
+      <h2>Bearbeiten zerstört die Daten</h2>
+
+      <p>Beim Nachprüfen im Juni fand ich etwas, das schlimmer ist als bloßes Nichtbenutzen. Wenn du ein Porträt in Google Fotos bearbeitest und speicherst, werden die Dynamic-Depth-Namensräume, die FocalTable und die Containerstruktur <strong>vollständig entfernt</strong>. Die gespeicherte Datei ist ein flaches JPEG.</p>
+
+      <p>Google Fotos erkennt das Ergebnis danach selbst nicht mehr als Porträt — das Porträt-Symbol verschwindet. Jede Möglichkeit, Schärfepunkt oder Unschärfe später noch einmal anzupassen, ist damit endgültig weg. Nicht ausgegraut, nicht versteckt: gelöscht.</p>
+
+      <p>Praktischer Rat, unabhängig von meiner App: Wenn dir die Tiefendaten eines Porträts etwas wert sind, bearbeite das Foto nicht in Google Fotos. Arbeite auf einer Kopie.</p>
+
       <p>Damals fehlte die Tiefenkarte in den Aufnahmen tatsächlich noch. Inzwischen liegt sie in jeder Datei, wie die Tabelle oben zeigt. Geändert hat das nichts: Die Unschärfe lässt sich drei Jahre später immer noch nicht entfernen, obwohl die Daten dafür jetzt mitgeliefert werden.</p>
 
       <p>Irgendwann hört Warten auf, eine Strategie zu sein. Seit dem Frühsommer baue ich deshalb an Rebokeh — nicht als Wochenendprojekt nach einer Zufallsentdeckung, sondern als Konsequenz aus mehreren Jahren, in denen sich an dieser Stelle nichts bewegt hat.</p>
@@ -278,6 +288,16 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
       <p>In 2019 I wrote my bachelor's thesis on UX design for computational photography in the age of AI. That is where I first worked with this container format, and back then the gap looked like a timing problem: the data is there, the tools will follow.</p>
 
       <p>On 27 November 2023 I filed it with Google: <a href="https://issuetracker.google.com/issues/313403359" target="_blank" rel="noopener">issue 313403359</a>, titled <em>"Photos don't include depth map"</em>. My complaint then was exactly the one this article opens with — portrait blur cannot be set to zero. The report still sits at <strong>Assigned</strong>, priority P2, status note: <em>"No update yet."</em></p>
+
+      <p>What happened in between: the report was passed on internally in December 2025 and again in January 2026. On 6 June 2026 Google asked me to retest the issue on the latest build. I did, and left a three-part analysis the same day. Three days later came the reply that the information had been shared with the product and engineering team. On 29 October 2026 the report was reassigned again. As of today: Assigned, P2, no change.</p>
+
+      <h2>Editing destroys the data</h2>
+
+      <p>While retesting in June I found something worse than mere neglect. When you edit a portrait in Google Photos and save it, the Dynamic Depth namespaces, the FocalTable and the container structure are <strong>stripped out entirely</strong>. What you save is a flat JPEG.</p>
+
+      <p>Google Photos then no longer recognises its own output as a portrait — the portrait badge disappears. Any ability to adjust the focal point or blur later is gone for good. Not greyed out, not hidden: deleted.</p>
+
+      <p>Practical advice, regardless of my app: if the depth data in a portrait matters to you, do not edit that photo in Google Photos. Work on a copy.</p>
 
       <p>Back then the depth map really was missing from the files. Today it ships with every shot, as the table above shows. That changed nothing: three years later the blur still cannot be removed, even though the data to do it now travels with the photo.</p>
 
