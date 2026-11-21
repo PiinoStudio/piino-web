@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="piino studio">
+  <rect width="64" height="64" rx="17" fill="#5F7D59"/>
+  <g stroke="#F6F4EF" stroke-width="5.5" stroke-linecap="round" fill="none">
+    <path d="M23 19v26"/>
+    <circle cx="33" cy="28" r="9"/>
+  </g>
+</svg>

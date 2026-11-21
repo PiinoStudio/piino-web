@@ -1,220 +1,415 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Piino Software Studio &bull; Durchdachte Software &amp; Digitale Systeme</title>
-  <meta name="description" content="Piino Software Studio von Giuseppe Madeo. Spezialisiert auf mobile Android/iOS-Tools, präzise Netzwerkanalyse (Nodus), intelligente Leitsysteme und Computational Photography (Rebokeh).">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piino Studio — Mobile Software aus Ludwigsburg</title>
+<meta name="title-de" content="Piino Studio — Mobile Software aus Ludwigsburg">
+<meta name="title-en" content="Piino Studio — Mobile software from Ludwigsburg, Germany">
+<meta name="description" content="Piino Studio ist das Ein-Mann-Studio von Pino Madeo: Android- und iOS-Apps, die lokal auf dem Gerät arbeiten — Nodus (Netzwerkdiagnose), Rebokeh (Porträt & Bokeh), whitespace (Tracking-Blocker).">
+<meta name="description-de" content="Piino Studio ist das Ein-Mann-Studio von Pino Madeo: Android- und iOS-Apps, die lokal auf dem Gerät arbeiten — Nodus (Netzwerkdiagnose), Rebokeh (Porträt & Bokeh), whitespace (Tracking-Blocker).">
+<meta name="description-en" content="Piino Studio is Pino Madeo's one-person studio: Android and iOS apps that run fully on-device — Nodus (network diagnostics), Rebokeh (portrait & bokeh), whitespace (tracking blocker).">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Piino Studio">
+<meta property="og:description" content="Mobile Software, die lokal auf dem Gerät arbeitet. Nodus, Rebokeh, whitespace.">
+<meta property="og:url" content="https://www.piino.de/">
+<meta property="og:image" content="https://www.piino.de/og-piino.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Piino Studio">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.piino.de/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+(function(){var r=document.documentElement,t=null,l=null;
+try{t=localStorage.getItem('piino-theme');l=localStorage.getItem('piino-lang');}catch(e){}
+if(t){r.setAttribute('data-theme',t);}
+if(!l){l=(navigator.language||'de').toLowerCase().slice(0,2)==='de'?'de':'en';}
+r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main"><span lang="de">Zum Inhalt springen</span><span lang="en">Skip to content</span></a>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="#" class="nav-brand">
-      <img src="piino-logo-legal.svg" alt="Piino Studio Logo" class="nav-logo-svg">
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="index.html" aria-label="Piino Studio">
+      <svg viewBox="0 0 91 44" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+      <span class="brand__sub">studio</span>
     </a>
-    <div class="nav-links">
-      <a href="#projekte" class="nav-link">Projekte</a>
-      <a href="honor-magicbook-art-14-linux.html" class="nav-link" style="color: #FFD600;">Snapdragon Linux ↗</a>
-      <a href="ncm-m5pro.html" class="nav-link" style="color: #00E1FF;">AI Research ↗</a>
-      <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary btn-sm">Nodus im Play Store ↗</a>
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-link" href="#produkte"><span lang="de">Produkte</span><span lang="en">Products</span></a>
+      <a class="nav-link" href="rebokeh.html"><span lang="de">Rebokeh-Beta</span><span lang="en">Rebokeh beta</span></a>
+      <a class="nav-link" href="#lesen"><span lang="de">Artikel</span><span lang="en">Writing</span></a>
+      <a class="nav-link" href="#ueber"><span lang="de">Über mich</span><span lang="en">About</span></a>
+      <a class="nav-link" href="#kontakt"><span lang="de">Kontakt</span><span lang="en">Contact</span></a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Sprache / Language">
+        <button type="button" data-lang-btn="de" aria-pressed="true">DE</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Design umschalten / Toggle theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Menü / Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
-  </nav>
+  </div>
+</header>
 
-  <!-- Hero Section -->
+<main id="main">
+
+  <!-- Hero -->
   <section class="hero">
-    <div class="badge-nintendo">PIINO SOFTWARE STUDIO</div>
-    <h1>Durchdachte Software &amp; Digitale Systeme.</h1>
-    <p>Von professionellen Netzwerk-Messwerkzeugen bis hin zu digitalen Leitsystemen, Smart-City-Plattformen und Computational Photography. Entwicklung mit Präzision und klarem Fokus auf Usability.</p>
-    
-    <div class="hero-actions">
-      <a href="#projekte" class="btn-primary">Projekt-Portfolio entdecken &darr;</a>
-      <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-secondary">Nodus im Google Play Store ↗</a>
+    <div class="wrap">
+      <p class="eyebrow" lang="de">Ein-Mann-Studio · Ludwigsburg</p>
+      <p class="eyebrow" lang="en">One-person studio · Ludwigsburg, Germany</p>
+      <h1 lang="de">Mobile Werkzeuge, die <em class="serif-accent">echte</em> Arbeit abnehmen.</h1>
+      <h1 lang="en">Mobile tools that do <em class="serif-accent">real</em> work.</h1>
+      <p class="lead" lang="de">Ich bin Pino Madeo, Mobile-Medien-Absolvent aus Ludwigsburg. Nebenberuflich baue ich Android- und iOS-Apps für Leute mit einem konkreten Problem: einen unbeschrifteten Netzwerkport, ein Porträt mit zu unruhigem Hintergrund, zu viele Tracker auf dem Diensthandy. Alles rechnet auf dem Gerät — ohne Cloud, ohne Konto, ohne Tracking.</p>
+      <p class="lead" lang="en">I'm Pino Madeo, a mobile media graduate based near Stuttgart, Germany. I build Android and iOS apps on the side, for people with a concrete problem: an unlabelled network port, a portrait with a busy background, too many trackers on a work phone. Everything runs on the device — no cloud, no account, no tracking.</p>
+      <div class="cluster">
+        <a class="btn" href="nodus.html"><span lang="de">Nodus ansehen</span><span lang="en">Explore Nodus</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="rebokeh.html"><span lang="de">Rebokeh-Beta beitreten</span><span lang="en">Join the Rebokeh beta</span></a>
+      </div>
+      <dl class="hero__meta">
+        <div>
+          <dt lang="de">Schwerpunkt</dt><dt lang="en">Focus</dt>
+          <dd lang="de">Android & iOS, On-Device-Verarbeitung</dd>
+          <dd lang="en">Android & iOS, on-device processing</dd>
+        </div>
+        <div>
+          <dt lang="de">Im Store</dt><dt lang="en">Shipping</dt>
+          <dd lang="de">Nodus — Google Play, v3.8.5</dd>
+          <dd lang="en">Nodus — Google Play, v3.8.5</dd>
+        </div>
+        <div>
+          <dt lang="de">Gerade in Beta</dt><dt lang="en">Currently in beta</dt>
+          <dd lang="de">Rebokeh (Android), whitespace (iOS)</dd>
+          <dd lang="en">Rebokeh (Android), whitespace (iOS)</dd>
+        </div>
+        <div>
+          <dt lang="de">Kontakt</dt><dt lang="en">Contact</dt>
+          <dd><a href="mailto:mad@piino.de">mad@piino.de</a></dd>
+        </div>
+      </dl>
     </div>
   </section>
 
-  <!-- Projects Showcase Section -->
-  <section id="projekte" class="features">
-    <h2 class="section-title">Entwickelte Projekte &amp; Produkte</h2>
-    
-    <div class="grid">
-      <!-- Honor MagicBook Art 14 Snapdragon Linux -->
-      <div class="card card-featured" style="border-color: rgba(255, 214, 0, 0.4); background: linear-gradient(145deg, #1C1B14, #0F171F);">
-        <div class="card-badge" style="background: rgba(255, 214, 0, 0.15); color: #FFD600; border: 1px solid rgba(255, 214, 0, 0.3);">HARDWARE BRING-UP &bull; QUALCOMM SNAPDRAGON X ELITE</div>
-        <div class="card-icon-svg" style="margin-bottom: 16px;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="2" y1="20" x2="22" y2="20"></line>
-          </svg>
+  <!-- Aufruf: Betatester -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="note reveal" style="--p: var(--rebokeh);">
+        <div class="cluster" style="justify-content: space-between; align-items: flex-start;">
+          <div style="flex: 1 1 420px;">
+            <span class="badge badge--beta"><span class="dot"></span>Closed Beta</span>
+            <h3 style="margin-top: 12px;" lang="de">Rebokeh sucht Testgeräte — je ungewöhnlicher, desto besser</h3>
+            <h3 style="margin-top: 12px;" lang="en">Rebokeh needs test devices — the more unusual, the better</h3>
+            <p lang="de">Rebokeh liest die Tiefendaten aus Porträtfotos aus. Jeder Hersteller schreibt sie etwas anders in die Datei. Ich suche Tester mit Pixel, Samsung, Xiaomi, OnePlus, Honor, Motorola, Nothing, Fairphone — Hauptsache nicht nochmal dasselbe Modell. Ein Foto, ein Satz Rückmeldung, fertig.</p>
+            <p lang="en">Rebokeh reads the depth data your camera writes into portrait photos — and every manufacturer does it a little differently. I'm looking for testers on Pixel, Samsung, Xiaomi, OnePlus, Honor, Motorola, Nothing, Fairphone — anything but another copy of the same model. One photo, one line of feedback, done.</p>
+          </div>
+          <div class="cluster" style="flex: 0 0 auto;">
+            <a class="btn btn--product" style="--p: var(--rebokeh);" href="rebokeh.html#mitmachen">
+              <span lang="de">Tester werden</span><span lang="en">Become a tester</span>
+            </a>
+            <a class="btn btn--ghost" href="rebokeh.html"><span lang="de">Details</span><span lang="en">Details</span></a>
+          </div>
         </div>
-        <h3>Honor MagicBook Art 14 &bull; Snapdragon Linux</h3>
-        <p>Statusbericht Ende 2026: Über zwei Jahre nach dem Start des Snapdragon X Elite laufen 120 Hz OLED, Wi-Fi 7 und Fingerabdruck-Login perfekt. Ein ehrlicher Praxisbericht, warum der Ton nach wie vor nur nach unten feuert, der Standby-Verbrauch wie bei allen X1-Elite-Laptops eine Baustelle bleibt und wie 0W-Hibernate hilft.</p>
-        <div class="card-actions">
-          <a href="honor-magicbook-art-14-linux.html" class="btn-primary btn-sm">Artikel lesen &rarr;</a>
-          <a href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" class="btn-secondary btn-sm">GitHub Repo ↗</a>
-        </div>
-        <div class="card-tag" style="margin-top: 14px;">120Hz OLED &bull; SoundWire &bull; 0W Suspend-Hibernate &bull; Dual-Boot</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Produkte -->
+  <section class="section" id="produkte">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 lang="de">Produkte</h2>
+        <h2 lang="en">Products</h2>
+        <p lang="de">Drei eigene Apps. Alle drei verarbeiten ihre Daten vollständig auf dem Gerät.</p>
+        <p lang="en">Three apps of my own. All three keep their data on the device.</p>
       </div>
 
-      <!-- NCM on Apple Silicon (AI Research Feature) -->
-      <div class="card card-featured" style="border-color: rgba(0, 225, 255, 0.4); background: linear-gradient(145deg, #161E24, #0F171F);">
-        <div class="card-badge" style="background: rgba(0, 225, 255, 0.15); color: #00E1FF; border: 1px solid rgba(0, 225, 255, 0.3);">AI SYSTEMS RESEARCH &bull; APPLE SILICON M5 PRO</div>
-        <div class="card-icon-svg" style="margin-bottom: 16px;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00E1FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-          </svg>
+      <!-- Nodus -->
+      <article class="product reveal" style="--p: var(--nodus);">
+        <div>
+          <div class="cluster" style="gap: 14px;">
+            <img class="app-icon" src="nodus-app-icon.png" alt="Nodus" width="52" height="52">
+            <span class="badge badge--live"><span class="dot"></span>Google Play</span>
+          </div>
+          <h2 style="margin-top: 20px;">Nodus</h2>
+          <p class="lead" lang="de">Der Netzwerktester für die Hosentasche. USB-C-Ethernet-Adapter ans Android-Gerät, in die Dose stecken — und Nodus sagt dir, an welchem Switch, an welchem Port und in welchem VLAN du hängst.</p>
+          <p class="lead" lang="en">A network tester in your pocket. Plug a USB-C Ethernet adapter into your Android device, plug that into the wall — and Nodus tells you which switch, which port and which VLAN you're on.</p>
+          <ul class="feature-list">
+            <li lang="de">Switch, Port-ID, Management-IP und Native VLAN aus LLDP/CDP — Sekunden nach dem Einstecken</li>
+            <li lang="en">Switch name, port ID, management IP and native VLAN from LLDP/CDP — seconds after link-up</li>
+            <li lang="de">802.1Q-VLAN-Sniffer, Multi-Switch-Topologie, iPerf3-Durchsatz, PCAP-Mitschnitt für Wireshark</li>
+            <li lang="en">802.1Q VLAN sniffer, multi-switch topology, iPerf3 throughput, PCAP capture for Wireshark</li>
+            <li lang="de">KI-Copilot auf Basis von Gemini Nano — vollständig offline auf dem Chip des Telefons</li>
+            <li lang="en">AI copilot based on Gemini Nano — entirely offline, on the phone's own chip</li>
+            <li lang="de">Prüfberichte als PDF/HTML für Ticketsystem und Übergabeprotokoll</li>
+            <li lang="en">Audit reports as PDF/HTML for ticketing systems and handover documentation</li>
+          </ul>
+          <div class="cluster mt-l">
+            <a class="btn btn--product" style="--p: var(--nodus);" href="https://play.google.com/store/apps/details?id=de.piino.nodus" target="_blank" rel="noopener">
+              <span lang="de">Im Play Store</span><span lang="en">Get it on Google Play</span>
+            </a>
+            <a class="link-arrow" style="--p: var(--nodus);" href="nodus.html"><span lang="de">Alle Funktionen</span><span lang="en">All features</span> <span class="arr">→</span></a>
+          </div>
         </div>
-        <h3>Next-Concept Modeling (NCM) &bull; M5 Pro</h3>
-        <p>Challenging the Memory Wall: Ein ungeschminkter Systems-Befund zur Stanford NCM-Architektur auf Apple Silicon (MPS &amp; MLX). Reale Roofline-Modellierung (14B Compute-Explosion), Iso-Token-Normalisierung (1.84x vs MPS, 345 tok/s MLX), N=500 statistische XSum-Evaluation und physikalische Powermetrics-Telemetrie.</p>
-        <div class="card-actions">
-          <a href="ncm-m5pro.html" class="btn-primary btn-sm">Artikel &amp; Benchmarks lesen &rarr;</a>
-          <a href="https://github.com/PiinoStudio/ncm-apple-silicon" target="_blank" class="btn-secondary btn-sm">GitHub Repo ↗</a>
+        <div class="product__media">
+          <img class="phone" src="screenshots/01_dashboard.png" alt="Nodus Dashboard: erkannter Switch, Gateway-Port und VLANs" width="300" loading="lazy" style="width: min(280px, 72vw);">
         </div>
-        <div class="card-tag" style="margin-top: 14px;">Apple Silicon MPS &bull; Roofline Model &bull; N=500 XSum &bull; Sudoku 84%</div>
-      </div>
-
-      <!-- Nodus (Flagship) -->
-      <div class="card card-featured">
-        <div class="card-badge">FLAGSHIP APP &bull; PLAY STORE RELEASE</div>
-        <div style="margin-bottom: 16px;">
-          <img src="nodus-app-icon.png" alt="Nodus App Icon" style="width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 20px rgba(0, 225, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.15);">
-        </div>
-        <h3>Nodus Network Tester</h3>
-        <p>Der mobile USB-C Layer-2 Netzwerktester für Android. Mit integriertem <strong>100% Offline Google Gemini Nano KI-Copilot</strong> für automatische Ursachenanalyse, visueller Multi-Switch Topologie und mDNS/Bonjour Multicast-Filter-Test. Analysiert LLDP/CDP Switche, führt Switch-Port Blinken durch, misst iPerf3 Durchsatz, speichert Wireshark PCAPs und generiert professionelle Messberichte.</p>
-        <div class="card-actions">
-          <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary btn-sm">Google Play Store ↗</a>
-          <a href="https://nodus.piino.de" target="_blank" class="btn-secondary btn-sm">nodus.piino.de ↗</a>
-          <a href="datenschutz.html" class="btn-secondary btn-sm">Datenschutz ↗</a>
-        </div>
-      </div>
+      </article>
 
       <!-- Rebokeh -->
-      <div class="card">
-        <div class="card-badge" style="background: rgba(248, 189, 150, 0.15); color: #F8BD96; border: 1px solid rgba(248, 189, 150, 0.3);">PLAY STORE RELEASE</div>
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#F8BD96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-            <circle cx="12" cy="13" r="4"/>
-          </svg>
+      <article class="product product--reverse reveal mt-l" style="--p: var(--rebokeh);">
+        <div>
+          <div class="cluster" style="gap: 14px;">
+            <img class="app-icon" src="rebokeh-app-icon.png" alt="Rebokeh" width="52" height="52">
+            <span class="badge badge--beta"><span class="dot"></span>Closed Beta</span>
+          </div>
+          <h2 style="margin-top: 20px;">Rebokeh</h2>
+          <p class="lead" lang="de">Blende, Schärfepunkt und Objektiv-Charakter nachträglich ändern — mit den Tiefendaten, die dein Telefon beim Porträtfoto ohnehin mitspeichert.</p>
+          <p class="lead" lang="en">Change aperture, focal point and lens character after the shot — using the depth data your phone already saves with every portrait.</p>
+          <ul class="feature-list">
+            <li lang="de">Stufenlos von f/1.4 bis f/22, physikalisch gerechnet in einer 3D-Engine</li>
+            <li lang="en">Stepless f/1.4 to f/22, physically simulated in a 3D engine</li>
+            <li lang="de">Objektiv-Stile: sphärisch, anamorphotisch, Swirl, Vintage Soft</li>
+            <li lang="en">Lens styles: spherical, anamorphic, swirl, vintage soft</li>
+            <li lang="de">Tippen zum Umfokussieren, Porträt-Relighting, 3D-Parallax-Live-Wallpaper</li>
+            <li lang="en">Tap to refocus, portrait relighting, 3D parallax live wallpaper</li>
+            <li lang="de">Export in voller Auflösung — nichts verlässt das Gerät</li>
+            <li lang="en">Full-resolution export — nothing leaves the device</li>
+          </ul>
+          <div class="cluster mt-l">
+            <a class="btn btn--product" style="--p: var(--rebokeh);" href="rebokeh.html#mitmachen">
+              <span lang="de">Beta beitreten</span><span lang="en">Join the beta</span>
+            </a>
+            <a class="link-arrow" style="--p: var(--rebokeh);" href="rebokeh.html"><span lang="de">Was getestet wird</span><span lang="en">What to test</span> <span class="arr">→</span></a>
+          </div>
         </div>
-        <h3>Rebokeh</h3>
-        <p>Professionelles Porträt- &amp; Bokeh-Studio für Android. Physikalisch basierte 3D-Linsen-Simulation (Sphärisch, Anamorphotisch, Swirl, Vintage Soft), On-Device KI-Tiefenfusion und interaktive 3D Parallax Live-Wallpaper mit Gyroskop-Effekt.</p>
-        <div class="card-actions">
-          <a href="rebokeh-datenschutz.html" class="btn-secondary btn-sm">Datenschutzerklärung &rarr;</a>
+        <div class="product__media">
+          <img class="phone" src="screenshots/rebokeh/2_Editor_Blende_Bokeh.png" alt="Rebokeh Editor mit Blendenregler bei f/1.4" width="280" loading="lazy" style="width: min(260px, 68vw);">
         </div>
-        <div class="card-tag" style="margin-top: 14px;">Filament 3D &bull; ONNX AI &bull; Live-Wallpaper</div>
-      </div>
+      </article>
 
-      <!-- whitespace (iOS) -->
-      <div class="card">
-        <div class="card-badge" style="background: rgba(0, 225, 255, 0.15); color: #00E1FF; border: 1px solid rgba(0, 225, 255, 0.3);">iOS &bull; IN BETA-PHASE</div>
-        <div style="margin-bottom: 16px;">
-          <img src="whitespace-app-icon.png" alt="whitespace App Icon" style="width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 8px 20px rgba(0, 225, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.15);">
+      <!-- whitespace -->
+      <article class="card reveal mt-l" style="--p: var(--whitespace);">
+        <div class="card__top">
+          <div class="cluster" style="gap: 14px;">
+            <img class="app-icon" src="whitespace-app-icon.png" alt="whitespace" width="52" height="52">
+            <div>
+              <h3>whitespace</h3>
+              <p class="small" lang="de">iOS, iPadOS & macOS · in Beta</p>
+              <p class="small" lang="en">iOS, iPadOS & macOS · in beta</p>
+            </div>
+          </div>
+          <span class="badge badge--wip"><span class="dot"></span>Beta</span>
         </div>
-        <h3>whitespace (iOS)</h3>
-        <p>Der native System-Werbe- und Tracking-Blocker für iOS und iPadOS. Blockiert Werbe- und Analyse-Netzwerke auf DNS-Ebene mit ultraschneller In-Memory-Filterung &ndash; <strong>100 % lokal (On-Device)</strong>, ohne Datenspeicherung und ohne externe Server.</p>
-        <div class="card-actions">
-          <span class="wip-badge" style="font-size: 11px; padding: 4px 10px; background: rgba(0, 225, 255, 0.12); color: #00E1FF; border: 1px solid rgba(0, 225, 255, 0.3); border-radius: 8px;">🚀 Aktuell in Beta-Phase</span>
-          <a href="whitespace-datenschutz.html" class="btn-secondary btn-sm">Datenschutz &rarr;</a>
+        <p lang="de">Werbe- und Trackingfilter auf DNS-Ebene, systemweit und ohne VPN-Slot — damit das Firmen-VPN auf dem Diensthandy weiterlaufen kann. Gefiltert wird im Arbeitsspeicher des Geräts, es gibt keinen Server und kein Log.</p>
+        <p lang="en">System-wide ad and tracker filtering at the DNS level, without occupying the VPN slot — so your corporate VPN keeps running on the same phone. Filtering happens in device memory: no server, no logs.</p>
+        <div class="card__foot">
+          <a class="link-arrow" style="--p: var(--whitespace);" href="whitespace-datenschutz.html"><span lang="de">Datenschutz</span><span lang="en">Privacy policy</span> <span class="arr">→</span></a>
+          <span class="tags"><span class="tag">Network Extension</span><span class="tag">DoH / DoT</span><span class="tag">On-Device</span></span>
         </div>
-        <div class="card-tag" style="margin-top: 14px;">Network Extension &bull; On-Device Privacy</div>
-      </div>
+      </article>
+    </div>
+  </section>
 
-      <!-- Wegweiser -->
-      <div class="card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00B0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 19 21 12 17 5 21 12 2"/>
-            <circle cx="12" cy="11" r="2" fill="#00B0FF"/>
-          </svg>
-        </div>
-        <h3>Wegweiser</h3>
-        <p>Interaktives Leitsystem für barrierefreie Orientierung in öffentlichen Gebäuden und modernen Einrichtungen. Entwickelt für Touch-Terminals und mobile Endgeräte.</p>
-        <div class="card-tag">Digitales Leitsystem &bull; Touch Navigation</div>
+  <!-- Artikel -->
+  <section class="section" id="lesen">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 lang="de">Aufgeschrieben</h2>
+        <h2 lang="en">Writing</h2>
+        <p lang="de">Zwei längere Berichte aus Projekten, die ich wirklich durchgemessen habe.</p>
+        <p lang="en">Two longer reports from projects I actually measured end to end.</p>
       </div>
+      <div class="grid grid--2">
+        <a class="card reveal" style="--p: var(--research);" href="ncm-m5pro.html">
+          <div class="card__top">
+            <span class="eyebrow eyebrow--plain">AI Systems Research</span>
+            <span class="row__meta">M5 Pro</span>
+          </div>
+          <h3 lang="de">Next-Concept Modeling auf Apple Silicon</h3>
+          <h3 lang="en">Next-Concept Modeling on Apple Silicon</h3>
+          <p lang="de">Was passiert, wenn man die Stanford-NCM-Architektur auf einem MacBook mit 24 GB Unified Memory nachbaut: Roofline-Modell, Iso-Token-Normalisierung, N=500-Evaluation auf XSum und echte Powermetrics-Telemetrie — inklusive der Stellen, an denen es nicht funktioniert hat.</p>
+          <p lang="en">What happens when you rebuild Stanford's NCM architecture on a MacBook with 24 GB of unified memory: roofline model, iso-token normalisation, an N=500 XSum evaluation and real powermetrics telemetry — including the parts where it did not work.</p>
+          <div class="card__foot">
+            <span class="link-arrow" style="--p: var(--research);"><span lang="de">Artikel lesen</span><span lang="en">Read the article</span> <span class="arr">→</span></span>
+            <span class="tags"><span class="tag">MPS &amp; MLX</span><span class="tag">Benchmarks</span><span class="tag">Open Source</span></span>
+          </div>
+        </a>
 
-      <!-- TabSign -->
-      <div class="card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="3"/>
-            <line x1="8" y1="21" x2="16" y2="21"/>
-            <line x1="12" y1="17" x2="12" y2="21"/>
-            <circle cx="18" cy="7" r="1.5" fill="#00E676"/>
-          </svg>
-        </div>
-        <h3>TabSign</h3>
-        <p>Intelligente Digital-Signage und Raum-Beschilderungslösung. Maßgeschneiderte Enterprise-App mit Admin-Portal, im Apple App Store freigeschaltet.</p>
-        <div class="card-tag">App Store &bull; Custom Enterprise</div>
-      </div>
-
-      <!-- LB Hub (Liquid Blocks) -->
-      <div class="card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="8" height="8" rx="2.5"/>
-            <rect x="13" y="3" width="8" height="8" rx="2.5"/>
-            <rect x="3" y="13" width="8" height="8" rx="2.5"/>
-            <rect x="13" y="13" width="8" height="8" rx="2.5"/>
-          </svg>
-        </div>
-        <h3>LB Hub (Liquid Blocks) <span class="wip-badge">Intern / WIP</span></h3>
-        <p>Die plattformübergreifende Mitarbeiter-App für iOS, iPadOS und Android (aktiver Prototyp). Integratives Dashboard für Interflex-Zeiterfassung mit ArbZG-Wächter, NFC-Badge Stempeln, OWA Suite, Desk-Sharing und Intranet-Module.</p>
-        <div class="card-tag">Internes Projekt &bull; In Entwicklung</div>
+        <a class="card reveal" style="--p: var(--research);" href="honor-magicbook-art-14-linux.html">
+          <div class="card__top">
+            <span class="eyebrow eyebrow--plain">Hardware Bring-up</span>
+            <span class="row__meta">Snapdragon X Elite</span>
+          </div>
+          <h3 lang="de">Linux auf dem Honor MagicBook Art 14</h3>
+          <h3 lang="en">Linux on the Honor MagicBook Art 14</h3>
+          <p lang="de">Statusbericht von einem ARM-Laptop, auf dem inzwischen 120-Hz-OLED, Wi-Fi 7 und Fingerabdruck-Login laufen — und ein ehrlicher Teil darüber, was weiterhin hakt: Ton nur nach unten, Standby-Verbrauch, 0-W-Hibernate als Notlösung.</p>
+          <p lang="en">A status report from an ARM laptop where 120 Hz OLED, Wi-Fi 7 and fingerprint login now work — plus an honest section on what still doesn't: downward-firing sound only, standby drain, and 0 W hibernate as the workaround.</p>
+          <div class="card__foot">
+            <span class="link-arrow" style="--p: var(--research);"><span lang="de">Artikel lesen</span><span lang="en">Read the article</span> <span class="arr">→</span></span>
+            <span class="tags"><span class="tag">Dual-Boot</span><span class="tag">SoundWire</span><span class="tag">Open Source</span></span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Legal Impressum & Privacy Section -->
-  <section id="impressum" class="impressum-section">
-    <div class="impressum-container">
-      <h2>⚖️ Impressum &amp; Rechtliche Angaben</h2>
-      <p class="impressum-subtitle">Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</p>
-
-      <div class="impressum-grid">
-        <div class="impressum-block">
-          <h4>Diensteanbieter</h4>
-          <p><strong>Giuseppe "Pino" Madeo</strong><br>
-          Bauhofstr. 10<br>
-          71634 Ludwigsburg, Deutschland</p>
-        </div>
-
-        <div class="impressum-block">
-          <h4>Kontakt &amp; Anfragen</h4>
-          <p>E-Mail: <a href="mailto:mad@piino.de">mad@piino.de</a><br>
-          Website: <a href="https://www.piino.de">www.piino.de</a></p>
-        </div>
+  <!-- Weitere Arbeiten -->
+  <section class="section" id="arbeiten">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 lang="de">Weitere Arbeiten</h2>
+        <h2 lang="en">Other work</h2>
+        <p lang="de">Projekte aus Auftrag, Alltag und Neugier — teils intern, teils noch in Entwicklung.</p>
+        <p lang="en">Client work, everyday tools and experiments — some internal, some still in progress.</p>
       </div>
-
-      <div class="impressum-legal-text">
-        <h4>Datenschutzerklärungen der Apps</h4>
-        <p>
-          • <a href="rebokeh-datenschutz.html" style="color: #F8BD96; font-weight: 600;">Datenschutzerklärung Rebokeh (Android)</a><br>
-          • <a href="datenschutz.html" style="color: #00E1FF; font-weight: 600;">Datenschutzerklärung Nodus Network Tester (Android)</a><br>
-          • <a href="whitespace-datenschutz.html" style="color: #00E1FF; font-weight: 600;">Datenschutzerklärung whitespace (iOS)</a>
-        </p>
-        <h4>Haftungsausschluss (Disclaimer)</h4>
-        <p><strong>Haftung für Inhalte:</strong> Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
-        <p><strong>Urheberrecht:</strong> Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Alle eingetragenen Warenzeichen und Markennamen gehören ihren jeweiligen Eigentümern.</p>
-        <p><strong>Datenschutz (DSGVO):</strong> Diese Website nutzt keine Tracking-Cookies und speichert keine personenbezogenen Daten der Besucher. Die Bereitstellung erfolgt über Cloudflare Pages CDN.</p>
+      <div class="rows">
+        <a class="row" href="https://github.com/PiinoStudio/honor-magicbook-art-14-linux" target="_blank" rel="noopener">
+          <h3>honor-magicbook-art-14-linux</h3>
+          <p lang="de">Open-Source-Toolkit für Linux auf Snapdragon-X-Hardware: Audio, Display, Fingerabdruck.</p>
+          <p lang="en">Open-source toolkit for Linux on Snapdragon X hardware: audio, display, fingerprint.</p>
+          <span class="row__meta">GitHub ↗</span>
+        </a>
+        <div class="row">
+          <h3>GPhotosFCP</h3>
+          <p lang="de">Workflow-Extension für Final Cut Pro: Fotos und Live Photos direkt aus Google Photos in die Timeline streamen, ohne vorher herunterzuladen.</p>
+          <p lang="en">A Final Cut Pro workflow extension: stream photos and Live Photos straight from Google Photos into the timeline, without downloading first.</p>
+          <span class="row__meta">macOS · Swift 6</span>
+        </div>
+        <div class="row">
+          <h3>EmuSync</h3>
+          <p lang="de">Android-App, die Launcher- und App-Profile über mehrere Benutzerprofile hinweg synchron hält.</p>
+          <p lang="en">An Android app that keeps launcher and app profiles in sync across user profiles.</p>
+          <span class="row__meta">Android · WIP</span>
+        </div>
+        <div class="row">
+          <h3>Wegweiser</h3>
+          <p lang="de">Interaktives Leitsystem für barrierefreie Orientierung in öffentlichen Gebäuden, für Touch-Terminals und Smartphones.</p>
+          <p lang="en">An interactive wayfinding system for accessible orientation in public buildings, for touch terminals and phones.</p>
+          <span class="row__meta" lang="de">Auftrag</span><span class="row__meta" lang="en">Client work</span>
+        </div>
+        <div class="row">
+          <h3>TabSign</h3>
+          <p lang="de">Digital-Signage- und Raumbeschilderungs-App mit Admin-Portal, im Apple App Store als Custom App ausgerollt.</p>
+          <p lang="en">Digital signage and room signage app with an admin portal, distributed as a custom app on the Apple App Store.</p>
+          <span class="row__meta">iPadOS · Custom App</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 Piino Studio • Giuseppe Madeo &bull; Alle Rechte vorbehalten.</p>
-  </footer>
+  <!-- Über mich -->
+  <section class="section" id="ueber">
+    <div class="wrap">
+      <div class="grid grid--2" style="align-items: start; gap: clamp(28px, 5vw, 72px);">
+        <div>
+          <p class="eyebrow" lang="de">Über mich</p>
+          <p class="eyebrow" lang="en">About</p>
+          <h2 style="margin-top: 16px;" lang="de">Eine Person, vier Plattformen, keine Zwischenschicht.</h2>
+          <h2 style="margin-top: 16px;" lang="en">One person, four platforms, nobody in between.</h2>
+        </div>
+        <div class="stack">
+          <p lang="de">Piino Studio ist kein Team — es bin ich. Im Pass steht Giuseppe, gerufen werde ich Pino; daher der Name. Studiert habe ich Mobile Medien, mit Schwerpunkt auf Interaktion, Oberflächen und mobilen Betriebssystemen. Hauptberuflich arbeite ich in der IT, abends und am Wochenende entstehen diese Apps: Entwurf, Code, Icons, Store-Texte, Support, alles aus einer Hand. Das begrenzt, wie viel ich schaffe, aber es macht die Entscheidungen klar.</p>
+          <p lang="de">Was dabei herauskommt, hat ein paar wiederkehrende Eigenschaften: die Rechenarbeit passiert auf dem Gerät, nicht auf einem Server. Es gibt keine Werbe-SDKs und keine Analyse-Tracker. Und wenn eine Funktion nur unter bestimmten Bedingungen zuverlässig läuft, steht das in der App — nicht im Kleingedruckten.</p>
+          <p lang="de">Wenn du eine der Apps einsetzt und etwas fehlt oder klemmt: schreib mir. Es gibt keine Ticket-Warteschlange und keinen First-Level-Support — deine Nachricht landet direkt bei dem, der entscheidet, was als Nächstes gebaut wird.</p>
+          <p lang="en">Piino Studio isn't a team — it's me. My passport says Giuseppe, everyone calls me Pino, and that's where the name comes from. I studied mobile media, focusing on interaction, interfaces and mobile operating systems. I work in IT by day; these apps happen in the evenings and at weekends — design, code, icons, store copy, support, all from one desk. That limits how much I ship, but it keeps the decisions honest.</p>
+          <p lang="en">The results share a few traits: the computation happens on your device, not on a server. There are no ad SDKs and no analytics trackers. And when a feature only works reliably under certain conditions, the app says so — rather than the fine print.</p>
+          <p lang="en">If you use one of the apps and something is missing or broken, write to me. There's no ticket queue and no first-level support — your message goes straight to the person who decides what gets built next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    // Subdomain routing: If entered via nodus.piino.de, load dedicated Nodus Landing Page nodus.html
-    if (window.location.hostname.startsWith('nodus.')) {
-      window.location.replace('nodus.html');
-    }
-  </script>
+  <!-- Kontakt -->
+  <section class="section" id="kontakt">
+    <div class="wrap">
+      <div class="note reveal" style="--p: var(--sage);">
+        <div class="cluster" style="justify-content: space-between;">
+          <div style="flex: 1 1 380px;">
+            <h3 lang="de">Fragen, Fehler, Projektanfragen</h3>
+            <h3 lang="en">Questions, bugs, project enquiries</h3>
+            <p lang="de">Direkt an mich — meist antworte ich noch am selben Tag.</p>
+            <p lang="en">Straight to me — usually answered the same day.</p>
+          </div>
+          <div class="cluster">
+            <a class="btn btn--accent" href="mailto:mad@piino.de">mad@piino.de</a>
+            <a class="btn btn--ghost" href="https://github.com/PiinoStudio" target="_blank" rel="noopener">GitHub ↗</a>
+            <a class="btn btn--ghost" href="https://www.linkedin.com/in/giuseppe-madeo-734a32218/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="Piino Studio">
+          <svg viewBox="0 0 91 44" fill="none" aria-hidden="true" style="height: 24px;"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+          <span class="brand__sub">studio</span>
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="de">Mobile Software von Pino Madeo. Ludwigsburg, Deutschland.</p>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="en">Mobile software by Pino Madeo. Ludwigsburg, Germany.</p>
+        <p class="small" style="margin-top: 10px;"><a href="mailto:mad@piino.de">mad@piino.de</a></p>
+      </div>
+      <div>
+        <h4 lang="de">Produkte</h4><h4 lang="en">Products</h4>
+        <ul>
+          <li><a href="nodus.html">Nodus</a></li>
+          <li><a href="rebokeh.html">Rebokeh</a></li>
+          <li><a href="index.html#produkte">whitespace</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Artikel</h4><h4 lang="en">Writing</h4>
+        <ul>
+          <li><a href="ncm-m5pro.html">NCM · Apple Silicon</a></li>
+          <li><a href="honor-magicbook-art-14-linux.html">Snapdragon Linux</a></li>
+          <li><a href="https://github.com/PiinoStudio" target="_blank" rel="noopener">GitHub ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Rechtliches</h4><h4 lang="en">Legal</h4>
+        <ul>
+          <li><a href="impressum.html"><span lang="de">Impressum</span><span lang="en">Legal notice</span></a></li>
+          <li><a href="datenschutz.html"><span lang="de">Datenschutz Nodus</span><span lang="en">Privacy · Nodus</span></a></li>
+          <li><a href="rebokeh-datenschutz.html"><span lang="de">Datenschutz Rebokeh</span><span lang="en">Privacy · Rebokeh</span></a></li>
+          <li><a href="rebokeh-nutzungsbedingungen.html"><span lang="de">Nutzungsbedingungen Rebokeh</span><span lang="en">Terms · Rebokeh</span></a></li>
+          <li><a href="whitespace-datenschutz.html"><span lang="de">Datenschutz whitespace</span><span lang="en">Privacy · whitespace</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> Piino Studio · Giuseppe Madeo</p>
+      <p lang="de">Diese Seite setzt keine Cookies und misst keine Besucher.</p>
+      <p lang="en">This site sets no cookies and measures no visitors.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+<script>
+  if (window.location.hostname.indexOf('nodus.') === 0) { window.location.replace('nodus.html'); }
+</script>
 </body>
 </html>

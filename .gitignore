@@ -1,0 +1,11 @@
+# Backend-Quelltext gehört NICHT in dieses öffentliche Statik-Repo:
+# Cloudflare Pages führt kein PHP aus und würde die Dateien als Quelltext ausliefern.
+api/
+
+# Zugangsschlüssel des Admin-Dashboards (nur auf dem Server)
+api/.stats_key
+
+# Laufzeitdaten des Backends (SQLite-Datenbanken)
+api/data/
+
+.DS_Store

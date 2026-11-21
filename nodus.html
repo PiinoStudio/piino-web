@@ -1,493 +1,402 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nodus Network Tester - Der mobile USB-C Layer-2 Netzwerktester für Android</title>
-  <meta name="description" content="Nodus verwandelt dein Android-Smartphone in einen professionellen Layer-2 Netzwerktester. LLDP/CDP Switch-Analyse, Port-Blinker, iPerf3 und PCAP Export ohne Root.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="nodus-app-icon.png">
-  <link rel="apple-touch-icon" href="nodus-app-icon.png">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .nodus-hero {
-      padding: 100px 8% 60px;
-      text-align: center;
-      background: radial-gradient(circle at top center, rgba(230, 0, 18, 0.15) 0%, rgba(11, 15, 18, 0) 70%);
-    }
-    .nodus-hero h1 {
-      font-size: 3.8rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 24px;
-    }
-    .nodus-hero p {
-      font-size: 1.3rem;
-      color: var(--text-gray);
-      max-width: 760px;
-      margin: 0 auto 40px;
-    }
-    .feature-detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 28px;
-      margin-top: 40px;
-    }
-    .detail-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 32px;
-      transition: all 0.2s ease;
-    }
-    .detail-card:hover {
-      border-color: var(--piino-red);
-      transform: translateY(-4px);
-    }
-    .detail-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-    .detail-card h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      color: var(--text-white);
-    }
-    .detail-card p {
-      color: var(--text-gray);
-      font-size: 0.98rem;
-      line-height: 1.6;
-    }
-    .tech-specs {
-      background: #0E1317;
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 40px;
-      margin-top: 60px;
-    }
-    .spec-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .spec-item:last-child {
-      border-bottom: none;
-    }
-    .spec-name {
-      color: var(--text-gray);
-      font-weight: 600;
-    }
-    .spec-value {
-      color: var(--accent-cyan);
-      font-weight: 800;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nodus — Switch- und Netzwerktester für Android</title>
+<meta name="title-de" content="Nodus — Switch- und Netzwerktester für Android">
+<meta name="title-en" content="Nodus — switch and network tester for Android">
+<meta name="description" content="Nodus macht aus deinem Android-Gerät ein Layer-2-Messwerkzeug: Switch, Port-ID und VLAN direkt aus LLDP/CDP, 802.1Q-Sniffer, Topologie, iPerf3, PCAP und ein KI-Copilot, der vollständig offline arbeitet.">
+<meta name="description-de" content="Nodus macht aus deinem Android-Gerät ein Layer-2-Messwerkzeug: Switch, Port-ID und VLAN direkt aus LLDP/CDP, 802.1Q-Sniffer, Topologie, iPerf3, PCAP und ein KI-Copilot, der vollständig offline arbeitet.">
+<meta name="description-en" content="Nodus turns your Android device into a layer-2 measurement tool: switch, port ID and VLAN straight from LLDP/CDP, an 802.1Q sniffer, topology, iPerf3, PCAP and an AI copilot that runs fully offline.">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="product">
+<meta property="og:title" content="Nodus — Switch- und Netzwerktester für Android">
+<meta property="og:description" content="Nodus macht aus deinem Android-Gerät ein Layer-2-Messwerkzeug: Switch, Port-ID und VLAN direkt aus LLDP/CDP, 802.1Q-Sniffer, Topologie, iPerf3, PCAP und ein KI-Copilot, der vollständig offline arbeitet.">
+<meta property="og:url" content="https://www.piino.de/nodus.html">
+<meta property="og:image" content="https://www.piino.de/og-piino.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Piino Studio">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.piino.de/nodus.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+(function(){var r=document.documentElement,t=null,l=null;
+try{t=localStorage.getItem('piino-theme');l=localStorage.getItem('piino-lang');}catch(e){}
+if(t){r.setAttribute('data-theme',t);}
+if(!l){l=(navigator.language||'de').toLowerCase().slice(0,2)==='de'?'de':'en';}
+r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main"><span lang="de">Zum Inhalt springen</span><span lang="en">Skip to content</span></a>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="https://www.piino.de" class="nav-brand">
-      <img src="piino-logo-legal.svg" alt="Piino Studio Logo" class="nav-logo-svg">
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="index.html" aria-label="Piino Studio">
+      <svg viewBox="0 0 91 44" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+      <span class="brand__sub">studio</span>
     </a>
-    <div class="nav-links">
-      <a href="https://www.piino.de" class="nav-link">← Zurück</a>
-      <a href="#screenshots" class="nav-link">Screenshots</a>
-      <a href="#vergleich" class="nav-link">Vergleich</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary btn-sm">Im Google Play Store ↗</a>
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-link" href="index.html#produkte"><span lang="de">Produkte</span><span lang="en">Products</span></a>
+      <a class="nav-link" href="nodus.html" aria-current="page">Nodus</a>
+      <a class="nav-link" href="rebokeh.html">Rebokeh</a>
+      <a class="nav-link" href="index.html#lesen"><span lang="de">Artikel</span><span lang="en">Writing</span></a>
+      <a class="nav-link" href="index.html#kontakt"><span lang="de">Kontakt</span><span lang="en">Contact</span></a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Sprache / Language">
+        <button type="button" data-lang-btn="de" aria-pressed="true">DE</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Design umschalten / Toggle theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Menü / Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
-  </nav>
+  </div>
+</header>
 
-  <!-- Nodus Hero -->
-  <section class="nodus-hero">
-    <div style="margin-bottom: 20px;">
-      <img src="nodus-app-icon.png" alt="Nodus App Icon" style="width: 124px; height: 124px; border-radius: 28px; box-shadow: 0 16px 45px rgba(0, 225, 255, 0.28), 0 0 30px rgba(124, 77, 255, 0.25); border: 1px solid rgba(255, 255, 255, 0.15); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
-    </div>
-    <div class="badge-nintendo">NODUS NETWORK TESTER • JETZT IM GOOGLE PLAY STORE</div>
-    <h1>Profi-Netzwerkanalyse. Direkt auf deinem Android-Smartphone.</h1>
-    <p>Keine unhandlichen Spezialgeräte für Tausende Euro mehr. Nodus verbindet deinen USB-C OTG Netzwerkadapter direkt mit dem Switch und analysiert Layer-2 Pakete mit lokaler Gemini Nano KI &amp; visueller Multi-Switch Topologie in Echtzeit.</p>
-    
-    <div class="hero-actions">
-      <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary">Im Google Play Store laden ↗</a>
-      <a href="#screenshots" class="btn-secondary">Screenshots ansehen ↓</a>
-    </div>
-
-    <div class="hero-mockup-wrapper">
-      <img src="screenshots/01_dashboard.png" alt="Nodus Network Tester Dashboard" class="hero-mockup-img">
-    </div>
-  </section>
-
-  <!-- Deep Feature Breakdown -->
-  <section id="features" class="features">
-    <h2 class="section-title">Leistungsstarke Funktionen &amp; On-Device KI Copilot</h2>
-    
-    <div class="feature-detail-grid">
-      <!-- HIGHLIGHT FEATURE: Gemini Nano On-Device KI Copilot -->
-      <div class="detail-card gemini-nano-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(147, 51, 234, 0.18), rgba(79, 70, 229, 0.18)); border: 1.5px solid #818CF8; position: relative; overflow: hidden;">
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-          <div style="flex: 1; min-width: 300px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-              <span style="background: #10B981; color: #000; font-weight: 900; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">100% OFFLINE KI</span>
-              <span style="background: #818CF8; color: #000; font-weight: 900; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">INTEGRIERTER COPILOT</span>
-            </div>
-            <h3 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 12px; color: #FFF; line-height: 1.2;">Google Gemini Nano SysAdmin Copilot</h3>
-            <p style="color: #E0E7FF; font-size: 1.05rem; line-height: 1.6;">
-              Nodus nutzt als mobiler Netzwerktester das Google Gemini Nano KI-Modell direkt lokal auf dem Smartphone. Erhalte sofortige Ursachenanalysen bei Netzwerk-Fehlkonfigurationen, generiere herstellerspezifische CLI-Spickzettel (Cisco, Aruba, MikroTik) und steuere die App im Serverraum per Sprachbefehl – <strong>vollkommen ohne Internetverbindung oder Cloud-Datentransfer.</strong>
-            </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px;">
-              <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; color: #A7F3D0; font-weight: 600;">On-Demand Sprachsteuerung</span>
-              <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; color: #A7F3D0; font-weight: 600;">Zweisprachig (DE / EN)</span>
-              <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; color: #A7F3D0; font-weight: 600;">PCAP KI-Deep-Inspection</span>
-            </div>
-          </div>
-          <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(129, 140, 248, 0.4); border-radius: 20px; padding: 24px; text-align: center; min-width: 240px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div style="font-size: 1.6rem; font-weight: 900; color: #818CF8; letter-spacing: 1px; margin-bottom: 8px;">GEMINI NANO</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: #FFF;">On-Device KI</div>
-            <div style="font-size: 0.85rem; color: #A7F3D0; margin-top: 4px; font-weight: 600;">Maximale Privatsphäre</div>
-            <div style="font-size: 0.75rem; color: #9CA3AF; margin-top: 8px;">Keine Abonnements &bull; Keine API-Keys</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feature 1: Layer-2 Engine -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E60012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v6m0 8v6M2 12h6m8 0h6"/>
-            <circle cx="12" cy="12" r="5" stroke="#E60012" stroke-width="1.5" fill="none"/>
-            <circle cx="12" cy="12" r="2.5" fill="#E60012"/>
-          </svg>
-        </div>
-        <h3>Plug &amp; Play Layer-2 Echtzeit-Analyse</h3>
-        <p>Erfasst und analysiert alle relevanten Layer-2 Pakete (LLDP, CDP, DHCP, 802.1Q VLAN Tags) direkt über deinen USB-C Netzwerkadapter ohne Root-Rechte mit maximaler Performance.</p>
-      </div>
-
-      <!-- Feature 2: Port Blinker -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-          </svg>
-        </div>
-        <h3>Switch Port Blinker Engine</h3>
-        <p>Erzeugt konfigurierbare Traffic-Burst Paket-Salven zur physischen Identifikation von Switch-Ports im Serverraum. Lässt die Port-LED am Switch im Wunschtakt blinken.</p>
-      </div>
-
-      <!-- Feature 3: LLDP / CDP Discovery -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00B0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </div>
-        <h3>Switch &amp; VLAN Dekodierung</h3>
-        <p>Zeigt sofort Switch-Name, Port-ID, VLAN-ID, Management IP, Duplex-Modus und Capabilities des angeschlossenen Netzwerk-Switches an.</p>
-      </div>
-
-      <!-- Feature 4: iPerf3 & Diagnostics -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-        </div>
-        <h3>iPerf3 &amp; Speed Diagnostics</h3>
-        <p>Integrierter iPerf3 Client für Durchsatzmessungen (TCP/UDP), Latenz-Analysen, Ping, DNS-Auflösung, Subnet Scanner und TCP Port Scanner.</p>
-      </div>
-
-      <!-- Feature 5: Wireshark PCAPs -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00B0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-        </div>
-        <h3>Wireshark PCAP Capture</h3>
-        <p>Zeichnet den eingehenden Datenverkehr im nativen Wireshark PCAP-Format auf. Perfekt für spätere Tiefenanalysen und Paket-Exporte.</p>
-      </div>
-
-      <!-- Feature 6: Bericht senden (HTML-Messbericht) -->
-      <div class="detail-card">
-        <div class="card-icon-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E60012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
-        </div>
-        <h3>Bericht senden (HTML-Prüfbericht)</h3>
-        <p>Generiert mit einem Klick interaktive, responsive HTML-Messberichte inklusive Standorteingabe, Messdaten und Prüfer-Signatur zum direkten Teilen und Versenden.</p>
+<main id="main">
+<section class="hero" style="--p: var(--nodus);">
+  <div class="wrap">
+    <div class="cluster" style="gap: 14px; margin-bottom: 22px;">
+      <img class="app-icon app-icon--lg" src="nodus-app-icon.png" alt="Nodus" width="68" height="68">
+      <div>
+        <span class="badge badge--live"><span class="dot"></span>Google Play · v3.8.5</span>
+        <p class="small" style="margin-top: 7px;" lang="de">Android 8 oder neuer · USB-OTG · kein Root</p>
+        <p class="small" style="margin-top: 7px;" lang="en">Android 8 or newer · USB OTG · no root</p>
       </div>
     </div>
+    <h1 lang="de">Welcher Port ist das? Nodus <em class="serif-accent">weiß</em> es.</h1>
+    <h1 lang="en">Which port is this? Nodus <em class="serif-accent">knows</em>.</h1>
+    <p class="lead" lang="de">Ein handelsüblicher USB-C-Ethernet-Adapter am Telefon, das Kabel in die Dose — und Sekunden später stehen Switch-Name, Port-ID, Management-IP und Native VLAN auf dem Display. Keine Patchfeld-Sucherei, kein Spezialgerät im Koffer, kein Root.</p>
+    <p class="lead" lang="en">An ordinary USB-C Ethernet adapter on your phone, the cable in the wall socket — and seconds later the switch name, port ID, management IP and native VLAN are on your screen. No hunting through patch panels, no dedicated tester in a case, no root.</p>
+    <div class="cluster">
+      <a class="btn btn--product btn--lg" style="--p: var(--nodus);" href="https://play.google.com/store/apps/details?id=de.piino.nodus" target="_blank" rel="noopener">
+        <span lang="de">Im Google Play Store</span><span lang="en">Get it on Google Play</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--ghost btn--lg" href="#funktionen"><span lang="de">Funktionen ansehen</span><span lang="en">See the features</span></a>
+    </div>
+    <dl class="hero__meta">
+      <div>
+        <dt lang="de">Testzeitraum</dt><dt lang="en">Trial</dt>
+        <dd lang="de">3 Tage mit vollem Funktionsumfang</dd>
+        <dd lang="en">3 days, all features</dd>
+      </div>
+      <div>
+        <dt lang="de">Lizenz</dt><dt lang="en">Licence</dt>
+        <dd lang="de">Einmalkauf, kein Abo</dd>
+        <dd lang="en">One-time purchase, no subscription</dd>
+      </div>
+      <div>
+        <dt lang="de">Hardware</dt><dt lang="en">Hardware</dt>
+        <dd lang="de">USB-C-LAN-Adapter ab ca. 15 €</dd>
+        <dd lang="en">USB-C LAN adapter from about €15</dd>
+      </div>
+      <div>
+        <dt lang="de">Verbindung</dt><dt lang="en">Connectivity</dt>
+        <dd lang="de">Arbeitet vollständig offline</dd>
+        <dd lang="en">Works entirely offline</dd>
+      </div>
+    </dl>
+  </div>
+</section>
 
-    <!-- Technical Specifications -->
-    <div class="tech-specs">
-      <h3 style="font-size: 1.6rem; margin-bottom: 20px; font-weight: 800;">Technische Spezifikationen</h3>
-      
-      <div class="spec-item">
-        <span class="spec-name">Plattform &amp; Betriebssystem</span>
-        <span class="spec-value">Android 8.0+ (API 26+) &bull; Großbildschirm- &amp; Desktop-optimiert</span>
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="shots" aria-label="Screenshots">
+      <figure>
+        <img src="screenshots/01_dashboard.png" alt="Dashboard mit erkanntem Switch, Gateway-Port und VLAN-Liste" loading="lazy">
+        <figcaption lang="de">Nach dem Einstecken: Switch, Port, VLANs, DHCP</figcaption>
+        <figcaption lang="en">Right after link-up: switch, port, VLANs, DHCP</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/02_topology.png" alt="Interaktive Multi-Switch-Topologie" loading="lazy">
+        <figcaption lang="de">Topologie vom Client über Access- und Core-Switch zum Gateway</figcaption>
+        <figcaption lang="en">Topology from client via access and core switch to the gateway</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/03_tools.png" alt="Werkzeugsammlung" loading="lazy">
+        <figcaption lang="de">Werkzeuge: Port-Blinker, mDNS-Test, Port-Probing</figcaption>
+        <figcaption lang="en">Tools: port blinker, mDNS test, port probing</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/04_iperf3.png" alt="iPerf3-Messung" loading="lazy">
+        <figcaption lang="de">iPerf3: TCP- und UDP-Durchsatz gegen jeden Standard-Server</figcaption>
+        <figcaption lang="en">iPerf3: TCP and UDP throughput against any standard server</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/05_reports_ai.png" alt="Berichte und KI-Auswertung" loading="lazy">
+        <figcaption lang="de">Messbericht als PDF oder HTML, direkt aus der App</figcaption>
+        <figcaption lang="en">Measurement report as PDF or HTML, straight from the app</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/06_copilot_cli.png" alt="KI-Copilot" loading="lazy">
+        <figcaption lang="de">Der Copilot erklärt Messwerte — offline auf dem Gerät</figcaption>
+        <figcaption lang="en">The copilot explains your readings — offline, on-device</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="funktionen" style="--p: var(--nodus);">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 lang="de">Was Nodus misst</h2>
+      <h2 lang="en">What Nodus measures</h2>
+      <p lang="de">Layer 2 statt nur Ping: die Informationen, für die sonst ein Spezialgerät nötig wäre.</p>
+      <p lang="en">Layer 2, not just ping: the information that usually requires dedicated hardware.</p>
+    </div>
+    <div class="grid grid--3">
+      <div class="card">
+        <h3 lang="de">Switch- und Port-Erkennung</h3>
+        <h3 lang="en">Switch and port discovery</h3>
+        <p lang="de">Aus LLDP- und CDP-Frames liest Nodus Switch-Name, Modell, Port-Bezeichnung (etwa Gi1/0/24), Management-IP, Gerätefunktionen und das Native VLAN — direkt beim Verbindungsaufbau.</p>
+        <p lang="en">From LLDP and CDP frames Nodus reads switch name, model, port identifier (such as Gi1/0/24), management IP, device capabilities and the native VLAN — right as the link comes up.</p>
       </div>
-      <div class="spec-item">
-        <span class="spec-name">Lokale KI Engine</span>
-        <span class="spec-value">Google Gemini Nano On-Device (100% Offline)</span>
+      <div class="card">
+        <h3 lang="de">802.1Q VLAN-Sniffer</h3>
+        <h3 lang="en">802.1Q VLAN sniffer</h3>
+        <p lang="de">Getaggte Frames auf der Leitung zeigen sofort, ob die Dose als Access- oder Trunk-Port konfiguriert ist — mit Live-Zählern und prozentualer Verteilung je VLAN.</p>
+        <p lang="en">Tagged frames on the wire immediately show whether an outlet is configured as access or trunk — with live counters and a percentage split per VLAN.</p>
       </div>
-      <div class="spec-item">
-        <span class="spec-name">Hardware-Anforderung</span>
-        <span class="spec-value">USB-C OTG Netzwerkadapter (Gigabit)</span>
+      <div class="card">
+        <h3 lang="de">Multi-Switch-Topologie</h3>
+        <h3 lang="en">Multi-switch topology</h3>
+        <p lang="de">Nodus zeichnet den Weg vom Client über Access- und Core-Switch bis zum Gateway als interaktiven Baum — hilfreich für Dokumentation und Übergabe.</p>
+        <p lang="en">Nodus draws the path from client via access and core switch to the gateway as an interactive tree — useful for documentation and handover.</p>
       </div>
-      <div class="spec-item">
-        <span class="spec-name">Root-Rechte erforderlich?</span>
-        <span class="spec-value">NEIN (Standard Android ohne Root)</span>
+      <div class="card">
+        <h3 lang="de">Durchsatz und Benchmark</h3>
+        <h3 lang="en">Throughput and benchmarks</h3>
+        <p lang="de">iPerf3 gegen jeden Standard-Server (Port 5201), dazu Stresstests nach RFC 2544 / ITU-T Y.1564 für Frame-Loss, Latenzkurven und Jitter.</p>
+        <p lang="en">iPerf3 against any standard server (port 5201), plus RFC 2544 / ITU-T Y.1564 stress tests for frame loss, latency curves and jitter.</p>
       </div>
-      <div class="spec-item">
-        <span class="spec-name">Unterstützte L2 Protokolle</span>
-        <span class="spec-value">LLDP, CDP, 802.1Q VLAN, DHCP, ARP</span>
+      <div class="card">
+        <h3 lang="de">PCAP für Wireshark</h3>
+        <h3 lang="en">PCAP for Wireshark</h3>
+        <p lang="de">Rohdatenmitschnitt im Standardformat .pcap über USB-C — zur späteren Analyse in Wireshark oder tcpdump, ohne Root-Rechte.</p>
+        <p lang="en">Raw capture in standard .pcap format over USB-C — for later analysis in Wireshark or tcpdump, without root.</p>
       </div>
-      <div class="spec-item">
-        <span class="spec-name">Export &amp; Bericht-Funktion</span>
-        <span class="spec-value">Wireshark .pcap &amp; HTML / PDF Messprotokolle</span>
+      <div class="card">
+        <h3 lang="de">KI-Copilot, komplett offline</h3>
+        <h3 lang="en">AI copilot, fully offline</h3>
+        <p lang="de">Der Copilot auf Basis von Gemini Nano erklärt DHCP-Aushandlung, IP-Konflikte und auffällige Frames — die Analyse läuft auf dem Chip des Telefons, nichts verlässt das Gerät.</p>
+        <p lang="en">The copilot based on Gemini Nano explains DHCP negotiation, IP conflicts and odd frames — the analysis runs on the phone's own chip, nothing leaves the device.</p>
+      </div>
+      <div class="card">
+        <h3 lang="de">Port-Blinker</h3>
+        <h3 lang="en">Port blinker</h3>
+        <p lang="de">Gezielte Lastbursts bringen die LED am gesuchten Switch-Port zum Blinken. Ob das klappt, hängt von Switch und PHY-LED-Modus ab — deshalb ist die Funktion als Beta markiert.</p>
+        <p lang="en">Targeted traffic bursts make the LED on the port you're looking for blink. Whether that works depends on the switch and its PHY LED mode — which is why the feature is marked beta.</p>
+      </div>
+      <div class="card">
+        <h3 lang="de">Multicast und Dienste</h3>
+        <h3 lang="en">Multicast and services</h3>
+        <p lang="de">mDNS-/Bonjour-Test über VLAN-Grenzen hinweg sowie Erreichbarkeits- und Latenzmessung für Standardports wie 80, 443, 22 und 3389.</p>
+        <p lang="en">mDNS/Bonjour testing across VLAN boundaries, plus reachability and latency checks for standard ports such as 80, 443, 22 and 3389.</p>
+      </div>
+      <div class="card">
+        <h3 lang="de">Berichte zum Weitergeben</h3>
+        <h3 lang="en">Reports you can hand over</h3>
+        <p lang="de">Aus jeder Messung wird auf Wunsch ein sauberer PDF- oder HTML-Bericht für Ticketsystem, Abnahme oder Kundendokumentation.</p>
+        <p lang="en">Any measurement can become a clean PDF or HTML report for your ticketing system, acceptance test or client documentation.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Screenshot Showcase Section -->
-  <section id="screenshots" class="screenshots-section">
-    <h2 class="section-title">App-Einblicke &amp; Benutzeroberfläche</h2>
-    <p class="section-subtitle">Professionelle Werkzeuge, übersichtlich strukturiert für den mobilen Feldeinsatz.</p>
-    
-    <div class="screenshot-grid">
-      <!-- Screenshot 1 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/01_dashboard.png" alt="Live Switch &amp; Port Analyse" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge">Echtzeit-Scan</span>
-        </div>
-        <h4>Live Switch &amp; Port Analyse</h4>
-        <p>Sofortige Anzeige von Switch-Name, Port-ID, VLAN-Tagging und Duplex-Status über LLDP &amp; CDP.</p>
-      </div>
-
-      <!-- Screenshot 2 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/02_topology.png" alt="Multi-Switch Topologie" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge badge-cyan">Visualisierung</span>
-        </div>
-        <h4>Multi-Switch &amp; VLAN Topologie</h4>
-        <p>Interaktiver Topologie-Baum zur schnellen Orientierung über Uplinks, Trunks und nachgelagerte Switche.</p>
-      </div>
-
-      <!-- Screenshot 3 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/03_tools.png" alt="Integrierte Werkzeuge" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge badge-yellow">Diagnose</span>
-        </div>
-        <h4>Integrierte Netzwerk-Tools</h4>
-        <p>Switch-Port Blinker mit LED-Taktrate, Ping, DNS-Lookup, Subnet-Scanner und TCP-Port-Prüfung.</p>
-      </div>
-
-      <!-- Screenshot 4 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/04_iperf3.png" alt="iPerf3 Durchsatzmessung" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge badge-green">Benchmark</span>
-        </div>
-        <h4>iPerf3 Durchsatz &amp; Latenz</h4>
-        <p>Integrierter TCP- und UDP-Bandbreitentest mit grafischem Live-Chart und automatischer Latenzanalyse.</p>
-      </div>
-
-      <!-- Screenshot 5 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/05_reports_ai.png" alt="Messberichte &amp; KI-Analyse" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge badge-purple">Dokumentation</span>
-        </div>
-        <h4>Prüfberichte mit KI-Analyse</h4>
-        <p>Generiere exportierbare HTML- &amp; PDF-Messprotokolle mit Prüfer-Signatur, Dosen-Kennung und KI-Befunden.</p>
-      </div>
-
-      <!-- Screenshot 6 -->
-      <div class="screenshot-card">
-        <div class="screenshot-card-img-wrap">
-          <img src="screenshots/06_copilot_cli.png" alt="Gemini Nano KI Copilot &amp; CLI" loading="lazy">
-        </div>
-        <div class="screenshot-card-meta">
-          <span class="screenshot-card-badge badge-purple">On-Device KI</span>
-        </div>
-        <h4>Gemini Nano Copilot &amp; CLI</h4>
-        <p>Lokale Ursachenanalyse ohne Internetverbindung sowie herstellerspezifische CLI-Hilfen auf Zuruf.</p>
-      </div>
-
-      <!-- Wide Tablet/Desktop Showcase -->
-      <div class="screenshot-card screenshot-card-wide">
-        <div class="screenshot-card-wide-content">
-          <div>
-            <div class="screenshot-card-meta">
-              <span class="screenshot-card-badge badge-cyan">Adaptive UI</span>
-            </div>
-            <h4>Optimiert für Tablets, Falt-Displays &amp; Desktop-Systeme</h4>
-            <p style="margin-bottom: 20px;">Nodus passt sich dynamisch an moderne Geräteformate an. Auf Tablets, ChromeOS und großen Bildschirmen bietet die App ein produktives Multi-Spalten-Layout mit Navigation Rail, freier Fensteranpassung und vollständiger Tastatursteuerung.</p>
-            <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary btn-sm">Im Google Play Store ansehen ↗</a>
-          </div>
-          <div class="screenshot-card-img-wrap" style="margin-bottom: 0;">
-            <img src="screenshots/tablet_dashboard.png" alt="Nodus Tablet &amp; Desktop UI" loading="lazy">
-          </div>
-        </div>
-      </div>
+<section class="section" style="--p: var(--nodus);">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 lang="de">Im Vergleich</h2>
+      <h2 lang="en">In comparison</h2>
+      <p lang="de">Warum ein Telefon plus 15-Euro-Adapter den Alltag abdeckt.</p>
+      <p lang="en">Why a phone plus a €15 adapter covers most days.</p>
     </div>
-  </section>
-
-  <!-- Comparison Section -->
-  <section id="vergleich" class="comparison-section">
-    <h2 class="section-title">Nodus im Praxis-Check</h2>
-    <p class="section-subtitle">Auf einen Blick: Warum teure Spezialgeräte und Standard-Store-Apps ausgedient haben.</p>
-    
-    <div class="table-container">
-      <table class="comparison-table">
+    <div class="table-scroll">
+      <table>
         <thead>
           <tr>
-            <th>Feature / Kriterium</th>
-            <th>Standard-Apps<br><span class="table-subtext">(Play Store)</span></th>
-            <th>Teure Hardware-Tester<br><span class="table-subtext">(200 € – 1.500 €)</span></th>
-            <th class="highlight-col">NODUS<br><span class="table-badge">Layer-2 Engine</span></th>
+            <th><span lang="de">Kriterium</span><span lang="en">Criterion</span></th>
+            <th><span lang="de">Übliche Store-Apps</span><span lang="en">Typical store apps</span></th>
+            <th><span lang="de">Spezial-Messgeräte</span><span lang="en">Dedicated testers</span></th>
+            <th>Nodus</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="feature-name">Benötigte Hardware</td>
-            <td>USB-LAN-Adapter</td>
-            <td>Proprietäres Spezial-Gerät / Dongle</td>
-            <td class="highlight-col"><strong>Handelsüblicher USB-C LAN-Adapter (~15 €)</strong></td>
+            <td><span lang="de">Benötigte Hardware</span><span lang="en">Hardware needed</span></td>
+            <td><span lang="de">USB-LAN-Adapter</span><span lang="en">USB LAN adapter</span></td>
+            <td><span lang="de">Eigenes Gerät, 200–1.500 €</span><span lang="en">Dedicated device, €200–1,500</span></td>
+            <td><strong><span lang="de">USB-C-LAN-Adapter, ca. 15 €</span><span lang="en">USB-C LAN adapter, about €15</span></strong></td>
           </tr>
           <tr>
-            <td class="feature-name">Root-Rechte erforderlich?</td>
-            <td><span class="status-badge status-neutral">Nein</span></td>
-            <td><span class="status-badge status-neutral">Nein</span></td>
-            <td class="highlight-col"><span class="status-badge status-success">Nein</span></td>
+            <td><span lang="de">Layer-2-Analyse (LLDP/CDP)</span><span lang="en">Layer-2 analysis (LLDP/CDP)</span></td>
+            <td><span lang="de">nein, nur IP-Ebene</span><span lang="en">no, IP layer only</span></td>
+            <td><span lang="de">ja</span><span lang="en">yes</span></td>
+            <td><strong><span lang="de">ja</span><span lang="en">yes</span></strong></td>
           </tr>
           <tr>
-            <td class="feature-name">Layer 2 Analyse (LLDP / CDP)</td>
-            <td><span class="status-cross">&#10005;</span> <small>(Nur IP/L3)</small></td>
-            <td><span class="status-check">&#10003;</span></td>
-            <td class="highlight-col"><span class="status-check">&#10003;</span></td>
+            <td><span lang="de">VLAN-Erkennung (802.1Q)</span><span lang="en">VLAN detection (802.1Q)</span></td>
+            <td><span lang="de">nein</span><span lang="en">no</span></td>
+            <td><span lang="de">ja</span><span lang="en">yes</span></td>
+            <td><strong><span lang="de">ja</span><span lang="en">yes</span></strong></td>
           </tr>
           <tr>
-            <td class="feature-name">VLAN-Erkennung (802.1Q)</td>
-            <td><span class="status-cross">&#10005;</span></td>
-            <td><span class="status-check">&#10003;</span></td>
-            <td class="highlight-col"><span class="status-check">&#10003;</span></td>
+            <td>PCAP / Wireshark</td>
+            <td><span lang="de">nein</span><span lang="en">no</span></td>
+            <td><span lang="de">teilweise</span><span lang="en">sometimes</span></td>
+            <td><strong><span lang="de">ja</span><span lang="en">yes</span></strong></td>
           </tr>
           <tr>
-            <td class="feature-name">Wireshark-PCAP-Mitschnitt</td>
-            <td><span class="status-cross">&#10005;</span></td>
-            <td><span class="status-check">&#10003;</span> <small>(Teilweise)</small></td>
-            <td class="highlight-col"><span class="status-check">&#10003;</span></td>
+            <td><span lang="de">iPerf3 &amp; Messberichte</span><span lang="en">iPerf3 &amp; reports</span></td>
+            <td><span lang="de">selten, eingeschränkt</span><span lang="en">rare, limited</span></td>
+            <td><span lang="de">oft Aufpreis</span><span lang="en">often a paid add-on</span></td>
+            <td><strong><span lang="de">eingebaut</span><span lang="en">built in</span></strong></td>
           </tr>
           <tr>
-            <td class="feature-name">Port-Blinker (Switch-LED)</td>
-            <td><span class="status-cross">&#10005;</span></td>
-            <td><span class="status-check">&#10003;</span></td>
-            <td class="highlight-col"><span class="status-check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td class="feature-name">iPerf3 &amp; PDF-Messberichte</td>
-            <td>Selten / Eingeschränkt</td>
-            <td>Oft Aufpreis / Extra-Software</td>
-            <td class="highlight-col"><strong>Integriert</strong></td>
-          </tr>
-          <tr>
-            <td class="feature-name">Infrastruktur-Kosten</td>
-            <td>0 € – 10 €</td>
-            <td>200 € – 1.500 €+</td>
-            <td class="highlight-col"><strong>Nur App + günstiger Adapter</strong></td>
+            <td><span lang="de">Root nötig</span><span lang="en">Root required</span></td>
+            <td><span lang="de">nein</span><span lang="en">no</span></td>
+            <td>—</td>
+            <td><strong><span lang="de">nein</span><span lang="en">no</span></strong></td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
+    <p class="small" style="margin-top: 14px;" lang="de">Nodus ersetzt kein zertifiziertes Kabelmessgerät: Dämpfung, NEXT oder Längenmessung bleiben Sache der Spezialhardware. Für Portsuche, VLAN-Klärung, DHCP- und Durchsatzfragen im Tagesgeschäft reicht das Telefon.</p>
+    <p class="small" style="margin-top: 14px;" lang="en">Nodus does not replace a certified cable tester: attenuation, NEXT and length measurements stay with dedicated hardware. For port hunting, VLAN questions, DHCP and throughput checks in daily work, the phone is enough.</p>
+  </div>
+</section>
 
-  <!-- FAQ Section -->
-  <section id="faq" class="faq-section">
-    <h2 class="section-title">Häufig gestellte Fragen (FAQ)</h2>
-    
-    <div class="faq-container">
-      <details class="faq-item" open>
-        <summary class="faq-question">
-          <span>1. Wie unterscheidet sich NODUS von anderen Netzwerk-Apps im Store?</span>
-          <span class="faq-icon">+</span>
-        </summary>
-        <div class="faq-answer">
-          <p>Standard-Apps aus dem Store arbeiten rein auf Layer 3 und 4 (IP-Adressen, Pings, einfache Portscans). Sie können keine Schicht-2-Informationen des Switches auslesen. NODUS geht eine Ebene tiefer: Du erhältst direkte Schicht-2-Informationen wie LLDP/CDP-Nachrichten, Trunk-VLAN-Tags und Paket-Mitschnitte (PCAP) – genau die Daten, für die man bisher teure Spezialhardware brauchte.</p>
+<section class="section">
+  <div class="wrap wrap-narrow">
+    <div class="section-head">
+      <h2 lang="de">Häufige Fragen</h2>
+      <h2 lang="en">Frequent questions</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary><span lang="de">Welche USB-Adapter funktionieren?</span><span lang="en">Which USB adapters work?</span></summary>
+        <div class="faq__a">
+          <p lang="de">Handelsübliche USB-C-auf-Gigabit-Ethernet-Adapter mit den verbreiteten Chipsätzen (Realtek RTL8152/8153, ASIX AX88179) sowie Standard-CDC-ECM- und CDC-NCM-Geräte. Genau dafür gibt es die dreitägige Testphase: probier deinen Adapter aus, bevor du kaufst.</p>
+          <p lang="en">Standard USB-C-to-gigabit-Ethernet adapters with the common chipsets (Realtek RTL8152/8153, ASIX AX88179) plus generic CDC-ECM and CDC-NCM devices. That's exactly what the three-day trial is for: try your adapter before you buy.</p>
         </div>
       </details>
-
-      <details class="faq-item">
-        <summary class="faq-question">
-          <span>2. Brauche ich ein gerootetes Smartphone oder teure Zusatz-Hardware?</span>
-          <span class="faq-icon">+</span>
-        </summary>
-        <div class="faq-answer">
-          <p>Nein. NODUS funktioniert auf ganz normalen Android-Smartphones ohne Root-Zustand. Anstelle eines proprietären Hardware-Dongles für mehrere hundert Euro nutzt NODUS einen handelsüblichen USB-C-auf-Ethernet-Adapter.</p>
+      <details>
+        <summary><span lang="de">Brauche ich Root oder ein besonderes Telefon?</span><span lang="en">Do I need root or a special phone?</span></summary>
+        <div class="faq__a">
+          <p lang="de">Nein. Nodus läuft auf gewöhnlichen Android-Geräten ab Android 8 mit USB-OTG-Unterstützung und arbeitet ausschließlich über die regulären Android-USB-Schnittstellen. Tablets, Samsung DeX und Desktop-Modus werden mit angepasstem Layout unterstützt.</p>
+          <p lang="en">No. Nodus runs on ordinary Android devices from Android 8 with USB OTG support, using only the regular Android USB APIs. Tablets, Samsung DeX and desktop mode are supported with an adapted layout.</p>
         </div>
       </details>
-
-      <details class="faq-item">
-        <summary class="faq-question">
-          <span>3. Welche USB-LAN-Adapter werden unterstützt?</span>
-          <span class="faq-icon">+</span>
-        </summary>
-        <div class="faq-answer">
-          <p>NODUS funktioniert mit praktisch allen handelsüblichen USB-C-auf-Gigabit-Ethernet-Adaptern, die überall im Handel erhältlich sind. Du benötigst keine teure Spezial-Hardware – ein ganz gewöhnlicher USB-LAN-Adapter genügt.</p>
+      <details>
+        <summary><span lang="de">Wie unterscheidet sich Nodus von anderen Netzwerk-Apps?</span><span lang="en">How is Nodus different from other network apps?</span></summary>
+        <div class="faq__a">
+          <p lang="de">Die meisten Apps arbeiten auf Layer 3 und 4: Ping, Portscan, IP-Rechner. Nodus setzt eine Ebene tiefer an und wertet die Frames aus, die der Switch selbst schickt. Deshalb kann es Port-Bezeichnung, VLAN-Tags und Topologie zeigen statt nur Erreichbarkeit.</p>
+          <p lang="en">Most apps operate at layers 3 and 4: ping, port scan, subnet calculator. Nodus works one layer below and evaluates the frames the switch itself sends. That's why it can show port identifiers, VLAN tags and topology instead of just reachability.</p>
         </div>
       </details>
-
-      <details class="faq-item">
-        <summary class="faq-question">
-          <span>4. Ersetzt NODUS mein teures Profi-Messgerät im Arbeitsalltag?</span>
-          <span class="faq-icon">+</span>
-        </summary>
-        <div class="faq-answer">
-          <p>Für 90 % der täglichen Aufgaben im Service, bei der Fehlersuche und der Inbetriebnahme (Welcher Switch-Port ist das? Welches VLAN liegt an? Läuft DHCP? Passt der Durchsatz via iPerf3?): Ja. Du hast dein Testwerkzeug ab sofort immer in der Hosentasche, ohne schwere Gerätekoffer oder leere Spezial-Akkus.</p>
+      <details>
+        <summary><span lang="de">Was passiert mit meinen Messdaten?</span><span lang="en">What happens to my measurements?</span></summary>
+        <div class="faq__a">
+          <p lang="de">Sie bleiben auf dem Gerät. Die App braucht für die Messung keine Internetverbindung; Lizenz- und Update-Prüfung übertragen nur eine anonymisierte Geräte-Prüfsumme und die Versionsnummer. Ein Google-Drive-Backup gibt es nur, wenn du es selbst einschaltest. Details stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+          <p lang="en">They stay on the device. Measuring needs no internet connection; the licence and update check only transmits an anonymised device checksum and the version number. A Google Drive backup exists only if you switch it on yourself. Details are in the <a href="datenschutz.html">privacy policy</a>.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="de">Ersetzt Nodus mein Profi-Messgerät?</span><span lang="en">Does Nodus replace my professional tester?</span></summary>
+        <div class="faq__a">
+          <p lang="de">Für den größten Teil der täglichen Fragen im Service und bei der Inbetriebnahme: ja. Welcher Switch-Port ist das, welches VLAN liegt an, kommt DHCP durch, stimmt der Durchsatz — dafür brauchst du keinen Gerätekoffer mehr. Für Zertifizierungsmessungen an der Verkabelung weiterhin nein.</p>
+          <p lang="en">For most day-to-day service and commissioning questions: yes. Which switch port is this, which VLAN is live, does DHCP come through, is throughput right — you no longer need a case full of hardware for that. For certification measurements on the cabling itself: still no.</p>
         </div>
       </details>
     </div>
-  </section>
 
-  <!-- Download Footer CTA -->
-  <section style="text-align: center; padding: 70px 5%; background: #0E1317; border-top: 1px solid var(--card-border);">
-    <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 16px;">Jetzt Nodus im Google Play Store laden</h2>
-    <p style="color: var(--text-gray); margin-bottom: 30px; max-width: 620px; margin-left: auto; margin-right: auto; font-size: 1.1rem;">Lade Nodus direkt aus dem offiziellen Google Play Store auf dein Android-Smartphone oder -Tablet und teste alle Profi-Funktionen 3 Tage lang kostenlos und unverbindlich.</p>
-    <div style="max-width: 480px; margin: 0 auto; width: 100%;">
-      <a href="https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share" target="_blank" class="btn-primary btn-cta-footer">Im Google Play Store herunterladen ↗</a>
+    <div class="note mt-l" style="--p: var(--nodus);">
+      <div class="cluster" style="justify-content: space-between;">
+        <div style="flex: 1 1 340px;">
+          <h3 lang="de">Drei Tage ausprobieren</h3>
+          <h3 lang="en">Try it for three days</h3>
+          <p lang="de">Voller Funktionsumfang, damit du deinen Adapter und deine Infrastruktur wirklich testen kannst.</p>
+          <p lang="en">All features unlocked, so you can genuinely test your adapter and your infrastructure.</p>
+        </div>
+        <div class="cluster">
+          <a class="btn btn--product" style="--p: var(--nodus);" href="https://play.google.com/store/apps/details?id=de.piino.nodus" target="_blank" rel="noopener">
+            <span lang="de">Im Play Store öffnen</span><span lang="en">Open in Google Play</span>
+          </a>
+          <a class="btn btn--ghost" href="mailto:mad@piino.de?subject=Nodus">mad@piino.de</a>
+        </div>
+      </div>
+      <p class="small" style="margin-top: 18px;" lang="de">Rechtliches: <a href="datenschutz.html">Datenschutzerklärung</a> · <a href="impressum.html">Impressum</a></p>
+      <p class="small" style="margin-top: 18px;" lang="en">Legal: <a href="datenschutz.html">privacy policy</a> · <a href="impressum.html">legal notice</a></p>
     </div>
-  </section>
+  </div>
+</section>
 
+</main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 Piino Studio – Nodus Network Tester &bull; <a href="datenschutz.html" style="color: var(--accent-cyan); text-decoration: none;">Datenschutz</a> &bull; <a href="https://www.piino.de#impressum" style="color: var(--accent-cyan); text-decoration: none;">Impressum</a></p>
-  </footer>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="Piino Studio">
+          <svg viewBox="0 0 91 44" fill="none" aria-hidden="true" style="height: 24px;"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+          <span class="brand__sub">studio</span>
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="de">Mobile Software von Pino Madeo. Ludwigsburg, Deutschland.</p>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="en">Mobile software by Pino Madeo. Ludwigsburg, Germany.</p>
+        <p class="small" style="margin-top: 10px;"><a href="mailto:mad@piino.de">mad@piino.de</a></p>
+      </div>
+      <div>
+        <h4 lang="de">Produkte</h4><h4 lang="en">Products</h4>
+        <ul>
+          <li><a href="nodus.html">Nodus</a></li>
+          <li><a href="rebokeh.html">Rebokeh</a></li>
+          <li><a href="index.html#produkte">whitespace</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Artikel</h4><h4 lang="en">Writing</h4>
+        <ul>
+          <li><a href="ncm-m5pro.html">NCM &middot; Apple Silicon</a></li>
+          <li><a href="honor-magicbook-art-14-linux.html">Snapdragon Linux</a></li>
+          <li><a href="https://github.com/PiinoStudio" target="_blank" rel="noopener">GitHub &#8599;</a></li>
+          <li><a href="https://www.linkedin.com/in/giuseppe-madeo-734a32218/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Rechtliches</h4><h4 lang="en">Legal</h4>
+        <ul>
+          <li><a href="impressum.html"><span lang="de">Impressum</span><span lang="en">Legal notice</span></a></li>
+          <li><a href="datenschutz.html"><span lang="de">Datenschutz Nodus</span><span lang="en">Privacy &middot; Nodus</span></a></li>
+          <li><a href="rebokeh-datenschutz.html"><span lang="de">Datenschutz Rebokeh</span><span lang="en">Privacy &middot; Rebokeh</span></a></li>
+          <li><a href="rebokeh-nutzungsbedingungen.html"><span lang="de">Nutzungsbedingungen Rebokeh</span><span lang="en">Terms &middot; Rebokeh</span></a></li>
+          <li><a href="whitespace-datenschutz.html"><span lang="de">Datenschutz whitespace</span><span lang="en">Privacy &middot; whitespace</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-year>2026</span> Piino Studio &middot; Giuseppe Madeo</p>
+      <p lang="de">Diese Seite setzt keine Cookies und misst keine Besucher.</p>
+      <p lang="en">This site sets no cookies and measures no visitors.</p>
+    </div>
+  </div>
+</footer>
 
+<script src="app.js" defer></script>
 </body>
 </html>

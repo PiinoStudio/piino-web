@@ -1,152 +1,217 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Datenschutzerklärung &ndash; whitespace System-Filter &bull; Piino Studio</title>
-  <meta name="description" content="Datenschutzerklärung für die native iOS-App whitespace von Piino Studio (Giuseppe Madeo). Information gemäß DSGVO & Apple App Store Guidelines.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .legal-container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-      line-height: 1.7;
-    }
-    .legal-card {
-      background: #141A1E;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 36px;
-      margin-bottom: 30px;
-    }
-    .legal-card h2 {
-      color: #00E1FF;
-      font-size: 1.4rem;
-      margin-top: 24px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 6px;
-    }
-    .legal-card h3 {
-      color: #FFFFFF;
-      font-size: 1.1rem;
-      margin-top: 18px;
-      margin-bottom: 8px;
-    }
-    .legal-card p, .legal-card ul {
-      color: #94A3B8;
-      font-size: 0.95rem;
-      margin-bottom: 14px;
-    }
-    .legal-card ul {
-      padding-left: 20px;
-    }
-    .legal-card li {
-      margin-bottom: 6px;
-    }
-    .badge-privacy {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 225, 255, 0.12);
-      color: #00E1FF;
-      border: 1px solid rgba(0, 225, 255, 0.3);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .privacy-highlight {
-      background: rgba(0, 225, 255, 0.05);
-      border-left: 4px solid #00E1FF;
-      padding: 16px 20px;
-      border-radius: 0 12px 12px 0;
-      margin: 20px 0;
-    }
-    .privacy-highlight p {
-      color: #F1F5F9;
-      font-weight: 600;
-      margin-bottom: 0;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datenschutzerklärung whitespace — Piino Studio</title>
+<meta name="title-de" content="Datenschutzerklärung whitespace — Piino Studio">
+<meta name="title-en" content="Privacy policy for whitespace — Piino Studio">
+<meta name="description" content="Datenschutzerklärung für whitespace: DNS-Filterung vollständig auf dem Gerät, keine Protokollierung, keine Tracker.">
+<meta name="description-de" content="Datenschutzerklärung für whitespace: DNS-Filterung vollständig auf dem Gerät, keine Protokollierung, keine Tracker.">
+<meta name="description-en" content="Privacy policy for whitespace: DNS filtering entirely on-device, no logging, no trackers.">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Datenschutzerklärung whitespace — Piino Studio">
+<meta property="og:description" content="Datenschutzerklärung für whitespace: DNS-Filterung vollständig auf dem Gerät, keine Protokollierung, keine Tracker.">
+<meta property="og:url" content="https://www.piino.de/whitespace-datenschutz.html">
+<meta property="og:image" content="https://www.piino.de/og-piino.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Piino Studio">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.piino.de/whitespace-datenschutz.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+(function(){var r=document.documentElement,t=null,l=null;
+try{t=localStorage.getItem('piino-theme');l=localStorage.getItem('piino-lang');}catch(e){}
+if(t){r.setAttribute('data-theme',t);}
+if(!l){l=(navigator.language||'de').toLowerCase().slice(0,2)==='de'?'de':'en';}
+r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main"><span lang="de">Zum Inhalt springen</span><span lang="en">Skip to content</span></a>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="https://www.piino.de" class="nav-brand">
-      <img src="piino-logo-legal.svg" alt="Piino Studio Logo" class="nav-logo-svg">
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="index.html" aria-label="Piino Studio">
+      <svg viewBox="0 0 91 44" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+      <span class="brand__sub">studio</span>
     </a>
-    <div class="nav-links">
-      <a href="https://www.piino.de" class="nav-link">&larr; Zurück zu Piino Studio</a>
-    </div>
-  </nav>
-
-  <div class="legal-container">
-    <div class="legal-card">
-      <div class="badge-privacy">🔒 DATENSCHUTZERKLÄRUNG (DSGVO & APPLE APP STORE)</div>
-      <h1 style="color: #FFFFFF; font-size: 2rem; font-weight: 900; margin-bottom: 10px;">Datenschutzerklärung whitespace</h1>
-      <p style="color: #64748B; font-size: 0.9rem;">Stand: August 2026 &bull; Gültig für die native iOS-App <strong>whitespace</strong> von Piino Studio.</p>
-
-      <div class="privacy-highlight">
-        <p>🛡️ Unser oberstes Datenschutzversprechen: whitespace erfasst, speichert, analysiert oder überträgt zu keinem Zeitpunkt persönliche Daten, IP-Adressen, Surf-Historien oder DNS-Anfragen. Alle Filterfunktionen arbeiten zu 100 % lokal auf Ihrem Apple-Endgerät.</p>
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-link" href="index.html#produkte"><span lang="de">Produkte</span><span lang="en">Products</span></a>
+      <a class="nav-link" href="nodus.html">Nodus</a>
+      <a class="nav-link" href="rebokeh.html">Rebokeh</a>
+      <a class="nav-link" href="index.html#lesen"><span lang="de">Artikel</span><span lang="en">Writing</span></a>
+      <a class="nav-link" href="index.html#kontakt"><span lang="de">Kontakt</span><span lang="en">Contact</span></a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Sprache / Language">
+        <button type="button" data-lang-btn="de" aria-pressed="true">DE</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
       </div>
-
-      <h2>1. Verantwortlicher für die Datenverarbeitung</h2>
-      <p>Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) sowie sonstiger datenschutzrechtlicher Bestimmungen ist:</p>
-      <p>
-        <strong>Piino Studio</strong><br>
-        Giuseppe Madeo<br>
-        Ludwigsburg, Deutschland<br>
-        E-Mail: <a href="mailto:mad@piino.de" style="color: #00E1FF;">mad@piino.de</a><br>
-        Webseite: <a href="https://www.piino.de" target="_blank" style="color: #00E1FF;">www.piino.de</a>
-      </p>
-
-      <h2>2. Grundsatz: 100 % Lokale Datenverarbeitung (On-Device DNS-Proxy)</h2>
-      <p>Die Anwendung <strong>whitespace</strong> wurde nach dem Prinzip <em>Privacy by Design and by Default</em> entwickelt. Die Kernfunktion der App ist das Blockieren von Werbe-, Tracking- und bösartigen Server-Domains auf Netzwerkebene:</p>
-      <ul>
-        <li><strong>Lokale Network Extension (NEDNSProxyProvider)</strong>: whitespace nutzt die offizielle Apple NetworkExtension-Schnittstelle. Ausgehende DNS-Anfragen Ihres Geräts werden in einem geschützten Speicherbereich (Shared App Group Container) direkt auf Ihrem iPhone oder iPad mit lokalen Filterregeln abgeglichen.</li>
-        <li><strong>Kein Remote-Proxy & kein VPN-Server</strong>: Ihr gesamter Datenverkehr verbleibt auf Ihrem Gerät. whitespace betreibt keine Zwischenserver, über die Ihr Netzwerkverkehr umgeleitet wird.</li>
-        <li><strong>Keine DNS-Protokollierung</strong>: Aufgerufene Domains werden weder persistent mitgeloggt noch an Server übermittelt. Zähler für „Blockierte Anfragen“ werden rein numerisch und anonymisiert im lokalen Arbeitsspeicher Ihres Geräts gehalten.</li>
-      </ul>
-
-      <h2>3. Download & Aktualisierung von Filterlisten</h2>
-      <p>Zur Bereitstellung aktueller Werbe- und Trackingfilter lädt die App regelmäßig kuratierte, öffentlich zugängliche Regellisten (z. B. StevenBlack Hosts, OISD) herunter:</p>
-      <ul>
-        <li>Der Download erfolgt über verschlüsselte HTTPS-Verbindungen direkt von den jeweiligen Open-Source-Quellen.</li>
-        <li>Hierbei werden vom Anbieter der Liste lediglich die standardmäßigen technischen Verbindungsdaten (z. B. IP-Adresse Ihres Internetanschlusses) zur Auslieferung der Textdatei verarbeitet. whitespace übermittelt keinerlei Gerätekennungen oder Nutzerprofile.</li>
-        <li>Hintergrund-Aktualisierungen nutzen das native iOS <em>BackgroundTasks</em>-Framework und werden ausschließlich bei bestehender Netzwerkverbindung ausgeführt.</li>
-      </ul>
-
-      <h2>4. Upstream-DNS-Auflösung</h2>
-      <p>Anfragen zu legitimen, nicht blockierten Webseiten werden über den von Ihnen in den Einstellungen ausgewählten DNS-Resolver (z. B. Cloudflare 1.1.1.1, Quad9 9.9.9.9 oder Mullvad) aufgelöst. Für diese Anfragen gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
-
-      <h2>5. Berechtigungen der App</h2>
-      <p>Die App benötigt ausschließlich folgende systemseitige iOS-Berechtigungen:</p>
-      <ul>
-        <li><strong>Network Extension (DNS-Proxy)</strong>: Notwendig, damit das iOS-Betriebssystem Werbeanfragen an die lokale Filter-Engine übergeben kann.</li>
-        <li><strong>App Groups</strong>: Ermöglicht den sicheren Datenaustausch der Filterregeln zwischen der whitespace Haupt-App und der systemweiten DNS-Extension auf Ihrem Gerät.</li>
-        <li><strong>Hintergrund-Aktualisierung</strong>: Zum automatischen Laden aktualisierter Filterlisten.</li>
-      </ul>
-
-      <h2>6. Keine Drittanbieter-Tracker oder Analysetools</h2>
-      <p>whitespace enthält <strong>keinerlei Werbenetzwerke, Analyse-SDKs (wie Google Analytics, Firebase oder Facebook SDK) oder Crash-Reporting-Dienste von Drittanbietern</strong>. Die App ist vollständig frei von externen Tracking-Bibliotheken.</p>
-
-      <h2>7. Ihre Rechte gemäß DSGVO</h2>
-      <p>Da whitespace keinerlei personenbezogene Daten erhebt oder verarbeitet, liegen bei uns keine personenbezogenen Daten über Sie vor. Sollten Sie Fragen zum Datenschutz bei Piino Studio haben, können Sie sich jederzeit an <a href="mailto:mad@piino.de" style="color: #00E1FF;">mad@piino.de</a> wenden.</p>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Design umschalten / Toggle theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Menü / Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
   </div>
+</header>
 
-  <footer style="text-align: center; padding: 20px; color: #64748B; font-size: 0.85rem;">
-    &copy; 2026 Piino Studio (Giuseppe Madeo). Alle Rechte vorbehalten.
-  </footer>
+<main id="main">
+<section class="page-head">
+  <div class="wrap wrap-narrow">
+    <p class="eyebrow">DSGVO · GDPR · App Store</p>
+    <h1 lang="de">Datenschutzerklärung whitespace</h1>
+    <h1 lang="en">Privacy policy for whitespace</h1>
+    <p class="legal-meta" style="margin-top: 16px;" lang="de">Stand: August 2026 · whitespace für iOS, iPadOS und macOS</p>
+    <p class="legal-meta" style="margin-top: 16px;" lang="en">Last updated: August 2026 · whitespace for iOS, iPadOS and macOS</p>
+  </div>
+</section>
 
+<section class="section section--tight">
+  <div class="wrap wrap-narrow">
+    <div class="note" style="--p: var(--sage); margin-bottom: clamp(28px, 4vw, 44px);">
+      <p lang="de"><strong>Das Versprechen in einem Satz:</strong> whitespace erfasst, speichert, analysiert und überträgt zu keinem Zeitpunkt persönliche Daten, IP-Adressen, Surf-Historien oder DNS-Anfragen. Die Filterung läuft vollständig auf Ihrem Gerät.</p>
+      <p lang="en"><strong>The promise in one sentence:</strong> whitespace never collects, stores, analyses or transmits personal data, IP addresses, browsing history or DNS queries. Filtering happens entirely on your device.</p>
+    </div>
+
+    <div class="prose" lang="de">
+      <h2 style="border: 0; padding-top: 0; margin-top: 0;">1. Verantwortlicher</h2>
+      <p><strong>Giuseppe Madeo — Piino Studio</strong><br>Bauhofstr. 10, 71634 Ludwigsburg, Deutschland<br>E-Mail: <a href="mailto:mad@piino.de">mad@piino.de</a> · Web: <a href="https://www.piino.de">www.piino.de</a></p>
+
+      <h2>2. Grundsatz: lokaler DNS-Proxy</h2>
+      <ul>
+        <li><strong>Lokale Network Extension:</strong> whitespace nutzt die offizielle Apple-NetworkExtension-Schnittstelle. Ausgehende DNS-Anfragen werden in einem geschützten Speicherbereich direkt auf Ihrem Gerät mit den lokalen Filterregeln abgeglichen.</li>
+        <li><strong>Kein Remote-Proxy, kein VPN-Server:</strong> Ihr Datenverkehr verbleibt auf dem Gerät. Es gibt keine Zwischenserver, über die Verkehr umgeleitet wird.</li>
+        <li><strong>Keine Protokollierung:</strong> Aufgerufene Domains werden weder dauerhaft gespeichert noch übermittelt. Zähler für blockierte Anfragen bleiben rein numerisch und anonym im lokalen Speicher.</li>
+      </ul>
+
+      <h2>3. Filterlisten</h2>
+      <p>Für aktuelle Werbe- und Trackingfilter lädt die App regelmäßig öffentlich zugängliche Regellisten (etwa StevenBlack Hosts oder OISD):</p>
+      <ul>
+        <li>Der Download erfolgt per HTTPS direkt von der jeweiligen Open-Source-Quelle.</li>
+        <li>Dabei verarbeitet der Anbieter der Liste nur die üblichen technischen Verbindungsdaten (etwa die IP-Adresse Ihres Anschlusses), die zur Auslieferung einer Datei nötig sind. whitespace übermittelt keine Gerätekennungen und keine Nutzerprofile.</li>
+        <li>Aktualisierungen im Hintergrund laufen über das iOS-Framework <em>BackgroundTasks</em> und nur bei bestehender Netzwerkverbindung.</li>
+      </ul>
+
+      <h2>4. Upstream-DNS</h2>
+      <p>Anfragen an nicht blockierte Adressen löst der von Ihnen gewählte DNS-Resolver auf (etwa Cloudflare, Quad9 oder Mullvad). Für diese Anfragen gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
+
+      <h2>5. Berechtigungen</h2>
+      <ul>
+        <li><strong>Network Extension (DNS-Proxy):</strong> damit das Betriebssystem Anfragen an die lokale Filter-Engine übergeben kann.</li>
+        <li><strong>App Groups:</strong> sicherer Austausch der Filterregeln zwischen Haupt-App und Systemerweiterung.</li>
+        <li><strong>Hintergrund-Aktualisierung:</strong> automatisches Nachladen aktueller Filterlisten.</li>
+      </ul>
+
+      <h2>6. Keine Drittanbieter-Tracker</h2>
+      <p>whitespace enthält keine Werbenetzwerke, keine Analyse-SDKs und keine Crash-Reporting-Dienste von Drittanbietern. Die App ist frei von externen Tracking-Bibliotheken.</p>
+
+      <h2>7. Ihre Rechte</h2>
+      <p>Da whitespace keine personenbezogenen Daten erhebt, liegen bei mir keine personenbezogenen Daten über Sie vor. Fragen zum Datenschutz beantworte ich gern unter <a href="mailto:mad@piino.de">mad@piino.de</a>.</p>
+    </div>
+
+    <div class="prose" lang="en">
+      <h2 style="border: 0; padding-top: 0; margin-top: 0;">1. Controller</h2>
+      <p><strong>Giuseppe Madeo — Piino Studio</strong><br>Bauhofstr. 10, 71634 Ludwigsburg, Germany<br>Email: <a href="mailto:mad@piino.de">mad@piino.de</a> · Web: <a href="https://www.piino.de">www.piino.de</a></p>
+
+      <h2>2. Principle: a local DNS proxy</h2>
+      <ul>
+        <li><strong>Local network extension:</strong> whitespace uses Apple's official NetworkExtension API. Outgoing DNS queries are matched against the local filter rules in a protected memory area on your device.</li>
+        <li><strong>No remote proxy, no VPN server:</strong> your traffic stays on the device. There are no intermediate servers routing it anywhere.</li>
+        <li><strong>No logging:</strong> the domains you visit are neither stored permanently nor transmitted. Counters for blocked requests remain purely numeric and anonymous in local memory.</li>
+      </ul>
+
+      <h2>3. Filter lists</h2>
+      <p>To keep ad and tracker filters current, the app periodically downloads publicly available rule lists (such as StevenBlack Hosts or OISD):</p>
+      <ul>
+        <li>Downloads go over HTTPS, directly from the respective open-source source.</li>
+        <li>In doing so, the list provider processes only the usual technical connection data (such as your connection's IP address) needed to deliver a file. whitespace transmits no device identifiers and no user profiles.</li>
+        <li>Background updates use the iOS <em>BackgroundTasks</em> framework and only run when a network connection exists.</li>
+      </ul>
+
+      <h2>4. Upstream DNS</h2>
+      <p>Queries for addresses that are not blocked are resolved by the DNS resolver you select (for example Cloudflare, Quad9 or Mullvad). Those queries are subject to that provider's privacy policy.</p>
+
+      <h2>5. Permissions</h2>
+      <ul>
+        <li><strong>Network extension (DNS proxy):</strong> so the operating system can hand queries to the local filter engine.</li>
+        <li><strong>App groups:</strong> secure exchange of filter rules between the main app and the system extension.</li>
+        <li><strong>Background refresh:</strong> automatic fetching of updated filter lists.</li>
+      </ul>
+
+      <h2>6. No third-party trackers</h2>
+      <p>whitespace contains no ad networks, no analytics SDKs and no third-party crash reporting. The app is free of external tracking libraries.</p>
+
+      <h2>7. Your rights</h2>
+      <p>Because whitespace collects no personal data, I hold no personal data about you. I'm happy to answer privacy questions at <a href="mailto:mad@piino.de">mad@piino.de</a>.</p>
+
+      <p class="small"><em>This is a courtesy translation. The German version is the legally binding one.</em></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="Piino Studio">
+          <svg viewBox="0 0 91 44" fill="none" aria-hidden="true" style="height: 24px;"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+          <span class="brand__sub">studio</span>
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="de">Mobile Software von Pino Madeo. Ludwigsburg, Deutschland.</p>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="en">Mobile software by Pino Madeo. Ludwigsburg, Germany.</p>
+        <p class="small" style="margin-top: 10px;"><a href="mailto:mad@piino.de">mad@piino.de</a></p>
+      </div>
+      <div>
+        <h4 lang="de">Produkte</h4><h4 lang="en">Products</h4>
+        <ul>
+          <li><a href="nodus.html">Nodus</a></li>
+          <li><a href="rebokeh.html">Rebokeh</a></li>
+          <li><a href="index.html#produkte">whitespace</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Artikel</h4><h4 lang="en">Writing</h4>
+        <ul>
+          <li><a href="ncm-m5pro.html">NCM &middot; Apple Silicon</a></li>
+          <li><a href="honor-magicbook-art-14-linux.html">Snapdragon Linux</a></li>
+          <li><a href="https://github.com/PiinoStudio" target="_blank" rel="noopener">GitHub &#8599;</a></li>
+          <li><a href="https://www.linkedin.com/in/giuseppe-madeo-734a32218/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Rechtliches</h4><h4 lang="en">Legal</h4>
+        <ul>
+          <li><a href="impressum.html"><span lang="de">Impressum</span><span lang="en">Legal notice</span></a></li>
+          <li><a href="datenschutz.html"><span lang="de">Datenschutz Nodus</span><span lang="en">Privacy &middot; Nodus</span></a></li>
+          <li><a href="rebokeh-datenschutz.html"><span lang="de">Datenschutz Rebokeh</span><span lang="en">Privacy &middot; Rebokeh</span></a></li>
+          <li><a href="rebokeh-nutzungsbedingungen.html"><span lang="de">Nutzungsbedingungen Rebokeh</span><span lang="en">Terms &middot; Rebokeh</span></a></li>
+          <li><a href="whitespace-datenschutz.html"><span lang="de">Datenschutz whitespace</span><span lang="en">Privacy &middot; whitespace</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-year>2026</span> Piino Studio &middot; Giuseppe Madeo</p>
+      <p lang="de">Diese Seite setzt keine Cookies und misst keine Besucher.</p>
+      <p lang="en">This site sets no cookies and measures no visitors.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
 </body>
 </html>

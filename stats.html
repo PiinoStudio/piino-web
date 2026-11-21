@@ -1,193 +1,199 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nodus Pro • Live Tester & Dashboard Stats</title>
-    <style>
-        :root {
-            --bg-color: #0D1317;
-            --card-bg: #161E24;
-            --border-color: #242E36;
-            --accent-cyan: #00B0FF;
-            --accent-green: #34D399;
-            --text-main: #F1F5F9;
-            --text-muted: #94A3B8;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 24px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 16px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #FFF;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .badge-pro {
-            background: rgba(0, 176, 255, 0.15);
-            color: var(--accent-cyan);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            border: 1px solid rgba(0, 176, 255, 0.3);
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        .metric-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        .metric-card .title {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .metric-card .value {
-            font-size: 32px;
-            font-weight: bold;
-            margin-top: 8px;
-            color: #FFF;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 16px;
-            color: #FFF;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            margin-bottom: 32px;
-        }
-        th, td {
-            padding: 14px 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-        }
-        th {
-            background: #11181E;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        tr:hover {
-            background: rgba(255,255,255,0.02);
-        }
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        .dot-green { background: #34D399; box-shadow: 0 0 8px #34D399; }
-        .dot-yellow { background: #FBBF24; }
-        .dot-gray { background: #64748B; }
-        .code-box {
-            font-family: monospace;
-            background: #0F172A;
-            padding: 4px 8px;
-            border-radius: 6px;
-            color: #38BDF8;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Status — Nodus Verteilung (intern)</title>
+<meta name="title-de" content="Status — Nodus Verteilung (intern)">
+<meta name="title-en" content="Status — Nodus distribution (internal)">
+<meta name="description" content="Interne Statusübersicht zur Verteilung von Nodus.">
+<meta name="description-de" content="Interne Statusübersicht zur Verteilung von Nodus.">
+<meta name="description-en" content="Internal status overview for Nodus distribution.">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Status — Nodus Verteilung (intern)">
+<meta property="og:description" content="Interne Statusübersicht zur Verteilung von Nodus.">
+<meta property="og:url" content="https://www.piino.de/stats.html">
+<meta property="og:image" content="https://www.piino.de/og-piino.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Piino Studio">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.piino.de/stats.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+(function(){var r=document.documentElement,t=null,l=null;
+try{t=localStorage.getItem('piino-theme');l=localStorage.getItem('piino-lang');}catch(e){}
+if(t){r.setAttribute('data-theme',t);}
+if(!l){l=(navigator.language||'de').toLowerCase().slice(0,2)==='de'?'de':'en';}
+r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
+</script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📡 Nodus Pro <span class="badge-pro">CLOUDFLARE DASHBOARD</span></h1>
-            <div style="color: var(--text-muted); font-size: 13px;">Version: 3.0.0-PRO (vc60)</div>
-        </div>
+<a class="skip-link" href="#main"><span lang="de">Zum Inhalt springen</span><span lang="en">Skip to content</span></a>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="title">Aktiver Status</div>
-                <div class="value" style="color: var(--accent-cyan);">Google Play Closed Beta</div>
-            </div>
-            <div class="metric-card">
-                <div class="title">Plattform</div>
-                <div class="value" style="color: var(--accent-green);">Cloudflare / GitHub Pages</div>
-            </div>
-            <div class="metric-card">
-                <div class="title">Build Release</div>
-                <div class="value" style="color: #A855F7;">Version Code 60</div>
-            </div>
-        </div>
-
-        <div class="section-title">📊 Closed Beta & Distribution Status</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Komponente</th>
-                    <th>Ziel / URL</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Google Play Store Release</strong></td>
-                    <td><span class="code-box">https://play.google.com/store/apps/details?id=de.piino.nodus&amp;pcampaignid=web_share</span></td>
-                    <td><span class="status-dot dot-green"></span> Live im Store</td>
-                    <td>Offizieller Release (AAB vc140)</td>
-                </tr>
-                <tr>
-                    <td><strong>Cloud Backup Sync</strong></td>
-                    <td><span class="code-box">Google Drive AppData API</span></td>
-                    <td><span class="status-dot dot-green"></span> OAuth 2.0 Aktiv</td>
-                    <td>Signiert mit SHA-1 Fingerabdruck</td>
-                </tr>
-                <tr>
-                    <td><strong>Direkt-Download (Web)</strong></td>
-                    <td><span class="code-box">https://nodus.piino.de/downloads/Nodus_latest.apk</span></td>
-                    <td><span class="status-dot dot-green"></span> Live auf Cloudflare</td>
-                    <td>v3.0.0-PRO (vc60)</td>
-                </tr>
-                <tr>
-                    <td><strong>Offline KI-Copilot</strong></td>
-                    <td><span class="code-box">Gemini Nano (Local On-Device)</span></td>
-                    <td><span class="status-dot dot-green"></span> 100% Offline</td>
-                    <td>Vollständig integriert</td>
-                </tr>
-            </tbody>
-        </table>
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="index.html" aria-label="Piino Studio">
+      <svg viewBox="0 0 91 44" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+      <span class="brand__sub">studio</span>
+    </a>
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-link" href="index.html#produkte"><span lang="de">Produkte</span><span lang="en">Products</span></a>
+      <a class="nav-link" href="nodus.html">Nodus</a>
+      <a class="nav-link" href="rebokeh.html">Rebokeh</a>
+      <a class="nav-link" href="index.html#lesen"><span lang="de">Artikel</span><span lang="en">Writing</span></a>
+      <a class="nav-link" href="index.html#kontakt"><span lang="de">Kontakt</span><span lang="en">Contact</span></a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Sprache / Language">
+        <button type="button" data-lang-btn="de" aria-pressed="true">DE</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Design umschalten / Toggle theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Menü / Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow" lang="de">Intern · nicht verlinkt</p>
+    <p class="eyebrow" lang="en">Internal · unlisted</p>
+    <h1 lang="de">Nodus — Verteilungsstatus</h1>
+    <h1 lang="en">Nodus — distribution status</h1>
+    <p class="legal-meta" style="margin-top: 16px;">v3.8.5-PRO · versionCode 140</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <dl class="stats" style="margin-bottom: clamp(28px, 4vw, 44px);">
+      <div>
+        <dt lang="de">Store-Status</dt><dt lang="en">Store status</dt>
+        <dd lang="de">Live im Google Play Store</dd><dd lang="en">Live on Google Play</dd>
+      </div>
+      <div>
+        <dt lang="de">Auslieferung</dt><dt lang="en">Delivery</dt>
+        <dd>Cloudflare Pages</dd>
+      </div>
+      <div>
+        <dt lang="de">Aktueller Build</dt><dt lang="en">Current build</dt>
+        <dd>3.8.5-PRO (vc140)</dd>
+      </div>
+      <div>
+        <dt lang="de">Mindestversion</dt><dt lang="en">Minimum supported</dt>
+        <dd>versionCode 45</dd>
+      </div>
+    </dl>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th><span lang="de">Komponente</span><span lang="en">Component</span></th>
+            <th><span lang="de">Ziel</span><span lang="en">Target</span></th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google Play</strong></td>
+            <td><code>de.piino.nodus</code></td>
+            <td><span lang="de">Live, AAB vc140</span><span lang="en">Live, AAB vc140</span></td>
+          </tr>
+          <tr>
+            <td><strong><span lang="de">Direkt-Download</span><span lang="en">Direct download</span></strong></td>
+            <td><code>nodus.piino.de/downloads/Nodus_latest.apk</code></td>
+            <td>v3.8.5-PRO (vc140)</td>
+          </tr>
+          <tr>
+            <td><strong>Update-Feed</strong></td>
+            <td><code>version.json</code></td>
+            <td><span lang="de">synchron mit vc140</span><span lang="en">in sync with vc140</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cloud Backup</strong></td>
+            <td><code>Google Drive AppData API</code></td>
+            <td><span lang="de">OAuth aktiv</span><span lang="en">OAuth active</span></td>
+          </tr>
+          <tr>
+            <td><strong>KI-Copilot</strong></td>
+            <td><code>Gemini Nano, on-device</code></td>
+            <td><span lang="de">offline integriert</span><span lang="en">integrated, offline</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small mt-l" lang="de">Diese Seite ist eine interne Notiz und wird nicht beworben. Zahlen stammen aus <code>version.json</code>.</p>
+    <p class="small mt-l" lang="en">This page is an internal note and is not promoted. Figures come from <code>version.json</code>.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="Piino Studio">
+          <svg viewBox="0 0 91 44" fill="none" aria-hidden="true" style="height: 24px;"><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M4 13v26"/><circle cx="12" cy="20" r="7"/><path d="M29 13v14"/><path d="M39 13v14"/><circle cx="39" cy="6" r="3.3" stroke-width="2.2"/><path d="M49 27v-7a7 7 0 0 1 14 0v7"/><circle cx="78" cy="20" r="7"/></g><circle cx="29" cy="6" r="2.6" fill="currentColor"/></svg>
+          <span class="brand__sub">studio</span>
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="de">Mobile Software von Pino Madeo. Ludwigsburg, Deutschland.</p>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;" lang="en">Mobile software by Pino Madeo. Ludwigsburg, Germany.</p>
+        <p class="small" style="margin-top: 10px;"><a href="mailto:mad@piino.de">mad@piino.de</a></p>
+      </div>
+      <div>
+        <h4 lang="de">Produkte</h4><h4 lang="en">Products</h4>
+        <ul>
+          <li><a href="nodus.html">Nodus</a></li>
+          <li><a href="rebokeh.html">Rebokeh</a></li>
+          <li><a href="index.html#produkte">whitespace</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Artikel</h4><h4 lang="en">Writing</h4>
+        <ul>
+          <li><a href="ncm-m5pro.html">NCM &middot; Apple Silicon</a></li>
+          <li><a href="honor-magicbook-art-14-linux.html">Snapdragon Linux</a></li>
+          <li><a href="https://github.com/PiinoStudio" target="_blank" rel="noopener">GitHub &#8599;</a></li>
+          <li><a href="https://www.linkedin.com/in/giuseppe-madeo-734a32218/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 lang="de">Rechtliches</h4><h4 lang="en">Legal</h4>
+        <ul>
+          <li><a href="impressum.html"><span lang="de">Impressum</span><span lang="en">Legal notice</span></a></li>
+          <li><a href="datenschutz.html"><span lang="de">Datenschutz Nodus</span><span lang="en">Privacy &middot; Nodus</span></a></li>
+          <li><a href="rebokeh-datenschutz.html"><span lang="de">Datenschutz Rebokeh</span><span lang="en">Privacy &middot; Rebokeh</span></a></li>
+          <li><a href="rebokeh-nutzungsbedingungen.html"><span lang="de">Nutzungsbedingungen Rebokeh</span><span lang="en">Terms &middot; Rebokeh</span></a></li>
+          <li><a href="whitespace-datenschutz.html"><span lang="de">Datenschutz whitespace</span><span lang="en">Privacy &middot; whitespace</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-year>2026</span> Piino Studio &middot; Giuseppe Madeo</p>
+      <p lang="de">Diese Seite setzt keine Cookies und misst keine Besucher.</p>
+      <p lang="en">This site sets no cookies and measures no visitors.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
 </body>
 </html>

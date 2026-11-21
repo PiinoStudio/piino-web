@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /stats.html
+Disallow: /downloads/
+
+Sitemap: https://www.piino.de/sitemap.xml
