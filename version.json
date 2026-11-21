@@ -1,7 +1,7 @@
 {
   "versionCode": 140,
   "versionName": "3.8.5-PRO",
-  "apkUrl": "https://nodus.piino.de/downloads/Nodus_latest.apk",
+  "apkUrl": "",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=de.piino.nodus&pcampaignid=web_share",
   "releaseNotes": "Nodus v3.8.5-PRO (vc140): Native Desktop-, Laptop- und Großbildschirm-Unterstützung für ChromeOS / PCs, optimiertes Fenster-Handling, verbesserte Switch-Topologie und Messberichte.",
   "minSupportedVersionCode": 45
