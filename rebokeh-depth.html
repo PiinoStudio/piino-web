@@ -164,7 +164,11 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <h2>Bearbeiten zerstört die Daten</h2>
 
-      <p>Beim Nachprüfen im Juni fand ich etwas, das schlimmer ist als bloßes Nichtbenutzen. Wenn du ein Porträt in Google Fotos bearbeitest und die Änderung über das Original speicherst, werden die Dynamic-Depth-Namensräume, die FocalTable und die Containerstruktur <strong>vollständig entfernt</strong>. Die gespeicherte Datei ist ein flaches JPEG. Ob das Speichern als separate Kopie dasselbe tut, prüfe ich gerade nach — bis dahin gilt diese Aussage nur für den überschriebenen Fall.</p>
+      <p>Beim Nachprüfen im Juni fand ich etwas, das schlimmer ist als bloßes Nichtbenutzen. Wenn du ein Porträt in Google Fotos bearbeitest und speicherst, werden die Dynamic-Depth-Namensräume, die FocalTable und die Containerstruktur <strong>vollständig entfernt</strong> — auch dann, wenn du ausdrücklich als Kopie speicherst.</p>
+
+      <p>Hier die Messung an einer solchen Kopie, bei der nur der Weichzeichner verändert wurde: Von den fünf Container-Elementen der Originaldatei sind zwei übrig, <code>Primary</code> und <code>GainMap</code>. <code>Original</code>, <code>Depth</code> und <code>Confidence</code> fehlen, die FocalTable ebenso. Die Datei ist dabei auf ein knappes Megabyte geschrumpft.</p>
+
+      <p>Google Fotos zeigt diese Kopie inzwischen trotzdem mit Porträt-Symbol an. Das macht die Sache nicht besser, sondern schlechter: Die Oberfläche behauptet weiterhin, es handle sich um ein Porträt, während die Daten dafür nicht mehr existieren. Wer dann erneut am Weichzeichner dreht, legt eine zweite geschätzte Unschärfe auf die erste.</p>
 
       <p>Google Fotos erkennt das Ergebnis danach selbst nicht mehr als Porträt — das Porträt-Symbol verschwindet. Jede Möglichkeit, Schärfepunkt oder Unschärfe später noch einmal anzupassen, ist damit endgültig weg. Nicht ausgegraut, nicht versteckt: gelöscht.</p>
 
@@ -293,7 +297,11 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
 
       <h2>Editing destroys the data</h2>
 
-      <p>While retesting in June I found something worse than mere neglect. When you edit a portrait in Google Photos and save the change over the original, the Dynamic Depth namespaces, the FocalTable and the container structure are <strong>stripped out entirely</strong>. What you save is a flat JPEG. Whether saving as a separate copy does the same is something I am currently re-testing — until then this claim covers the overwrite case only.</p>
+      <p>While retesting in June I found something worse than mere neglect. When you edit a portrait in Google Photos and save it, the Dynamic Depth namespaces, the FocalTable and the container structure are <strong>stripped out entirely</strong> — including when you explicitly save as a copy.</p>
+
+      <p>Here is the measurement on such a copy, where only the blur was changed: of the five container items in the original file, two remain, <code>Primary</code> and <code>GainMap</code>. <code>Original</code>, <code>Depth</code> and <code>Confidence</code> are gone, and so is the FocalTable. The file shrank to just under a megabyte in the process.</p>
+
+      <p>Google Photos now shows that copy with a portrait badge anyway. That makes it worse, not better: the interface still claims the shot is a portrait while the data behind it no longer exists. Touch the blur slider again and you put a second estimated blur on top of the first.</p>
 
       <p>Google Photos then no longer recognises its own output as a portrait — the portrait badge disappears. Any ability to adjust the focal point or blur later is gone for good. Not greyed out, not hidden: deleted.</p>
 
