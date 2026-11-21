@@ -117,6 +117,11 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
         <figcaption class="small" style="margin-top: 10px;">Dieselbe Aufnahme als Tiefenkarte, Byte für Byte aus dem Container gezogen und nur fürs Web verkleinert. Die Stacheln des Igels sind einzeln aufgelöst, der Fenstersims läuft als sauberer Verlauf nach hinten. Diese Daten liegen in jedem deiner Porträts.</figcaption>
       </figure>
 
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/rebokeh-3d.jpg" alt="Rebokehs 3D-Ansicht derselben Aufnahme: der Schornstein steht plastisch vor der Dachfläche" loading="lazy" style="width: min(360px, 100%); margin-inline: auto; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">Dieselbe Aufnahme in Rebokehs 3D-Ansicht, aus den Daten der Datei aufgebaut. Der Schornstein steht körperlich vor der Dachfläche, die Fassade läuft nach hinten weg. Das ist Geometrie, keine Freistellmaske — und oben links zeigt die App an, dass hier die Tiefe aus der Hardware verwendet wird.</figcaption>
+      </figure>
+
       <p><strong>Confidence.</strong> Eine zweite Karte, die festhält, wie sicher sich die Kamera an jeder Stelle war — also genau dort, wo die Schätzung schwierig wird und Kanten ausfransen. Google schreibt sie mit. Googles Editor bietet nichts an, was sie nutzt.</p>
 
       <figure style="margin: 28px 0;">
@@ -130,6 +135,17 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
       </figure>
 
       <p><strong>Original.</strong> Das war die Überraschung beim ersten Mal. Der Container trägt das unbearbeitete Bild in voller Auflösung, ohne jede Unschärfe — 770 KB bei 12 MP, 7,3 MB bei 50 MP. Das scharfe Foto, das du über den Editor nicht zurückbekommst, liegt in derselben Datei, die du gerade bearbeitest.</p>
+
+      <div class="grid grid--2" style="margin: 28px 0;">
+        <figure>
+          <img src="screenshots/depth/zoom-google.jpg" alt="Die Aufnahme, wie Google Fotos sie zeigt: Schornstein scharf, Häuser und Bäume dahinter stark weichgezeichnet" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+          <figcaption class="small" style="margin-top: 10px;">Was Google dir zeigt: die fertige Aufnahme, Unschärfe fest in den Pixeln.</figcaption>
+        </figure>
+        <figure>
+          <img src="screenshots/depth/zoom-original.jpg" alt="Dasselbe Motiv aus dem Original-Element: Dachziegel, Fenster und Äste bis in den Hintergrund scharf" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+          <figcaption class="small" style="margin-top: 10px;">Was in derselben Datei liegt: das Original-Element, scharf bis zum letzten Dachziegel.</figcaption>
+        </figure>
+      </div>
 
       <p>Dazu kommt die FocalTable: die Unschärfekurve, die die Kamera bei der Aufnahme selbst verwendet hat. Keine Vermutung darüber, wie die Szene ausgesehen haben könnte, sondern die tatsächlichen Parameter.</p>
 
@@ -223,6 +239,11 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
         <figcaption class="small" style="margin-top: 10px;">The same photo as a depth map, pulled byte for byte out of the container and only scaled down for the web. The hedgehog's spines are resolved individually and the windowsill recedes as a clean gradient. This sits inside every portrait you take.</figcaption>
       </figure>
 
+      <figure style="margin: 28px 0;">
+        <img src="screenshots/depth/rebokeh-3d.jpg" alt="Rebokeh's 3D view of the same shot: the chimney stands out in front of the roof plane" loading="lazy" style="width: min(360px, 100%); margin-inline: auto; border-radius: var(--r); border: 1px solid var(--line);">
+        <figcaption class="small" style="margin-top: 10px;">The same shot in Rebokeh's 3D view, built from the data in the file. The chimney physically stands in front of the roof plane and the facade recedes behind it. This is geometry, not a cut-out mask — and the badge in the corner shows the app is using the hardware depth from the file.</figcaption>
+      </figure>
+
       <p><strong>Confidence.</strong> A second map, recording how sure the camera was about each region — exactly where estimation gets hard and edges fray. Google writes it. Google's editor offers nothing that uses it.</p>
 
       <figure style="margin: 28px 0;">
@@ -236,6 +257,17 @@ r.setAttribute('data-lang',l);r.setAttribute('lang',l);})();
       </figure>
 
       <p><strong>Original.</strong> This is the one that surprised me the first time. The container holds the unprocessed frame at full resolution, no blur applied — 770 KB on the 12 MP file, 7.3 MB at 50 MP. The sharp photo you cannot get back from the editor is sitting in the same file you are editing.</p>
+
+      <div class="grid grid--2" style="margin: 28px 0;">
+        <figure>
+          <img src="screenshots/depth/zoom-google.jpg" alt="The shot as Google Photos shows it: chimney sharp, houses and trees behind it heavily blurred" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+          <figcaption class="small" style="margin-top: 10px;">What Google shows you: the finished shot, blur baked into the pixels.</figcaption>
+        </figure>
+        <figure>
+          <img src="screenshots/depth/zoom-original.jpg" alt="The same scene from the Original item: roof tiles, windows and branches sharp into the distance" loading="lazy" style="width: 100%; border-radius: var(--r); border: 1px solid var(--line);">
+          <figcaption class="small" style="margin-top: 10px;">What sits in the same file: the Original item, sharp down to the last roof tile.</figcaption>
+        </figure>
+      </div>
 
       <p>And alongside those, a FocalTable: the blur curve the camera itself used at capture time. Not a guess about what the scene looked like. The actual parameters.</p>
 
