@@ -7,7 +7,7 @@
 - **Design-System:** `styles.css` (Tokens, Komponenten, Artikel-Bausteine), `app.js` (Sprache, Hell/Dunkel, Mobilnavigation, Reveal), `assets/piino-wordmark.svg` + `assets/piino-mark.svg` + `favicon.svg`.
 - **Assets:** `screenshots/` (Nodus), `screenshots/rebokeh/`, App-Icons (`*-app-icon.png`), `og-piino.png` / `og-rebokeh.png` (Link-Vorschau), `downloads/` (APKs).
 - **Hosting: Cloudflare Pages, rein statisch.** Dort wird **kein PHP ausgeführt** — `.php`-Dateien werden als Quelltext ausgeliefert, `.htaccess` wird ignoriert. Deshalb liegt in diesem Repo kein Backend-Code; `api/` ist in `.gitignore`. Serverlogik gehört in eine Cloudflare Function/Worker oder auf einen echten PHP-Host mit eigenem, **privatem** Repo.
-  - Falls die Trial-Prüfung wieder aufgebaut wird: Die Antwort an die Nodus-App (`status`, `device_id`, `first_seen_ms`, `is_expired`, `server_time_ms`) ist Vertrag und darf sich nicht ändern.
+  - Die Trial-Prüfung läuft seit 26.11.2026 als Cloudflare Worker (`nodus.piino.de/api/trial_check.php`, Quelltext im privaten Nodus-Repo unter `server/trial`). Sie speichert nur einen mit geheimem Schlüssel umgerechneten Geräte-Hash, Zeitstempel und den Messzähler, keine IP. Die Antwortfelder (`status`, `device_id`, `first_seen_ms`, `is_expired`, `server_time_ms`, `used_scans`) sind Vertrag mit der App und dürfen nicht entfernt oder umbenannt werden.
   - Niemals Schlüssel oder Passwörter in Dateien dieses Repos — es ist öffentlich. Keine IP-Adressen speichern; die Datenschutzerklärungen sagen genau das zu.
 - **`version.json`:** steuert App-Update-Infos (versionCode/Name, `apkUrl`, `playStoreUrl`, Release Notes). Bei neuem App-Release hier mitziehen (und `stats.html` angleichen).
 
